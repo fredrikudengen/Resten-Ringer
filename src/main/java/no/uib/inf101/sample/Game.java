@@ -21,6 +21,11 @@ public class Game extends JPanel implements Runnable {
     final int screenWidth = tileSize * rows; // 768 pixels
     final int screenHeight = tileSize * cols; // 576 pixels
 
+    // Set player's default position
+    public int playerX = 100;
+    public int playerY = 100;
+    public int playerSpeed = 3; // moves 3 pixels each time
+
     GameController gameController;
     Thread gameThread;
     Player player;
@@ -33,7 +38,7 @@ public class Game extends JPanel implements Runnable {
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
         this.setBackground(Color.BLACK);
         this.setDoubleBuffered(true); // improves rendering, doesn't display the render before the whole screen is
-                                            // ready (chatGPT 06.04.24)
+                                      // ready (chatGPT 06.04.24)
         gameController = new GameController(this);
         this.addKeyListener(gameController);
         this.setFocusable(true);
@@ -91,17 +96,21 @@ public class Game extends JPanel implements Runnable {
         // Change so player position is updated in Player and then call this function
 
         if (gameController.upPressed == true) {
-            player.playerY -= player.playerSpeed;
+            playerY -= playerSpeed;
         }
         if (gameController.downPressed == true) {
-            player.playerY += player.playerSpeed;
+            playerY += playerSpeed;
         }
         if (gameController.leftPressed == true) {
-            player.playerX -= player.playerSpeed;
+            playerX -= playerSpeed;
         }
         if (gameController.rightPressed == true) {
-            player.playerX += player.playerSpeed;
+            playerX += playerSpeed;
         }
+
+        // PROJECTILES
+        // Create a variable projectileCount and then a while(i < projectileCount) to
+        // make sure that every projectile on the map is updated
     }
 
     // The paintComponent method is called by the Java Swing framework every time
@@ -115,7 +124,7 @@ public class Game extends JPanel implements Runnable {
         Graphics2D g2 = (Graphics2D) g;
 
         g2.setColor(Color.WHITE);
-        g2.fillRect(player.playerX, player.playerY, tileSize, tileSize);
+        g2.fillRect(playerX, playerY, tileSize, tileSize);
     }
 
 }

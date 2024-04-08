@@ -11,7 +11,7 @@ public class Projectile {
 
     boolean north, northEast, northWest, southEast, south, southWest, west, east;
 
-    public Projectile() {
+    public Projectile(boolean bulletDirection) {
         // Create projectile moving towards direction north/east/etc. 
         // northEast = projectileX += projectileSpeed and projectileY -= projectileSpeed
 
