@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JPanel;
 
@@ -21,27 +23,42 @@ public class Game extends JPanel implements Runnable {
     final int screenWidth = tileSize * rows; // 768 pixels
     final int screenHeight = tileSize * cols; // 576 pixels
 
-    // Set player's default position
-    public int playerX = 100;
-    public int playerY = 100;
-    public int playerSpeed = 3; // moves 3 pixels each time
-
     GameController gameController;
     Thread gameThread;
     Player player;
+    Projectile projectile;
+    Game game;
 
     // FPS
     int fps = 60;
+
+    // List to store projectiles
+    private List<Projectile> projectiles;
+
+    // Set player's default position
+    private int playerX = 100;
+    private int playerY = 100;
+    private int playerSpeed = 3; // moves 3 pixels each time
 
     public Game() {
 
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
         this.setBackground(Color.BLACK);
         this.setDoubleBuffered(true); // improves rendering, doesn't display the render before the whole screen is
-                                      // ready (chatGPT 06.04.24)
+                                      // ready
         gameController = new GameController(this);
+
         this.addKeyListener(gameController);
         this.setFocusable(true);
+
+        projectiles = new ArrayList<>();
+
+        // Initialize the player object first
+        player = new Player(this.playerX, this.playerY, this.playerSpeed, this, gameController);
+
+        // Then initialize the projectile object using the initialized player object
+        projectile = new Projectile(player.getPlayerX(), player.getPlayerY(), 10, this);
+
     }
 
     public void startGameThread() {
@@ -93,24 +110,13 @@ public class Game extends JPanel implements Runnable {
 
     public void update() {
 
-        // Change so player position is updated in Player and then call this function
+        player.update();
+        projectile.update();
 
-        if (gameController.upPressed == true) {
-            playerY -= playerSpeed;
-        }
-        if (gameController.downPressed == true) {
-            playerY += playerSpeed;
-        }
-        if (gameController.leftPressed == true) {
-            playerX -= playerSpeed;
-        }
-        if (gameController.rightPressed == true) {
-            playerX += playerSpeed;
-        }
+    }
 
-        // PROJECTILES
-        // Create a variable projectileCount and then a while(i < projectileCount) to
-        // make sure that every projectile on the map is updated
+    public void addProjectile(Projectile projectile) {
+        projectiles.add(projectile);
     }
 
     // The paintComponent method is called by the Java Swing framework every time
@@ -123,8 +129,12 @@ public class Game extends JPanel implements Runnable {
 
         Graphics2D g2 = (Graphics2D) g;
 
+        // Draw player
         g2.setColor(Color.WHITE);
-        g2.fillRect(playerX, playerY, tileSize, tileSize);
-    }
+        g2.fillRect(player.getPlayerX(), player.getPlayerY(), tileSize, tileSize);
 
+        g2.setColor(Color.RED); // Set the color of the projectile
+        g2.fillRect(projectile.getProjectileX(), projectile.getProjectileY(), 5, 5); // Draw a simple rectangle as the
+                                                                                     // projectile
+    }
 }
