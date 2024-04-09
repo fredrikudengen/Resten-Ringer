@@ -5,11 +5,12 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
-import java.util.List;
 
 import javax.swing.JPanel;
 
+import no.uib.inf101.sample.entity.Entity;
 import no.uib.inf101.sample.entity.Player;
+import no.uib.inf101.sample.entity.Projectile;
 
 public class Game extends JPanel implements Runnable {
 
@@ -17,28 +18,24 @@ public class Game extends JPanel implements Runnable {
     final int originalTileSize = 16; // 16x16 tile size
     final int scale = 3; // upscale by 3 to make it larger on screen
 
-    final int tileSize = originalTileSize * scale; // 48x48 tile size
+    public final int tileSize = originalTileSize * scale; // 48x48 tile size
     final int rows = 16;
     final int cols = 12;
-    final int screenWidth = tileSize * rows; // 768 pixels
-    final int screenHeight = tileSize * cols; // 576 pixels
+    public final int screenWidth = tileSize * rows; // 768 pixels
+    public final int screenHeight = tileSize * cols; // 576 pixels
 
-    GameController gameController;
+    GameController gameController = new GameController(this);
     Thread gameThread;
-    Player player;
+
     Projectile projectile;
+
+    public ArrayList<Projectile> projectileList = new ArrayList<>();
     Game game;
 
     // FPS
     int fps = 60;
 
-    // List to store projectiles
-    private List<Projectile> projectiles;
-
-    // Set player's default position
-    private int playerX = 100;
-    private int playerY = 100;
-    private int playerSpeed = 3; // moves 3 pixels each time
+    Player player = new Player(this, gameController);
 
     public Game() {
 
@@ -46,19 +43,9 @@ public class Game extends JPanel implements Runnable {
         this.setBackground(Color.BLACK);
         this.setDoubleBuffered(true); // improves rendering, doesn't display the render before the whole screen is
                                       // ready
-        gameController = new GameController(this);
-
         this.addKeyListener(gameController);
         this.setFocusable(true);
-
-        projectiles = new ArrayList<>();
-
-        // Initialize the player object first
-        player = new Player(this.playerX, this.playerY, this.playerSpeed, this, gameController);
-
-        // Then initialize the projectile object using the initialized player object
-        projectile = new Projectile(player.getPlayerX(), player.getPlayerY(), 10, this);
-
+        this.requestFocusInWindow();
     }
 
     public void startGameThread() {
@@ -76,9 +63,6 @@ public class Game extends JPanel implements Runnable {
         double nextDrawTime = System.nanoTime() + drawInterval;
 
         while (gameThread != null) {
-
-            long currentTime = System.nanoTime(); // Stores a time in nanoseconds from when it was instantiated in a
-                                                  // long type (int but with larger numbers) (chatGPT 07.04.24)
 
             // 1 UPDATE: update information such as character positions
             update();
@@ -111,12 +95,16 @@ public class Game extends JPanel implements Runnable {
     public void update() {
 
         player.update();
-        projectile.update();
 
-    }
-
-    public void addProjectile(Projectile projectile) {
-        projectiles.add(projectile);
+        for (int i = 0; i < projectileList.size(); i++) {
+            if (projectileList.get(i) != null) {
+                projectileList.get(i).update();
+            }
+            if (768 < projectileList.get(i).getProjectileX() || projectileList.get(i).getProjectileX() < 0
+                    || 576 < projectileList.get(i).getProjectileY() || projectileList.get(i).getProjectileY() < 0) {
+                projectileList.remove(i);
+            }
+        }
     }
 
     // The paintComponent method is called by the Java Swing framework every time
@@ -129,12 +117,12 @@ public class Game extends JPanel implements Runnable {
 
         Graphics2D g2 = (Graphics2D) g;
 
-        // Draw player
-        g2.setColor(Color.WHITE);
-        g2.fillRect(player.getPlayerX(), player.getPlayerY(), tileSize, tileSize);
+        player.draw(g2);
 
-        g2.setColor(Color.RED); // Set the color of the projectile
-        g2.fillRect(projectile.getProjectileX(), projectile.getProjectileY(), 5, 5); // Draw a simple rectangle as the
-                                                                                     // projectile
+        for (int i = 0; i < projectileList.size(); i++) {
+            if (projectileList.get(i) != null) {
+                projectileList.get(i).draw(g2);
+            }
+        }
     }
 }

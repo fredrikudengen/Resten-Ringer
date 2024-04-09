@@ -14,8 +14,12 @@ public class Main {
     frame.setResizable(false);
     frame.setTitle("Sem2 Spill");
 
-    // Create an instance of GamePanel
-    Game gamePanel = new Game();
+
+    // Create an instance of Game
+    Game gamePanel = new Game();    
+
+    // GameController gameController = new GameController(gamePanel);
+    // Player player = new Player(100, 100, 3, gamePanel, gameController); 
 
     // Add the GamePanel to the JFrame
     frame.add(gamePanel);

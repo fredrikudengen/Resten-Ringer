@@ -1,34 +1,16 @@
 package no.uib.inf101.sample;
 
 import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-
-import no.uib.inf101.sample.entity.Player;
 
 public class GameController implements java.awt.event.KeyListener {
 
     Game game;
-    Projectile projectile;
-    Player player;
 
-    public boolean upPressed, downPressed, leftPressed, rightPressed;
-
-    public GameController(Game game) {
+    public GameController(Game game) { // Modify the constructor
         this.game = game;
-        this.projectile = new Projectile(0, 0, 0, game);
-        game.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
-                projectile.handleMouseClick(e.getX(), e.getY());
-            }
-        });
-
-        // Pass the GameController instance to the Player constructor
-        // and set it accordingly
-        this.game.player = new Player(0, 0, 0, game, this);
     }
+
+    public boolean upPressed, downPressed, leftPressed, rightPressed, shotKeyPressed;
 
     @Override
     public void keyTyped(KeyEvent e) {
@@ -48,6 +30,9 @@ public class GameController implements java.awt.event.KeyListener {
         if (e.getKeyCode() == KeyEvent.VK_D) {
             rightPressed = true;
         }
+        if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+            shotKeyPressed = true;            
+        }
     }
 
     @Override
@@ -63,6 +48,9 @@ public class GameController implements java.awt.event.KeyListener {
         }
         if (e.getKeyCode() == KeyEvent.VK_D) {
             rightPressed = false;
+        }
+        if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+            shotKeyPressed = false;            
         }
     }
 }

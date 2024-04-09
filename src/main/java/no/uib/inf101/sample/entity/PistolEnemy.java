@@ -1,10 +1,7 @@
 package no.uib.inf101.sample.entity;
 
-public class PistolEnemy implements Enemy {
+public class PistolEnemy extends Entity {
 
-    @Override
-    public String getName() {
-        return "PistolEnenmy";
-    }
+    
 
 }
