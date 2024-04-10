@@ -8,7 +8,6 @@ import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
-import no.uib.inf101.sample.entity.Entity;
 import no.uib.inf101.sample.entity.Player;
 import no.uib.inf101.sample.entity.Projectile;
 
@@ -96,12 +95,23 @@ public class Game extends JPanel implements Runnable {
 
         player.update();
 
+        // MÅ OPPDATERE SLIK AT SKUDDENE BEVEGER SEG UAVHENGIG FRA HVERANDRE OG AT DET
+        // ER EN PAUSE MELLOM HVER GANG MAN KAN SKYTE
+        
+        // Check if arrow keys are pressed and create projectile accordingly
+        if (gameController.shotKeyPressed) {
+            Projectile newProjectile = new Projectile(this, player, gameController);
+            projectileList.add(newProjectile);
+            gameController.shotKeyPressed = false;
+        }
+
         for (int i = 0; i < projectileList.size(); i++) {
             if (projectileList.get(i) != null) {
                 projectileList.get(i).update();
             }
-            if (768 < projectileList.get(i).getProjectileX() || projectileList.get(i).getProjectileX() < 0
-                    || 576 < projectileList.get(i).getProjectileY() || projectileList.get(i).getProjectileY() < 0) {
+            if (screenWidth < projectileList.get(i).getProjectileX() || projectileList.get(i).getProjectileX() < 0
+                    || screenHeight < projectileList.get(i).getProjectileY()
+                    || projectileList.get(i).getProjectileY() < 0) {
                 projectileList.remove(i);
             }
         }

@@ -6,15 +6,18 @@ public class GameController implements java.awt.event.KeyListener {
 
     Game game;
 
-    public GameController(Game game) { // Modify the constructor
+    public GameController(Game game) {
         this.game = game;
     }
 
-    public boolean upPressed, downPressed, leftPressed, rightPressed, shotKeyPressed;
+    public boolean upPressed, downPressed, leftPressed, rightPressed;
+    public boolean shootUp, shootDown, shootLeft, shootRight;
+    public boolean shotKeyPressed;
 
     @Override
     public void keyTyped(KeyEvent e) {
     }
+    
 
     @Override
     public void keyPressed(KeyEvent e) {
@@ -30,8 +33,21 @@ public class GameController implements java.awt.event.KeyListener {
         if (e.getKeyCode() == KeyEvent.VK_D) {
             rightPressed = true;
         }
-        if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-            shotKeyPressed = true;            
+        if (e.getKeyCode() == KeyEvent.VK_UP) {
+            shootUp = true;
+            shotKeyPressed = true;
+        }
+        else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+            shootDown = true;
+            shotKeyPressed = true;
+        }
+        else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+            shootLeft = true;
+            shotKeyPressed = true;
+        }
+        else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+            shootRight = true;
+            shotKeyPressed = true;
         }
     }
 
@@ -48,9 +64,6 @@ public class GameController implements java.awt.event.KeyListener {
         }
         if (e.getKeyCode() == KeyEvent.VK_D) {
             rightPressed = false;
-        }
-        if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-            shotKeyPressed = false;            
         }
     }
 }

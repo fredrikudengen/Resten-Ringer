@@ -7,6 +7,7 @@ public class Entity {
     public int speed;
     public Projectile projectile;
     public Player player;
+    public boolean isAlive;
     
     public void update() {
         player.update();
