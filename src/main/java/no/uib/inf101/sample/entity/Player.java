@@ -46,7 +46,6 @@ public class Player extends Entity {
         x = 100;
         y = 100;
         speed = 4;
-        projectile = new Projectile(game, this, gameController);
         direction = "down";
     }
 

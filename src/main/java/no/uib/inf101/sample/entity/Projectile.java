@@ -1,7 +1,8 @@
 package no.uib.inf101.sample.entity;
 
-import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.Toolkit;
 
 import no.uib.inf101.sample.Game;
 import no.uib.inf101.sample.GameController;
@@ -12,13 +13,32 @@ public class Projectile extends Entity {
     Player player;
     GameController gameController;
 
-    public boolean isAlive = false;
-    int healthPoints;
+    String shotDirection;
+    int imageNum = 1;
+    int imageCounter = 0;
 
-    public Projectile(Game game, Player player, GameController gameController) {
+    private Image up1 = Toolkit.getDefaultToolkit()
+            .getImage(getClass().getResource("images/Up_bullet_1.png"));
+    private Image up2 = Toolkit.getDefaultToolkit()
+            .getImage(getClass().getResource("images/Up_bullet_2.png"));
+    private Image down1 = Toolkit.getDefaultToolkit()
+            .getImage(getClass().getResource("images/Down_bullet_1.png"));
+    private Image down2 = Toolkit.getDefaultToolkit()
+            .getImage(getClass().getResource("images/Down_bullet_2.png"));
+    private Image left1 = Toolkit.getDefaultToolkit()
+            .getImage(getClass().getResource("images/Left_bullet_1.png"));
+    private Image left2 = Toolkit.getDefaultToolkit()
+            .getImage(getClass().getResource("images/Left_bullet_2.png"));
+    private Image right1 = Toolkit.getDefaultToolkit()
+            .getImage(getClass().getResource("images/Right_bullet_1.png"));
+    private Image right2 = Toolkit.getDefaultToolkit()
+            .getImage(getClass().getResource("images/Right_bullet_2.png"));
+
+    public Projectile(Game game, Player player, GameController gameController, String shotDirection) {
         this.game = game;
         this.player = player;
         this.gameController = gameController;
+        this.shotDirection = shotDirection;
 
         setDefaultValues();
     }
@@ -30,7 +50,7 @@ public class Projectile extends Entity {
 
         speed = 8;
 
-        healthPoints = 60;
+        healthPoints = 40;
     }
 
     // Getters and setters
@@ -48,41 +68,84 @@ public class Projectile extends Entity {
 
     // Called upon once every frame in Game
     public void update() {
-        if (gameController.shootUp) {
+        if (shotDirection == "up") {
             y -= speed;
             if (y < 0) {
                 gameController.shootUp = false;
             }
-        } else if (gameController.shootDown) {
+        } else if (shotDirection == "down") {
             y += speed;
             if (y > game.screenHeight) {
                 gameController.shootDown = false;
             }
-        } else if (gameController.shootLeft) {
+        } else if (shotDirection == "left") {
             x -= speed;
             if (x < 0) {
                 gameController.shootLeft = false;
             }
-        } else if (gameController.shootRight) {
+        } else if (shotDirection == "right") {
             x += speed;
             if (x > game.screenWidth) {
                 gameController.shootRight = false;
             }
         }
-        healthPoints--;
-
-        if (healthPoints == 0) {
-            isAlive = false;
-        }
+        imageCounter++;
+            if (imageCounter > 10) {
+                if (imageNum == 1) {
+                    imageNum = 2;
+                } else if (imageNum == 2) {
+                    imageNum = 1;
+                }
+                imageCounter = 0;
+            }
     }
 
-    // FIKSE SÅNN AT MAN BARE KAN SKYTE HVERT SEKUND (isAlive == false)
 
     public void draw(Graphics2D g2) {
-        // if (isAlive = false) {
-            // Draw projectile
-            g2.setColor(Color.RED);
-            g2.fillRect(x, y, game.tileSize, game.tileSize);
-        //}
+        Image image = null;
+        switch (shotDirection) {
+            case "up":
+                if (imageNum == 1) {
+                    image = up1;
+                }
+                if (imageNum == 2) {
+                    image = up2;
+                }
+                break;
+            case "down":
+                if (imageNum == 1) {
+                    image = down1;
+                }
+                if (imageNum == 2) {
+                    image = down2;
+                }
+                break;
+            case "left":
+                if (imageNum == 1) {
+                    image = left1;
+                }
+                if (imageNum == 2) {
+                    image = left2;
+                }
+                break;
+            case "right":
+                if (imageNum == 1) {
+                    image = right1;
+                }
+                if (imageNum == 2) {
+                    image = right2;
+                }
+                break;
+        }
+        // Draw Projectile
+        if (shotDirection == "right") {
+            g2.drawImage(image, x + 40, y + 20, game.bulletSize * 2, game.bulletSize, null);
+        } else if (shotDirection == "left") {
+            g2.drawImage(image, x - 40, y + 20, game.bulletSize * 2, game.bulletSize, null);
+        } else if (shotDirection == "up") {
+            g2.drawImage(image, x + 25, y - 20, game.bulletSize, game.bulletSize * 2, null);
+        } else if (shotDirection == "down") {
+            g2.drawImage(image, x, y + 30, game.bulletSize, game.bulletSize * 2, null);
+        }
     }
 }
