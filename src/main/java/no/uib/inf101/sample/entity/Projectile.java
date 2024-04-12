@@ -12,6 +12,9 @@ public class Projectile extends Entity {
     Player player;
     GameController gameController;
 
+    public boolean isAlive = false;
+    int healthPoints;
+
     public Projectile(Game game, Player player, GameController gameController) {
         this.game = game;
         this.player = player;
@@ -22,12 +25,12 @@ public class Projectile extends Entity {
 
     public void setDefaultValues() {
         x = player.getPlayerX();
-        System.out.println("Projectile start x = " + x);
 
         y = player.getPlayerY();
-        System.out.println("Projectile start y = " + y);
 
         speed = 8;
+
+        healthPoints = 60;
     }
 
     // Getters and setters
@@ -66,13 +69,20 @@ public class Projectile extends Entity {
                 gameController.shootRight = false;
             }
         }
+        healthPoints--;
+
+        if (healthPoints == 0) {
+            isAlive = false;
+        }
     }
 
+    // FIKSE SÅNN AT MAN BARE KAN SKYTE HVERT SEKUND (isAlive == false)
+
     public void draw(Graphics2D g2) {
-
-        // Draw projectile
-        g2.setColor(Color.RED);
-        g2.fillRect(x, y, game.tileSize, game.tileSize);
-
+        // if (isAlive = false) {
+            // Draw projectile
+            g2.setColor(Color.RED);
+            g2.fillRect(x, y, game.tileSize, game.tileSize);
+        //}
     }
 }

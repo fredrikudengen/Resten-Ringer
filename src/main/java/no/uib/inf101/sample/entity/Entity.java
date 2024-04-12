@@ -8,6 +8,7 @@ public class Entity {
     public Projectile projectile;
     public Player player;
     public boolean isAlive;
+    public int healthPoints;
     
     public void update() {
         player.update();
