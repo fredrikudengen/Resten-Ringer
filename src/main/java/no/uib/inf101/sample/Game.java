@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
+import no.uib.inf101.sample.entity.PistolEnemy;
 import no.uib.inf101.sample.entity.Player;
 import no.uib.inf101.sample.entity.Projectile;
 
@@ -15,8 +16,9 @@ public class Game extends JPanel implements Runnable {
 
     // SCREEN SETTINGS
     final int originalTileSize = 16; // 16x16 tile size
-    final int scale = 3; // upscale by 3 to make it larger on screen
     final int originalBulletSize = 8; // 8x8 bullet size
+    final int scale = 3; // upscale by 3 to make it larger on screen
+    
 
     public final int tileSize = originalTileSize * scale; // 48x48 tile size
     public final int bulletSize = originalBulletSize * scale; // 24x24 tile size
@@ -31,7 +33,6 @@ public class Game extends JPanel implements Runnable {
     Projectile projectile;
     boolean bulletTimerCheck = false;
     int bulletTimer = 40;
-    String savedShotDirection = "";
 
     public ArrayList<Projectile> projectileList = new ArrayList<>();
     Game game;
@@ -40,13 +41,14 @@ public class Game extends JPanel implements Runnable {
     int fps = 60;
 
     Player player = new Player(this, gameController);
+    PistolEnemy pistolEnemy = new PistolEnemy(this, player);
 
     public Game() {
 
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
         this.setBackground(Color.BLACK);
         this.setDoubleBuffered(true); // improves rendering, doesn't display the render before the whole screen is
-                                      // ready
+                                            // ready
         this.addKeyListener(gameController);
         this.setFocusable(true);
         this.requestFocusInWindow();
@@ -100,6 +102,8 @@ public class Game extends JPanel implements Runnable {
         
         player.update();
 
+        pistolEnemy.update();        
+
         // Check if arrow keys are pressed and create projectile accordingly
         if (gameController.shotKeyPressed) {
             // Check if the previous projectile is not alive before creating a new one
@@ -128,9 +132,8 @@ public class Game extends JPanel implements Runnable {
         bulletTimer--;
         if (bulletTimer <= 0) {
             bulletTimerCheck = false;
-            bulletTimer = 60;
+            bulletTimer = 40;
         }
-
     }
 
     // The paintComponent method is called by the Java Swing framework every time
@@ -144,6 +147,8 @@ public class Game extends JPanel implements Runnable {
         Graphics2D g2 = (Graphics2D) g;
 
         player.draw(g2);
+
+        pistolEnemy.draw(g2);
 
         for (int i = 0; i < projectileList.size(); i++) {
             if (projectileList.get(i) != null) {
