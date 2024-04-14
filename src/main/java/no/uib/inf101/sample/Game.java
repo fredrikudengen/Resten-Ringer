@@ -5,10 +5,11 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import javax.swing.JPanel;
 
-import no.uib.inf101.sample.entity.PistolEnemy;
+import no.uib.inf101.sample.entity.NormalEnemy;
 import no.uib.inf101.sample.entity.Player;
 import no.uib.inf101.sample.entity.Projectile;
 
@@ -18,7 +19,6 @@ public class Game extends JPanel implements Runnable {
     final int originalTileSize = 16; // 16x16 tile size
     final int originalBulletSize = 8; // 8x8 bullet size
     final int scale = 3; // upscale by 3 to make it larger on screen
-    
 
     public final int tileSize = originalTileSize * scale; // 48x48 tile size
     public final int bulletSize = originalBulletSize * scale; // 24x24 tile size
@@ -27,6 +27,7 @@ public class Game extends JPanel implements Runnable {
     public final int screenWidth = tileSize * rows; // 768 pixels
     public final int screenHeight = tileSize * cols; // 576 pixels
 
+    Game game;
     GameController gameController = new GameController(this);
     Thread gameThread;
 
@@ -35,20 +36,19 @@ public class Game extends JPanel implements Runnable {
     int bulletTimer = 40;
 
     public ArrayList<Projectile> projectileList = new ArrayList<>();
-    Game game;
 
     // FPS
     int fps = 60;
 
     Player player = new Player(this, gameController);
-    PistolEnemy pistolEnemy = new PistolEnemy(this, player);
+    NormalEnemy normalEnemy = new NormalEnemy(this, player);
 
     public Game() {
-
+        this.game = this;
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
         this.setBackground(Color.BLACK);
         this.setDoubleBuffered(true); // improves rendering, doesn't display the render before the whole screen is
-                                            // ready
+                                      // ready
         this.addKeyListener(gameController);
         this.setFocusable(true);
         this.requestFocusInWindow();
@@ -99,33 +99,46 @@ public class Game extends JPanel implements Runnable {
     }
 
     public void update() {
-        
+
         player.update();
 
-        pistolEnemy.update();        
+        normalEnemy.update();
 
         // Check if arrow keys are pressed and create projectile accordingly
-        if (gameController.shotKeyPressed) {
+        if (gameController.shotKeyPressed)
+
+        {
             // Check if the previous projectile is not alive before creating a new one
             if (bulletTimerCheck == false) {
-                Projectile newProjectile = new Projectile(this, player, gameController, gameController.getShotDirection());
+
+                Projectile newProjectile = new Projectile(this, player, gameController,
+                        gameController.getShotDirection(),
+                        normalEnemy);
                 projectileList.add(newProjectile);
                 gameController.shotKeyPressed = false;
                 bulletTimerCheck = true;
-            }
-            else {
+            } else {
                 gameController.shotKeyPressed = false;
             }
         }
 
-        for (int i = 0; i < projectileList.size(); i++) {
+        for (int i = projectileList.size() - 1; i >= 0; i--) {
 
             projectileList.get(i).update();
 
-            if (screenWidth < projectileList.get(i).getProjectileX() || projectileList.get(i).getProjectileX() < 0
-                    || screenHeight < projectileList.get(i).getProjectileY()
-                    || projectileList.get(i).getProjectileY() < 0) {
-                projectileList.remove(i);
+            Iterator<Projectile> projectileIterator = projectileList.iterator();
+            while (projectileIterator.hasNext()) {
+                Projectile projectile = projectileIterator.next();
+                projectile.update();
+
+                if (screenWidth < projectile.getProjectileX() || projectile.getProjectileX() < 0
+                        || screenHeight < projectile.getProjectileY() || projectile.getProjectileY() < 0) {
+                    projectileList.get(i).isAlive = false;
+                    projectileIterator.remove(); // Safely remove the projectile using iterator
+                } else if (projectileList.get(i).projectTileHitEnemy() == true) {
+                    projectileList.get(i).isAlive = false;
+                    projectileIterator.remove(); // Safely remove the projectile using iterator
+                }
             }
         }
 
@@ -148,7 +161,7 @@ public class Game extends JPanel implements Runnable {
 
         player.draw(g2);
 
-        pistolEnemy.draw(g2);
+        normalEnemy.draw(g2);
 
         for (int i = 0; i < projectileList.size(); i++) {
             if (projectileList.get(i) != null) {

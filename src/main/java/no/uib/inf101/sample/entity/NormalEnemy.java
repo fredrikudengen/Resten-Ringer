@@ -2,11 +2,12 @@ package no.uib.inf101.sample.entity;
 
 import java.awt.Graphics2D;
 import java.awt.Toolkit;
+import java.util.Random;
 
 import no.uib.inf101.sample.Game;
 import no.uib.inf101.sample.GameController;
 
-public class PistolEnemy extends Entity {
+public class NormalEnemy extends Entity {
 
     GameController gameController;
     Game game;
@@ -22,19 +23,21 @@ public class PistolEnemy extends Entity {
     int xNeededToMove;
     int yNeededToMove;
 
-    int spawnTime = 180;
-
-    public PistolEnemy(Game game, Player player) {
+    public NormalEnemy(Game game, Player player) {
         this.game = game;
         this.player = player;
         setDefaultValues();
     }
 
     public void setDefaultValues() {
-        x = 200;
-        y = 200;
+        Random rand = new Random();
+        
+        x = rand.nextInt(game.screenWidth) ;
+        y = rand.nextInt(game.screenHeight);
+        healthPoints = 3;
         speed = 2;
         direction = "down";
+        isAlive = true;
     }
 
     public void simulateEnemyMoves() {
@@ -69,9 +72,11 @@ public class PistolEnemy extends Entity {
 
     public void update() {
 
-        System.out.println("Enemy position is: " + x + ", " + y);
-
         simulateEnemyMoves();
+
+        if (healthPoints <= 0) {
+            isAlive = false;
+        }
 
         imageCounter++;
         if (imageCounter > 10) {
@@ -86,20 +91,22 @@ public class PistolEnemy extends Entity {
     }
 
     // Getters and setters
-    public int getPistolEnemyX() {
+    public int getNormalEnemyX() {
         return x;
     }
 
-    public int getPistolEnemyY() {
+    public int getNormalEnemyY() {
         return y;
     }
 
-    public int getPistolEnemySpeed() {
+    public int getNormalEnemySpeed() {
         return speed;
     }
 
     public void draw(Graphics2D g2) {
+        if (isAlive == true) {
         g2.drawImage(Toolkit.getDefaultToolkit()
                 .getImage(getClass().getResource("images/beer.png")), x, y, game.tileSize, game.tileSize, null);
+        }
     }
 }

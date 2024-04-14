@@ -82,7 +82,6 @@ public class Player extends Entity {
                 } else {
                     direction = "up";
                 }
-                System.out.println("Player position is:" + x + "," + y);
                 if (y <= -48) {
                     y = 576 + 36;
                 }
@@ -102,7 +101,6 @@ public class Player extends Entity {
                     direction = "down";
                 }
 
-                System.out.println("Player position is:" + x + "," + y);
                 if (y >= 576 + 36) {
                     y = -48;
                 }
@@ -120,7 +118,6 @@ public class Player extends Entity {
                 } else {
                     direction = "left";
                 }
-                System.out.println("Player position is:" + x + "," + y);
                 if (x <= -48) {
                     x = 768 + 36;
                 }
@@ -138,7 +135,6 @@ public class Player extends Entity {
                 } else {
                     direction = "right";
                 }
-                System.out.println("Player position is:" + x + "," + y);
                 if (x >= 768 + 36) {
                     x = -48;
                 }
