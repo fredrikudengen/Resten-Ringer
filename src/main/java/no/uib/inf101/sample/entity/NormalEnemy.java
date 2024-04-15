@@ -74,25 +74,28 @@ public class NormalEnemy extends Entity {
         xNeededToMove = player.getPlayerX() - x;
         yNeededToMove = player.getPlayerY() - y;
 
-        if (xNeededToMove < 0) {
-            x -= speed;
-            xNeededToMove += speed;
-            direction = "left";
-        }
-        if (xNeededToMove > 0) {
-            x += speed;
-            xNeededToMove -= speed;
-            direction = "right";
-        }
-        if (yNeededToMove < 0) {
-            y -= speed;
-            yNeededToMove += speed;
-            direction = "up";
-        }
-        if (yNeededToMove > 0) {
-            y += speed;
-            yNeededToMove -= speed;
-        }
+        System.out.println("player coord is: " +player.x +" " +player.y);
+        System.out.println("enemy coord is: " +x +" " +y);
+
+        // if (xNeededToMove < 0) {
+        //     x -= speed;
+        //     xNeededToMove += speed;
+        //     direction = "left";
+        // }
+        // if (xNeededToMove > 0) {
+        //     x += speed;
+        //     xNeededToMove -= speed;
+        //     direction = "right";
+        // }
+        // if (yNeededToMove < 0) {
+        //     y -= speed;
+        //     yNeededToMove += speed;
+        //     direction = "up";
+        // }
+        // if (yNeededToMove > 0) {
+        //     y += speed;
+        //     yNeededToMove -= speed;
+        // }
     }
 
     public void knockBackPlayer() {
