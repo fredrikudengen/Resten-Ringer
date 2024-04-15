@@ -43,13 +43,21 @@ public class Player extends Entity {
     }
 
     public void setDefaultValues() {
-        x = 100;
+        // x = game.screenWidth/2;
+        // y = game.screenHeight/2;
+        x = 140;
         y = 100;
+        healthPoints = 10;
         speed = 4;
         direction = "down";
+        isAlive = true;
     }
 
     public void update() {
+
+        if (healthPoints <= 0) {
+            isAlive = false;
+        }
 
         if (gameController.upPressed == true || gameController.downPressed == true || gameController.leftPressed == true
                 || gameController.rightPressed == true) {

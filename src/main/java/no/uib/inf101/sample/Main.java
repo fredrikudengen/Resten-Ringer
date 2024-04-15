@@ -14,7 +14,6 @@ public class Main {
     frame.setResizable(false);
     frame.setTitle("Sem2 Spill");
 
-
     // Create an instance of Game
     Game gamePanel = new Game();    
 

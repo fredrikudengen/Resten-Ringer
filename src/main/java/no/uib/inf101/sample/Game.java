@@ -2,10 +2,10 @@ package no.uib.inf101.sample;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
-import java.util.Iterator;
 
 import javax.swing.JPanel;
 
@@ -26,6 +26,8 @@ public class Game extends JPanel implements Runnable {
     final int cols = 12;
     public final int screenWidth = tileSize * rows; // 768 pixels
     public final int screenHeight = tileSize * cols; // 576 pixels
+
+    private volatile boolean running = true; // Flag to control the game loop
 
     Game game;
     GameController gameController = new GameController(this);
@@ -68,7 +70,12 @@ public class Game extends JPanel implements Runnable {
 
         double nextDrawTime = System.nanoTime() + drawInterval;
 
-        while (gameThread != null) {
+        while (running == true) {
+
+            // Check if the game should stop (e.g., player dies)
+            if (!player.isAlive) {
+                stopGame(); // Call method to stop the game
+            }
 
             // 1 UPDATE: update information such as character positions
             update();
@@ -100,14 +107,18 @@ public class Game extends JPanel implements Runnable {
 
     public void update() {
 
-        player.update();
+        if (player.isAlive == true) {
+            player.update();
+        }
 
         normalEnemy.update();
 
-        // Check if arrow keys are pressed and create projectile accordingly
-        if (gameController.shotKeyPressed)
+        if (normalEnemy.isAlive == false) {
+            normalEnemy = new NormalEnemy(game, player);
+        }
 
-        {
+        // Check if arrow keys are pressed and create projectile accordingly
+        if (gameController.shotKeyPressed) {
             // Check if the previous projectile is not alive before creating a new one
             if (bulletTimerCheck == false) {
 
@@ -123,22 +134,14 @@ public class Game extends JPanel implements Runnable {
         }
 
         for (int i = projectileList.size() - 1; i >= 0; i--) {
+            Projectile projectile = projectileList.get(i); // Retrieve the projectile
+            projectile.update(); // Update the projectile
 
-            projectileList.get(i).update();
-
-            Iterator<Projectile> projectileIterator = projectileList.iterator();
-            while (projectileIterator.hasNext()) {
-                Projectile projectile = projectileIterator.next();
-                projectile.update();
-
-                if (screenWidth < projectile.getProjectileX() || projectile.getProjectileX() < 0
-                        || screenHeight < projectile.getProjectileY() || projectile.getProjectileY() < 0) {
-                    projectileList.get(i).isAlive = false;
-                    projectileIterator.remove(); // Safely remove the projectile using iterator
-                } else if (projectileList.get(i).projectTileHitEnemy() == true) {
-                    projectileList.get(i).isAlive = false;
-                    projectileIterator.remove(); // Safely remove the projectile using iterator
-                }
+            // Check conditions for removing the projectile
+            if (screenWidth < projectile.getProjectileX() || projectile.getProjectileX() < 0
+                    || screenHeight < projectile.getProjectileY() || projectile.getProjectileY() < 0
+                    || projectile.projectTileHitEnemy()) {
+                projectileList.remove(i); // Remove the projectile if necessary
             }
         }
 
@@ -149,12 +152,17 @@ public class Game extends JPanel implements Runnable {
         }
     }
 
+    // Method to stop the game
+    private void stopGame() {
+        running = false; // Set the flag to stop the game
+        // Perform any cleanup or additional actions when stopping the game
+    }
+
     // The paintComponent method is called by the Java Swing framework every time
     // either the window opens or resizes, or we call .repaint() on this object.
     // Note: NEVER call paintComponent directly yourself
     @Override
     public void paintComponent(Graphics g) {
-
         super.paintComponent(g);
 
         Graphics2D g2 = (Graphics2D) g;
@@ -167,6 +175,15 @@ public class Game extends JPanel implements Runnable {
             if (projectileList.get(i) != null) {
                 projectileList.get(i).draw(g2);
             }
+        }
+
+        if (player.isAlive == false) {
+            g2.setColor(Color.BLACK);
+            g2.fillRect(0, 0, getWidth(), getHeight());
+
+            g2.setColor(Color.RED);
+            g2.setFont(new Font("Arial", Font.BOLD, 20));
+            g2.drawString("Game Over", screenHeight / 2, screenWidth / 2 - 80);
         }
     }
 }

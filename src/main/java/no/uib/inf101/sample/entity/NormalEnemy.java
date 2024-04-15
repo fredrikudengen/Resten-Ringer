@@ -1,15 +1,14 @@
 package no.uib.inf101.sample.entity;
 
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.Toolkit;
 import java.util.Random;
 
 import no.uib.inf101.sample.Game;
-import no.uib.inf101.sample.GameController;
 
 public class NormalEnemy extends Entity {
 
-    GameController gameController;
     Game game;
     Player player;
 
@@ -18,10 +17,31 @@ public class NormalEnemy extends Entity {
     int imageNum = 1;
     int imageCounter = 0;
 
+    private boolean isStopped = false;
+    private long stopStartTime = 0;
+    private static final long STOP_DURATION = 2000000000; // 2 seconds in milliseconds
+
     boolean isMoving = false;
 
     int xNeededToMove;
     int yNeededToMove;
+
+    private Image up1 = Toolkit.getDefaultToolkit()
+            .getImage(getClass().getResource("images/Up_shotgun_walking_1.png"));
+    private Image up2 = Toolkit.getDefaultToolkit()
+            .getImage(getClass().getResource("images/Up_shotgun_walking_2.png"));
+    private Image down1 = Toolkit.getDefaultToolkit()
+            .getImage(getClass().getResource("images/Down_shotgun_walking_1.png"));
+    private Image down2 = Toolkit.getDefaultToolkit()
+            .getImage(getClass().getResource("images/Down_shotgun_walking_2.png"));
+    private Image left1 = Toolkit.getDefaultToolkit()
+            .getImage(getClass().getResource("images/Left_shotgun_walking_1.png"));
+    private Image left2 = Toolkit.getDefaultToolkit()
+            .getImage(getClass().getResource("images/Left_shotgun_walking_2.png"));
+    private Image right1 = Toolkit.getDefaultToolkit()
+            .getImage(getClass().getResource("images/Right_shotgun_walking_1.png"));
+    private Image right2 = Toolkit.getDefaultToolkit()
+            .getImage(getClass().getResource("images/Right_shotgun_walking_2.png"));
 
     public NormalEnemy(Game game, Player player) {
         this.game = game;
@@ -31,8 +51,7 @@ public class NormalEnemy extends Entity {
 
     public void setDefaultValues() {
         Random rand = new Random();
-        
-        x = rand.nextInt(game.screenWidth) ;
+        x = rand.nextInt(game.screenWidth);
         y = rand.nextInt(game.screenHeight);
         healthPoints = 3;
         speed = 2;
@@ -40,44 +59,94 @@ public class NormalEnemy extends Entity {
         isAlive = true;
     }
 
+    public boolean enemyCollidesWithPlayer() {
+        if (rectanglesOverlap(x - (game.tileSize / 2), y - (game.tileSize / 2), x + (game.tileSize / 2),
+                y + (game.tileSize / 2), player.getPlayerX() - (game.tileSize / 2),
+                player.getPlayerY() + (game.tileSize / 2),
+                player.getPlayerX() + (game.tileSize / 2), player.getPlayerY() + (game.tileSize / 2))) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public void simulateEnemyMoves() {
         xNeededToMove = player.getPlayerX() - x;
         yNeededToMove = player.getPlayerY() - y;
-        if (xNeededToMove < 0) {
 
+        if (xNeededToMove < 0) {
             x -= speed;
             xNeededToMove += speed;
             direction = "left";
-
         }
         if (xNeededToMove > 0) {
             x += speed;
             xNeededToMove -= speed;
             direction = "right";
-
         }
         if (yNeededToMove < 0) {
             y -= speed;
             yNeededToMove += speed;
             direction = "up";
-
         }
         if (yNeededToMove > 0) {
             y += speed;
             yNeededToMove -= speed;
-            direction = "down";
+        }
+    }
 
+    public void knockBackPlayer() {
+        if (enemyCollidesWithPlayer() == true) {
+            if (direction == "up") {
+                player.y -= 100;
+            } else if (direction == "left") {
+                player.x -= 100;
+            } else if (direction == "right") {
+                player.x += 100;
+            }
         }
     }
 
     public void update() {
+        if (isStopped) {
+            long currentTime = System.nanoTime();
+            // Check if the enemy collides with the player
+            if (enemyCollidesWithPlayer() == true) {
+                // Perform actions when collision occurs
+                // For example, reduce player's health
+                player.healthPoints--;
+                knockBackPlayer();
+
+                // Start the stop timer
+                isStopped = true;
+                stopStartTime = System.nanoTime();
+            }
+            if (currentTime - stopStartTime >= STOP_DURATION) {
+                // If the stop duration has passed, resume movement
+                isStopped = false;
+            } else {
+                // Enemy remains stopped
+                return;
+            }
+        }
+
+        // Check if the enemy collides with the player
+        if (enemyCollidesWithPlayer() == true) {
+            // Perform actions when collision occurs
+            // For example, reduce player's health
+            player.healthPoints--;
+            knockBackPlayer();
+
+            // Start the stop timer
+            isStopped = true;
+            stopStartTime = System.nanoTime();
+        }
 
         simulateEnemyMoves();
 
         if (healthPoints <= 0) {
             isAlive = false;
         }
-
         imageCounter++;
         if (imageCounter > 10) {
             if (imageNum == 1) {
@@ -104,9 +173,53 @@ public class NormalEnemy extends Entity {
     }
 
     public void draw(Graphics2D g2) {
-        if (isAlive == true) {
-        g2.drawImage(Toolkit.getDefaultToolkit()
-                .getImage(getClass().getResource("images/beer.png")), x, y, game.tileSize, game.tileSize, null);
+
+        Image image = null;
+        switch (direction) {
+            case "up":
+                if (imageNum == 1) {
+                    image = up1;
+                }
+                if (imageNum == 2) {
+                    image = up2;
+                }
+                break;
+            case "down":
+                if (imageNum == 1) {
+                    image = down1;
+                }
+                if (imageNum == 2) {
+                    image = down2;
+                }
+                break;
+            case "left":
+                if (imageNum == 1) {
+                    image = left1;
+                }
+                if (imageNum == 2) {
+                    image = left2;
+                }
+                break;
+            case "right":
+                if (imageNum == 1) {
+                    image = right1;
+                }
+                if (imageNum == 2) {
+                    image = right2;
+                }
+                break;
+        }
+        // Draw player
+        if (direction == "right") {
+            g2.drawImage(image, x, y, game.tileSize * 2, game.tileSize, null);
+        } else if (direction == "left") {
+            g2.drawImage(image, x - game.tileSize, y, game.tileSize * 2, game.tileSize, null);
+        } else if (direction == "up") {
+            g2.drawImage(image, x, y - game.tileSize, game.tileSize, game.tileSize * 2, null);
+        } else if (direction == "down") {
+            g2.drawImage(image, x, y, game.tileSize, game.tileSize * 2, null);
+        } else {
+            g2.drawImage(down2, x, y, game.tileSize, game.tileSize * 2, null);
         }
     }
 }

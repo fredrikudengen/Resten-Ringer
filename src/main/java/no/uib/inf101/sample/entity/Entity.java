@@ -16,21 +16,6 @@ public class Entity {
 
     public boolean isAlive;
 
-    public boolean collidesWith(Entity other) {
-        if (other instanceof NormalEnemy) {
-            NormalEnemy enemy = (NormalEnemy) other;
-            if (rectanglesOverlap(x - (game.tileSize / 2), y - (game.tileSize / 2), x + (game.tileSize / 2),
-                    y + (game.tileSize / 2), x - (game.tileSize / 2), y + (game.tileSize / 2),
-                    x + (game.tileSize / 2), y + (game.tileSize / 2))) {
-                return true;
-            } else {
-                return false;
-            }
-        } else {
-            return false;
-        }
-    }
-
     public static boolean rectanglesOverlap(int x1, int y1, int x2, int y2,
             int x3, int y3, int x4, int y4) {
         int xLeft = Math.min(x1, x2);
