@@ -19,7 +19,7 @@ public class NormalEnemy extends Entity {
 
     private boolean isStopped = false;
     private long stopStartTime = 0;
-    private static final long STOP_DURATION = 2000000000; // 2 seconds in milliseconds
+    private static final long STOP_DURATION = 1500000000; // 1.5 seconds in milliseconds
 
     boolean isMoving = false;
 
@@ -74,28 +74,25 @@ public class NormalEnemy extends Entity {
         xNeededToMove = player.getPlayerX() - x;
         yNeededToMove = player.getPlayerY() - y;
 
-        System.out.println("player coord is: " +player.x +" " +player.y);
-        System.out.println("enemy coord is: " +x +" " +y);
-
-        // if (xNeededToMove < 0) {
-        //     x -= speed;
-        //     xNeededToMove += speed;
-        //     direction = "left";
-        // }
-        // if (xNeededToMove > 0) {
-        //     x += speed;
-        //     xNeededToMove -= speed;
-        //     direction = "right";
-        // }
-        // if (yNeededToMove < 0) {
-        //     y -= speed;
-        //     yNeededToMove += speed;
-        //     direction = "up";
-        // }
-        // if (yNeededToMove > 0) {
-        //     y += speed;
-        //     yNeededToMove -= speed;
-        // }
+        if (xNeededToMove < 0) {
+            x -= speed;
+            xNeededToMove += speed;
+            direction = "left";
+        }
+        if (xNeededToMove > 0) {
+            x += speed;
+            xNeededToMove -= speed;
+            direction = "right";
+        }
+        if (yNeededToMove < 0) {
+            y -= speed;
+            yNeededToMove += speed;
+            direction = "up";
+        }
+        if (yNeededToMove > 0) {
+            y += speed;
+            yNeededToMove -= speed;
+        }
     }
 
     public void knockBackPlayer() {
@@ -106,6 +103,8 @@ public class NormalEnemy extends Entity {
                 player.x -= 100;
             } else if (direction == "right") {
                 player.x += 100;
+            } else {
+                player.y += 100;
             }
         }
     }

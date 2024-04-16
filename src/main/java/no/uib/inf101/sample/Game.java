@@ -12,6 +12,7 @@ import javax.swing.JPanel;
 import no.uib.inf101.sample.entity.NormalEnemy;
 import no.uib.inf101.sample.entity.Player;
 import no.uib.inf101.sample.entity.Projectile;
+import no.uib.inf101.sample.map.TileFactory;
 
 public class Game extends JPanel implements Runnable {
 
@@ -22,8 +23,8 @@ public class Game extends JPanel implements Runnable {
 
     public final int tileSize = originalTileSize * scale; // 48x48 tile size
     public final int bulletSize = originalBulletSize * scale; // 24x24 tile size
-    final int rows = 16;
-    final int cols = 12;
+    public final int rows = 12;
+    public final int cols = 16;
     public final int screenWidth = tileSize * rows; // 768 pixels
     public final int screenHeight = tileSize * cols; // 576 pixels
 
@@ -44,13 +45,14 @@ public class Game extends JPanel implements Runnable {
 
     Player player = new Player(this, gameController);
     NormalEnemy normalEnemy = new NormalEnemy(this, player);
+    TileFactory tileFactory = new TileFactory(this);
 
     public Game() {
         this.game = this;
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
         this.setBackground(Color.BLACK);
         this.setDoubleBuffered(true); // improves rendering, doesn't display the render before the whole screen is
-                                      // ready
+                                            // ready
         this.addKeyListener(gameController);
         this.setFocusable(true);
         this.requestFocusInWindow();
@@ -168,6 +170,8 @@ public class Game extends JPanel implements Runnable {
         Graphics2D g2 = (Graphics2D) g;
 
         player.draw(g2);
+
+        tileFactory.draw(g2);
 
         normalEnemy.draw(g2);
 
