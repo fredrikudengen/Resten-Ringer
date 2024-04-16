@@ -25,8 +25,8 @@ public class Game extends JPanel implements Runnable {
     public final int bulletSize = originalBulletSize * scale; // 24x24 tile size
     public final int rows = 12;
     public final int cols = 16;
-    public final int screenWidth = tileSize * rows; // 768 pixels
-    public final int screenHeight = tileSize * cols; // 576 pixels
+    public final int screenWidth = tileSize * cols; // 768 pixels
+    public final int screenHeight = tileSize * rows; // 576 pixels
 
     private volatile boolean running = true; // Flag to control the game loop
 
@@ -169,9 +169,11 @@ public class Game extends JPanel implements Runnable {
 
         Graphics2D g2 = (Graphics2D) g;
 
+        tileFactory.draw(g2);
+
         player.draw(g2);
 
-        tileFactory.draw(g2);
+        
 
         normalEnemy.draw(g2);
 

@@ -1,6 +1,7 @@
 package no.uib.inf101.sample.map;
 
 import java.awt.Graphics2D;
+import java.awt.Toolkit;
 
 import no.uib.inf101.sample.Game;
 
@@ -30,14 +31,16 @@ public class TileFactory {
     }
     public void getTileImage() {
         tile[0] = new Tile();
-        tile[0].image = Inf101Graphics.loadImageFromResources("grass.png");
+        tile[0].image = Toolkit.getDefaultToolkit()
+        .getImage(getClass().getResource("grass.png"));
 
         tile[1] = new Tile();
-        tile[1].image = Inf101Graphics.loadImageFromResources("wall.png");
+        tile[1].image = Toolkit.getDefaultToolkit()
+        .getImage(getClass().getResource("wall.png"));
 
         tile[2] = new Tile();
-        tile[2].image = Inf101Graphics.loadImageFromResources("water.png");
-    
+        tile[2].image = Toolkit.getDefaultToolkit()
+        .getImage(getClass().getResource("water.png"));
 }
 
     public void loadMap(String mapFile) {
