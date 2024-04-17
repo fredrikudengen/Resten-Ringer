@@ -6,6 +6,7 @@ import java.awt.Toolkit;
 
 import no.uib.inf101.sample.Game;
 import no.uib.inf101.sample.GameController;
+import no.uib.inf101.sample.Inf101Graphics;
 
 public class Projectile extends Entity {
 
@@ -17,22 +18,14 @@ public class Projectile extends Entity {
     int imageNum = 1;
     int imageCounter = 0;
 
-    private Image up1 = Toolkit.getDefaultToolkit()
-            .getImage(getClass().getResource("images/Up_bullet_1.png"));
-    private Image up2 = Toolkit.getDefaultToolkit()
-            .getImage(getClass().getResource("images/Up_bullet_2.png"));
-    private Image down1 = Toolkit.getDefaultToolkit()
-            .getImage(getClass().getResource("images/Down_bullet_1.png"));
-    private Image down2 = Toolkit.getDefaultToolkit()
-            .getImage(getClass().getResource("images/Down_bullet_2.png"));
-    private Image left1 = Toolkit.getDefaultToolkit()
-            .getImage(getClass().getResource("images/Left_bullet_1.png"));
-    private Image left2 = Toolkit.getDefaultToolkit()
-            .getImage(getClass().getResource("images/Left_bullet_2.png"));
-    private Image right1 = Toolkit.getDefaultToolkit()
-            .getImage(getClass().getResource("images/Right_bullet_1.png"));
-    private Image right2 = Toolkit.getDefaultToolkit()
-            .getImage(getClass().getResource("images/Right_bullet_2.png"));
+    private Image up1 = Inf101Graphics.loadImageFromResources("Up_bullet_1.png");
+    private Image up2 = Inf101Graphics.loadImageFromResources("Up_bullet_2.png");
+    private Image down1 = Inf101Graphics.loadImageFromResources("Down_bullet_1.png");
+    private Image down2 = Inf101Graphics.loadImageFromResources("Down_bullet_2.png");
+    private Image left1 = Inf101Graphics.loadImageFromResources("Left_bullet_1.png");
+    private Image left2 = Inf101Graphics.loadImageFromResources("Left_bullet_2.png");
+    private Image right1 = Inf101Graphics.loadImageFromResources("Right_bullet_1.png");
+    private Image right2 = Inf101Graphics.loadImageFromResources("Right_bullet_2.png");
 
     public Projectile(Game game, Player player, GameController gameController, String shotDirection, NormalEnemy normalEnemy) {
         this.game = game;

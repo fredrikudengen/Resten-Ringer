@@ -1,6 +1,8 @@
 package no.uib.inf101.sample;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import org.junit.jupiter.api.Test;
 
 import no.uib.inf101.sample.entity.Player;
@@ -22,7 +24,7 @@ public class PlayerTest {
         assertEquals(10, player.healthPoints);
         assertEquals(4, player.getPlayerSpeed());
         assertEquals("down", player.getDirection());
-        assertEquals(true, player.isAlive());
+        assertTrue(player.isAlive);
     }
 
 

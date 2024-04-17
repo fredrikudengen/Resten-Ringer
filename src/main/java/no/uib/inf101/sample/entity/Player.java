@@ -6,6 +6,7 @@ import java.awt.Toolkit;
 
 import no.uib.inf101.sample.Game;
 import no.uib.inf101.sample.GameController;
+import no.uib.inf101.sample.Inf101Graphics;
 
 public class Player extends Entity {
 
@@ -19,22 +20,14 @@ public class Player extends Entity {
 
     boolean isMoving = false;
 
-    private Image up1 = Toolkit.getDefaultToolkit()
-            .getImage(getClass().getResource("images/Up_shotgun_walking_1.png"));
-    private Image up2 = Toolkit.getDefaultToolkit()
-            .getImage(getClass().getResource("images/Up_shotgun_walking_2.png"));
-    private Image down1 = Toolkit.getDefaultToolkit()
-            .getImage(getClass().getResource("images/Down_shotgun_walking_1.png"));
-    private Image down2 = Toolkit.getDefaultToolkit()
-            .getImage(getClass().getResource("images/Down_shotgun_walking_2.png"));
-    private Image left1 = Toolkit.getDefaultToolkit()
-            .getImage(getClass().getResource("images/Left_shotgun_walking_1.png"));
-    private Image left2 = Toolkit.getDefaultToolkit()
-            .getImage(getClass().getResource("images/Left_shotgun_walking_2.png"));
-    private Image right1 = Toolkit.getDefaultToolkit()
-            .getImage(getClass().getResource("images/Right_shotgun_walking_1.png"));
-    private Image right2 = Toolkit.getDefaultToolkit()
-            .getImage(getClass().getResource("images/Right_shotgun_walking_2.png"));
+    private Image up1 = Inf101Graphics.loadImageFromResources("Up_shotgun_walking_1.png");
+    private Image up2 = Inf101Graphics.loadImageFromResources("Up_shotgun_walking_2.png");
+    private Image down1 = Inf101Graphics.loadImageFromResources("Down_shotgun_walking_1.png");
+    private Image down2 = Inf101Graphics.loadImageFromResources("Down_shotgun_walking_2.png");
+    private Image left1 = Inf101Graphics.loadImageFromResources("Left_shotgun_walking_1.png");
+    private Image left2 = Inf101Graphics.loadImageFromResources("Left_shotgun_walking_2.png");
+    private Image right1 = Inf101Graphics.loadImageFromResources("Right_shotgun_walking_1.png");
+    private Image right2 = Inf101Graphics.loadImageFromResources("Right_shotgun_walking_2.png");
 
     public Player(Game game, GameController gameController) {
         this.game = game;
@@ -74,11 +67,13 @@ public class Player extends Entity {
             direction = "right";
         } else if (gameController.shootUp == true && isMoving == false) {
             direction = "up";
-
         } else if (isMoving == true) {
 
             if (gameController.upPressed == true) {
                 y -= speed;
+                if (y <= 0) {
+                    y = 0;
+                }
                 if (gameController.shootDown == true) {
                     direction = "down";
                 } else if (gameController.shootUp == true) {
@@ -89,14 +84,14 @@ public class Player extends Entity {
                     direction = "right";
                 } else {
                     direction = "up";
-                }
-                if (y <= -48) {
-                    y = 576 + 36;
                 }
             }
 
             if (gameController.downPressed == true) {
                 y += speed;
+                if (y >= game.screenHeight - game.tileSize) {
+                    y = game.screenHeight - game.tileSize;
+                }
                 if (gameController.shootDown == true) {
                     direction = "down";
                 } else if (gameController.shootUp == true) {
@@ -107,14 +102,13 @@ public class Player extends Entity {
                     direction = "right";
                 } else {
                     direction = "down";
-                }
-
-                if (y >= 576 + 36) {
-                    y = -48;
                 }
             }
             if (gameController.leftPressed == true) {
                 x -= speed;
+                if (x <= 0) {
+                    x = 0;
+                }
                 if (gameController.shootDown == true) {
                     direction = "down";
                 } else if (gameController.shootUp == true) {
@@ -125,13 +119,13 @@ public class Player extends Entity {
                     direction = "right";
                 } else {
                     direction = "left";
-                }
-                if (x <= -48) {
-                    x = 768 + 36;
                 }
             }
             if (gameController.rightPressed == true) {
                 x += speed;
+                if (x >= game.screenWidth - game.tileSize) {
+                    x = game.screenWidth - game.tileSize;
+                }
                 if (gameController.shootDown == true) {
                     direction = "down";
                 } else if (gameController.shootUp == true) {
@@ -143,10 +137,8 @@ public class Player extends Entity {
                 } else {
                     direction = "right";
                 }
-                if (x >= 768 + 36) {
-                    x = -48;
-                }
             }
+
             imageCounter++;
             if (imageCounter > 10) {
                 if (imageNum == 1) {

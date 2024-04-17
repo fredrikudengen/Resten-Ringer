@@ -5,7 +5,9 @@ import no.uib.inf101.sample.entity.NormalEnemy;
 import no.uib.inf101.sample.entity.Player;
 import no.uib.inf101.sample.entity.Projectile;
 
-import org.junit.jupiter.api.Assertions;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import org.junit.jupiter.api.Test;
 
 class ProjectileTest {
@@ -26,9 +28,9 @@ class ProjectileTest {
         boolean result = projectile.ProjectileCollidesWithEnemy();
 
         // Check if the projectile collides with the enemy
-        Assertions.assertTrue(result, "Projectile should collide with enemy");
+        assertTrue(result, "Projectile should collide with enemy");
         // Check if the enemy's health points are reduced after collision
-        Assertions.assertEquals(2, normalEnemy.healthPoints, "Enemy's health points should be reduced after collision");
+        assertEquals(2, normalEnemy.healthPoints, "Enemy's health points should be reduced after collision");
     }
 
     @Test
@@ -48,6 +50,6 @@ class ProjectileTest {
         projectile.update();
 
         // Check if projectile position is updated according to its direction
-        Assertions.assertTrue(projectile.y < player.getPlayerY(), "Projectile should move upwards");
+        assertTrue(projectile.y < player.getPlayerY(), "Projectile should move upwards");
     }
 }

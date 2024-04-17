@@ -4,9 +4,9 @@ import java.awt.Graphics2D;
 import java.awt.Toolkit;
 
 import no.uib.inf101.sample.Game;
+import no.uib.inf101.sample.Inf101Graphics;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
@@ -31,16 +31,13 @@ public class TileFactory {
     }
     public void getTileImage() {
         tile[0] = new Tile();
-        tile[0].image = Toolkit.getDefaultToolkit()
-        .getImage(getClass().getResource("grass.png"));
+        tile[0].image = Inf101Graphics.loadImageFromResources("grass.png");
 
         tile[1] = new Tile();
-        tile[1].image = Toolkit.getDefaultToolkit()
-        .getImage(getClass().getResource("wall.png"));
+        tile[1].image = Inf101Graphics.loadImageFromResources("wall.png");
 
         tile[2] = new Tile();
-        tile[2].image = Toolkit.getDefaultToolkit()
-        .getImage(getClass().getResource("water.png"));
+        tile[2].image = Inf101Graphics.loadImageFromResources("water.png");
 }
 
     public void loadMap(String mapFile) {

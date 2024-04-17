@@ -1,4 +1,4 @@
-package no.uib.inf101.sample.map;
+package no.uib.inf101.sample;
 
 // University of Bergen INF101 helper methods for graphics with Swing.
 // Methods for drawing images are adapted with permission from
