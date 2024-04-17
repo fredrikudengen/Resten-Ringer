@@ -173,8 +173,6 @@ public class Game extends JPanel implements Runnable {
 
         player.draw(g2);
 
-        
-
         normalEnemy.draw(g2);
 
         for (int i = 0; i < projectileList.size(); i++) {
