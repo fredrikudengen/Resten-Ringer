@@ -73,7 +73,11 @@ public class NormalEnemy extends Entity {
     public void simulateEnemyMoves() {
         xNeededToMove = player.getPlayerX() - x;
         yNeededToMove = player.getPlayerY() - y;
-
+        if (yNeededToMove < 0) {
+            y -= speed;
+            yNeededToMove += speed;
+            direction = "up";
+        }
         if (xNeededToMove < 0) {
             x -= speed;
             xNeededToMove += speed;
@@ -83,11 +87,6 @@ public class NormalEnemy extends Entity {
             x += speed;
             xNeededToMove -= speed;
             direction = "right";
-        }
-        if (yNeededToMove < 0) {
-            y -= speed;
-            yNeededToMove += speed;
-            direction = "up";
         }
         if (yNeededToMove > 0) {
             y += speed;
@@ -218,10 +217,6 @@ public class NormalEnemy extends Entity {
             g2.drawImage(image, x - game.tileSize, y, game.tileSize * 2, game.tileSize, null);
         } else if (direction == "up") {
             g2.drawImage(image, x, y - game.tileSize, game.tileSize, game.tileSize * 2, null);
-        } else if (direction == "down") {
-            g2.drawImage(image, x, y, game.tileSize, game.tileSize * 2, null);
-        } else {
-            g2.drawImage(down2, x, y, game.tileSize, game.tileSize * 2, null);
-        }
+        } 
     }
 }
