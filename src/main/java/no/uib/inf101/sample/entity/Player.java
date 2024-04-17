@@ -220,4 +220,12 @@ public class Player extends Entity {
             g2.drawImage(image, x, y, game.tileSize, game.tileSize * 2, null);
         }
     }
+
+    public Object getDirection() {
+        return direction;
+    }
+
+    public Object isAlive() {
+        return isAlive;
+    }
 }
