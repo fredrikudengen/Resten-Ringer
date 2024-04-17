@@ -9,7 +9,7 @@ public class PlayerTest {
     
     @Test
     public void testPlayerDefaultValues() {
-        // Create a Game instance and a GameController instance (you might need mocks or stubs)
+        // Create a Game instance and a GameController instance
         Game game = new Game();
         GameController gameController = new GameController(game);
 

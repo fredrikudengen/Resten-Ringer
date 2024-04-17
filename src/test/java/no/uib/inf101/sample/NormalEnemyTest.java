@@ -6,9 +6,6 @@ import no.uib.inf101.sample.entity.Player;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.awt.*;
-import java.awt.image.BufferedImage;
-
 class NormalEnemyTest {
 
     @Test
@@ -54,9 +51,7 @@ class NormalEnemyTest {
         Assertions.assertEquals(2, player.healthPoints, "Player's health points should be reduced after collision");
 
         // Check if enemy is alive
-        Assertions.assertTrue(enemy.isAlive, "Enemy should be alive after update");
-
-        
+        Assertions.assertTrue(enemy.isAlive, "Enemy should be alive after update");        
     }
 
 }
