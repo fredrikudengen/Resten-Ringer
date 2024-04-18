@@ -122,13 +122,23 @@ public class NormalEnemy extends Entity {
     public void knockBackPlayer() {
         if (enemyCollidesWithPlayer() == true) {
             if (direction == "up") {
-                player.y -= 100;
+                if (player.y - 100 < 0) {
+                    player.x += 100;
+                } else {
+                    player.y -= 100;
+                }
             } else if (direction == "left") {
-                player.x -= 100;
+                if (player.x - 100 < 0) {
+                    player.y += 100;
+                } else {
+                    player.x -= 100;
+                }
             } else if (direction == "right") {
-                player.x += 100;
-            } else {
-                player.y += 100;
+                if (player.x + 100 > game.screenWidth) {
+                    player.y += 100;
+                } else {
+                    player.x += 100;
+                }
             }
         }
     }

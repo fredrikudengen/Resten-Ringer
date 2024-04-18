@@ -2,7 +2,6 @@ package no.uib.inf101.sample.entity;
 
 import java.awt.Graphics2D;
 import java.awt.Image;
-import java.awt.Toolkit;
 
 import no.uib.inf101.sample.Game;
 import no.uib.inf101.sample.GameController;
@@ -36,8 +35,8 @@ public class Player extends Entity {
     }
 
     public void setDefaultValues() {
-        x = game.screenWidth/2 - game.tileSize/2;
-        y = game.screenHeight/2 - game.tileSize/2;
+        x = game.screenWidth / 2 - game.tileSize / 2;
+        y = game.screenHeight / 2 - game.tileSize / 2;
         healthPoints = 10;
         speed = 4;
         direction = "right";
@@ -136,16 +135,15 @@ public class Player extends Entity {
                     direction = "right";
                 }
             }
-
-            imageCounter++;
-            if (imageCounter > 10) {
-                if (imageNum == 1) {
-                    imageNum = 2;
-                } else if (imageNum == 2) {
-                    imageNum = 1;
-                }
-                imageCounter = 0;
+        }
+        imageCounter++;
+        if (imageCounter > 10) {
+            if (imageNum == 1) {
+                imageNum = 2;
+            } else if (imageNum == 2) {
+                imageNum = 1;
             }
+            imageCounter = 0;
         }
     }
 
