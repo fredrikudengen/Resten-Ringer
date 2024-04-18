@@ -28,6 +28,8 @@ public class Player extends Entity {
     private Image right1 = Inf101Graphics.loadImageFromResources("Right_shotgun_walking_1.png");
     private Image right2 = Inf101Graphics.loadImageFromResources("Right_shotgun_walking_2.png");
 
+    private Image heart = Inf101Graphics.loadImageFromResources("heart.png");
+
     public Player(Game game, GameController gameController) {
         this.game = game;
         this.gameController = gameController;
@@ -193,6 +195,10 @@ public class Player extends Entity {
             g2.drawImage(image, x, y - game.tileSize, game.tileSize, game.tileSize * 2, null);
         } else if (direction == "down") {
             g2.drawImage(image, x, y, game.tileSize, game.tileSize * 2, null);
+        }
+
+        for (int i = 0; i < healthPoints; i++) {
+            g2.drawImage(heart, game.screenWidth - 40 - ((game.tileSize/2 + 5) * i), 20, game.tileSize / 2, game.tileSize / 2, null);
         }
     }
 
