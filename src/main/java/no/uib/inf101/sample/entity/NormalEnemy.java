@@ -64,6 +64,7 @@ public class NormalEnemy extends Entity {
         // Generate random X and Y coordinates within the defined range
         int coinFlip = rand.nextInt(2);
         int coinFlip2 = rand.nextInt(2);
+        
         if (coinFlip == 0) {
             x = rand.nextInt(minX);
         } else {
