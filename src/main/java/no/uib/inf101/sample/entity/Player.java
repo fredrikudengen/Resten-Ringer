@@ -36,11 +36,11 @@ public class Player extends Entity {
     }
 
     public void setDefaultValues() {
-        x = 300;
-        y = 300;
+        x = game.screenWidth/2 - game.tileSize/2;
+        y = game.screenHeight/2 - game.tileSize/2;
         healthPoints = 10;
         speed = 4;
-        direction = "down";
+        direction = "right";
         isAlive = true;
     }
 

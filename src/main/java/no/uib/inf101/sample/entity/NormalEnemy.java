@@ -2,7 +2,6 @@ package no.uib.inf101.sample.entity;
 
 import java.awt.Graphics2D;
 import java.awt.Image;
-import java.util.concurrent.ThreadLocalRandom;
 import java.util.Random;
 
 import no.uib.inf101.sample.Game;
@@ -22,7 +21,7 @@ public class NormalEnemy extends Entity {
 
     private boolean isStopped = false;
     private long stopStartTime = 0;
-    private static final long STOP_DURATION = 1500000000; // 1.5 seconds in milliseconds
+    private static final long STOP_DURATION = 500000000; // 0.5 seconds in milliseconds
 
     boolean isMoving = false;
 
@@ -58,6 +57,8 @@ public class NormalEnemy extends Entity {
         // Generate random X and Y coordinates outside the safe zone boundaries
         int randomX, randomY;
 
+        // Coin toss to find whether enemy should spawn to the left/above or to the
+        // right/below the player
         if (rand.nextBoolean()) {
             // Generate random X outside the safe zone boundaries
             randomX = rand.nextInt(safeZoneMinX);
@@ -76,12 +77,10 @@ public class NormalEnemy extends Entity {
 
         x = randomX;
         y = randomY;
-        // source:
-        // https://stackoverflow.com/questions/363681/how-do-i-generate-random-integers-within-a-specific-range-in-java
 
         healthPoints = 3;
         speed = 2;
-        direction = "down";
+        direction = "right";
         isAlive = true;
     }
 
