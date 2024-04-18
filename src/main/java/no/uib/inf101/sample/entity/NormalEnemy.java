@@ -48,41 +48,42 @@ public class NormalEnemy extends Entity {
         Random rand = new Random();
         int screenWidth = game.screenWidth;
         int screenHeight = game.screenHeight;
-    
+
         // Define the safe zone boundaries
-        int safeZoneMinX = player.x - safeZone;
-        int safeZoneMaxX = player.x + safeZone;
-        int safeZoneMinY = player.y - safeZone;
-        int safeZoneMaxY = player.y + safeZone;
-    
-        // Calculate the range for random X and Y coordinates excluding the safe zone
-        int minX = Math.max(0, safeZoneMinX); // Ensure minX is not less than 0
-        int maxX = Math.min(screenWidth, safeZoneMaxX); // Ensure maxX is not greater than screenWidth
-        int minY = Math.max(0, safeZoneMinY); // Ensure minY is not less than 0
-        int maxY = Math.min(screenHeight, safeZoneMaxY); // Ensure maxY is not greater than screenHeight
-    
-        // Generate random X and Y coordinates within the defined range
-        int coinFlip = rand.nextInt(2);
-        int coinFlip2 = rand.nextInt(2);
-        
-        if (coinFlip == 0) {
-            x = rand.nextInt(minX);
+        int safeZoneMinX = Math.max(0, player.x - safeZone);
+        int safeZoneMaxX = Math.min(screenWidth, player.x + safeZone);
+        int safeZoneMinY = Math.max(0, player.y - safeZone);
+        int safeZoneMaxY = Math.min(screenHeight, player.y + safeZone);
+
+        // Generate random X and Y coordinates outside the safe zone boundaries
+        int randomX, randomY;
+
+        if (rand.nextBoolean()) {
+            // Generate random X outside the safe zone boundaries
+            randomX = rand.nextInt(safeZoneMinX);
         } else {
-            x = ThreadLocalRandom.current().nextInt(maxX, screenWidth + 1); // Random X coordinate to the right of the safe zone
-        } if (coinFlip2 == 0) {
-            y = rand.nextInt(minY);
-        } else {
-            y = ThreadLocalRandom.current().nextInt(maxY, screenHeight + 1); // Random Y coordinate below the safe zone
+            // Generate random X between safeZoneMaxX and screenWidth
+            randomX = rand.nextInt(screenWidth - safeZoneMaxX) + safeZoneMaxX;
         }
-        // source: https://stackoverflow.com/questions/363681/how-do-i-generate-random-integers-within-a-specific-range-in-java
-    
+
+        if (rand.nextBoolean()) {
+            // Generate random Y outside the safe zone boundaries
+            randomY = rand.nextInt(safeZoneMinY);
+        } else {
+            // Generate random Y between safeZoneMaxY and screenHeight
+            randomY = rand.nextInt(screenHeight - safeZoneMaxY) + safeZoneMaxY;
+        }
+
+        x = randomX;
+        y = randomY;
+        // source:
+        // https://stackoverflow.com/questions/363681/how-do-i-generate-random-integers-within-a-specific-range-in-java
+
         healthPoints = 3;
         speed = 2;
         direction = "down";
         isAlive = true;
     }
-    
-    
 
     public boolean enemyCollidesWithPlayer() {
         if (rectanglesOverlap(x - (game.tileSize / 2), y - (game.tileSize / 2), x + (game.tileSize / 2),

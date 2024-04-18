@@ -30,10 +30,6 @@ public class Game extends JPanel implements Runnable {
 
     private volatile boolean running = true; // Flag to control the game loop
 
-    Game game;
-    Thread gameThread;
-    GameController gameController = new GameController(this);
-
     Projectile projectile;
     boolean bulletTimerCheck = false;
     int bulletTimer = 40;
@@ -44,8 +40,13 @@ public class Game extends JPanel implements Runnable {
     // FPS
     int fps = 60;
 
-    int enemyCounter = 0;
+    int enemyMax = 3;
 
+    int enemiesAtStart = 0;
+
+    Game game;
+    Thread gameThread;
+    GameController gameController = new GameController(this);
     Player player = new Player(this, gameController);
     NormalEnemy normalEnemy = new NormalEnemy(this, player);
     TileFactory tileFactory = new TileFactory(this);
@@ -55,10 +56,18 @@ public class Game extends JPanel implements Runnable {
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
         this.setBackground(Color.BLACK);
         this.setDoubleBuffered(true); // improves rendering, doesn't display the render before the whole screen is
-                                            // ready
+                                      // ready
         this.addKeyListener(gameController);
         this.setFocusable(true);
         this.requestFocusInWindow();
+
+        // Create 3 enemies at start (if enemyMax is 3)
+        for (enemiesAtStart = 0; enemiesAtStart <= enemyMax; enemiesAtStart++) {
+            if (enemiesAtStart < enemyMax) {
+                NormalEnemy newNormalEnemy = new NormalEnemy(game, player);
+                enemyList.add(newNormalEnemy);
+            }
+        }
     }
 
     public void startGameThread() {
@@ -116,12 +125,6 @@ public class Game extends JPanel implements Runnable {
             player.update();
         }
 
-        if (enemyCounter < 3) {
-            NormalEnemy newNormalEnemy = new NormalEnemy(game, player);
-            enemyList.add(newNormalEnemy);
-            enemyCounter++;
-        }
-
         // Check if arrow keys are pressed and create projectile accordingly
         if (gameController.shotKeyPressed) {
             // Check if the previous projectile is not alive before creating a new one
@@ -151,10 +154,19 @@ public class Game extends JPanel implements Runnable {
                 }
             }
         }
+        int enemyCounter = enemyList.size();
+
         if (enemyList.isEmpty()) {
             for (int i = projectileList.size() - 1; i >= 0; i--) {
                 projectileList.get(i).update();
             }
+            enemyMax++;
+            while (enemyCounter <= enemyMax) {
+                NormalEnemy newNormalEnemy = new NormalEnemy(game, player);
+                enemyList.add(newNormalEnemy);
+                enemyCounter++;
+            }
+
         }
 
         for (int i = enemyList.size() - 1; i >= 0; i--) {
