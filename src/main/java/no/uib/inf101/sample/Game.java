@@ -23,16 +23,16 @@ public class Game extends JPanel implements Runnable {
 
     public final int tileSize = originalTileSize * scale; // 48x48 tile size
     public final int bulletSize = originalBulletSize * scale; // 24x24 tile size
-    public final int rows = 12;
     public final int cols = 16;
+    public final int rows = 12;
     public final int screenWidth = tileSize * cols; // 768 pixels
     public final int screenHeight = tileSize * rows; // 576 pixels
 
     private volatile boolean running = true; // Flag to control the game loop
 
     Game game;
-    GameController gameController = new GameController(this);
     Thread gameThread;
+    GameController gameController = new GameController(this);
 
     Projectile projectile;
     boolean bulletTimerCheck = false;
@@ -55,7 +55,7 @@ public class Game extends JPanel implements Runnable {
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
         this.setBackground(Color.BLACK);
         this.setDoubleBuffered(true); // improves rendering, doesn't display the render before the whole screen is
-                                      // ready
+                                            // ready
         this.addKeyListener(gameController);
         this.setFocusable(true);
         this.requestFocusInWindow();
