@@ -47,14 +47,25 @@ public class Projectile extends Entity {
         isAlive = true;
     }
 
-    public boolean ProjectileCollidesWithEnemy() {
-        if (rectanglesOverlap(normalEnemy.getNormalEnemyX() - (game.tileSize / 2),
-                normalEnemy.getNormalEnemyY() - (game.tileSize / 2),
-                normalEnemy.getNormalEnemyX() + (game.tileSize / 2),
-                normalEnemy.getNormalEnemyY() + (game.tileSize / 2), x - (game.bulletSize / 2),
-                y + (game.bulletSize / 2),
-                x + (game.bulletSize / 2), y + (game.bulletSize / 2))) {
-            normalEnemy.healthPoints--;
+    public boolean ProjectileCollidesWithEnemy(int i, int j) {
+        if (rectanglesOverlap(game.enemyList.get(i).getNormalEnemyX() - (game.tileSize / 2),
+                game.enemyList.get(i).getNormalEnemyY() - (game.tileSize / 2),
+                game.enemyList.get(i).getNormalEnemyX() + (game.tileSize / 2),
+                game.enemyList.get(i).getNormalEnemyY() + (game.tileSize / 2), (game.projectileList.get(j).getProjectileX()) - (game.bulletSize / 2),
+                game.projectileList.get(j).getProjectileY() + (game.bulletSize / 2),
+                (game.projectileList.get(j).getProjectileX()) + (game.bulletSize / 2), (game.projectileList.get(j).getProjectileY()) + (game.bulletSize / 2))) {
+            game.enemyList.get(i).healthPoints--;
+            if (game.enemyList.get(i).healthPoints <= 0) {
+                game.enemyList.get(i).isAlive = false;
+            }
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean projectTileHitEnemy(int i, int j) {
+        if (ProjectileCollidesWithEnemy(i, j) == true) {
             return true;
         } else {
             return false;
@@ -108,17 +119,8 @@ public class Projectile extends Entity {
         }
     }
 
-    public boolean projectTileHitEnemy() {
-        if (ProjectileCollidesWithEnemy() == true) {
-            isAlive = false;
-            return true;
-        } else {
-            return false;
-        }
-    }
-
     public void draw(Graphics2D g2) {
-        if (isAlive && !projectTileHitEnemy()) {
+        if (isAlive) {
             Image image = null;
             switch (shotDirection) {
                 case "up":

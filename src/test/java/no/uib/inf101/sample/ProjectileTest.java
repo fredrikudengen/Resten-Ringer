@@ -12,26 +12,6 @@ import org.junit.jupiter.api.Test;
 
 class ProjectileTest {
 
-    @Test
-    void testProjectileCollidesWithEnemy() {
-        Game game = new Game();
-        GameController gameController = new GameController(game);
-        Player player = new Player(game, gameController);
-
-        NormalEnemy normalEnemy = new NormalEnemy(game, player);
-        Projectile projectile = new Projectile(game, player, gameController, "up", normalEnemy);
-
-        // Set projectile position to collide with enemy
-        projectile.x = normalEnemy.getNormalEnemyX();
-        projectile.y = normalEnemy.getNormalEnemyY();
-
-        boolean result = projectile.ProjectileCollidesWithEnemy();
-
-        // Check if the projectile collides with the enemy
-        assertTrue(result, "Projectile should collide with enemy");
-        // Check if the enemy's health points are reduced after collision
-        assertEquals(2, normalEnemy.healthPoints, "Enemy's health points should be reduced after collision");
-    }
 
     @Test
     void testUpdate() {

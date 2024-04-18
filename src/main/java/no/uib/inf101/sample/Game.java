@@ -39,9 +39,12 @@ public class Game extends JPanel implements Runnable {
     int bulletTimer = 40;
 
     public ArrayList<Projectile> projectileList = new ArrayList<>();
+    public ArrayList<NormalEnemy> enemyList = new ArrayList<>();
 
     // FPS
     int fps = 60;
+
+    int enemyCounter = 0;
 
     Player player = new Player(this, gameController);
     NormalEnemy normalEnemy = new NormalEnemy(this, player);
@@ -52,7 +55,7 @@ public class Game extends JPanel implements Runnable {
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
         this.setBackground(Color.BLACK);
         this.setDoubleBuffered(true); // improves rendering, doesn't display the render before the whole screen is
-                                            // ready
+                                      // ready
         this.addKeyListener(gameController);
         this.setFocusable(true);
         this.requestFocusInWindow();
@@ -113,10 +116,10 @@ public class Game extends JPanel implements Runnable {
             player.update();
         }
 
-        normalEnemy.update();
-
-        if (normalEnemy.isAlive == false) {
-            normalEnemy = new NormalEnemy(game, player);
+        if (enemyCounter < 3) {
+            NormalEnemy newNormalEnemy = new NormalEnemy(game, player);
+            enemyList.add(newNormalEnemy);
+            enemyCounter++;
         }
 
         // Check if arrow keys are pressed and create projectile accordingly
@@ -135,15 +138,30 @@ public class Game extends JPanel implements Runnable {
             }
         }
 
-        for (int i = projectileList.size() - 1; i >= 0; i--) {
-            Projectile projectile = projectileList.get(i); // Retrieve the projectile
-            projectile.update(); // Update the projectile
+        for (int i = enemyList.size() - 1; i >= 0; i--) {
+            for (int j = projectileList.size() - 1; j >= 0; j--) {
+                Projectile projectile = projectileList.get(j); // Retrieve the projectile
+                projectile.update(); // Update the projectile
 
-            // Check conditions for removing the projectile
-            if (screenWidth < projectile.getProjectileX() || projectile.getProjectileX() < 0
-                    || screenHeight < projectile.getProjectileY() || projectile.getProjectileY() < 0
-                    || projectile.projectTileHitEnemy()) {
-                projectileList.remove(i); // Remove the projectile if necessary
+                // Check conditions for removing the projectile
+                if (screenWidth < projectile.getProjectileX() || projectile.getProjectileX() < 0
+                        || screenHeight < projectile.getProjectileY() || projectile.getProjectileY() < 0
+                        || projectile.projectTileHitEnemy(i, j)) {
+                    projectileList.remove(j); // Remove the projectile if necessary
+                }
+            }
+        }
+        if (enemyList.isEmpty()) {
+            for (int i = projectileList.size() - 1; i >= 0; i--) {
+                projectileList.get(i).update();
+            }
+        }
+
+        for (int i = enemyList.size() - 1; i >= 0; i--) {
+            NormalEnemy normalEnemy = enemyList.get(i); // Retrieve the enemy
+            normalEnemy.update(); // Update the enemy
+            if (normalEnemy.isAlive == false) {
+                enemyList.remove(i);
             }
         }
 
@@ -173,8 +191,11 @@ public class Game extends JPanel implements Runnable {
 
         player.draw(g2);
 
-        normalEnemy.draw(g2);
-
+        for (int i = 0; i < enemyList.size(); i++) {
+            if (enemyList.get(i) != null) {
+                enemyList.get(i).draw(g2);
+            }
+        }
         for (int i = 0; i < projectileList.size(); i++) {
             if (projectileList.get(i) != null) {
                 projectileList.get(i).draw(g2);
