@@ -36,10 +36,8 @@ public class Player extends Entity {
     }
 
     public void setDefaultValues() {
-        // x = game.screenWidth/2;
-        // y = game.screenHeight/2;
-        x = 140;
-        y = 100;
+        x = 300;
+        y = 300;
         healthPoints = 10;
         speed = 4;
         direction = "down";
@@ -151,19 +149,6 @@ public class Player extends Entity {
         }
     }
 
-    // Getters and setters
-    public int getPlayerX() {
-        return x;
-    }
-
-    public int getPlayerY() {
-        return y;
-    }
-
-    public int getPlayerSpeed() {
-        return speed;
-    }
-
     public void draw(Graphics2D g2) {
 
         Image image = null;
@@ -213,11 +198,24 @@ public class Player extends Entity {
         }
     }
 
-    public Object getDirection() {
+    // Getters and setters
+    public String getDirection() {
         return direction;
     }
 
-    public Object isAlive() {
+    public boolean isAlive() {
         return isAlive;
+    }
+
+    public int getPlayerX() {
+        return x;
+    }
+
+    public int getPlayerY() {
+        return y;
+    }
+
+    public int getPlayerSpeed() {
+        return speed;
     }
 }

@@ -2,7 +2,7 @@ package no.uib.inf101.sample.entity;
 
 import java.awt.Graphics2D;
 import java.awt.Image;
-import java.awt.Toolkit;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.Random;
 
 import no.uib.inf101.sample.Game;
@@ -17,6 +17,8 @@ public class NormalEnemy extends Entity {
 
     int imageNum = 1;
     int imageCounter = 0;
+
+    int safeZone = 100;
 
     private boolean isStopped = false;
     private long stopStartTime = 0;
@@ -44,13 +46,42 @@ public class NormalEnemy extends Entity {
 
     public void setDefaultValues() {
         Random rand = new Random();
-        x = rand.nextInt(game.screenWidth);
-        y = rand.nextInt(game.screenHeight);
+        int screenWidth = game.screenWidth;
+        int screenHeight = game.screenHeight;
+    
+        // Define the safe zone boundaries
+        int safeZoneMinX = player.x - safeZone;
+        int safeZoneMaxX = player.x + safeZone;
+        int safeZoneMinY = player.y - safeZone;
+        int safeZoneMaxY = player.y + safeZone;
+    
+        // Calculate the range for random X and Y coordinates excluding the safe zone
+        int minX = Math.max(0, safeZoneMinX); // Ensure minX is not less than 0
+        int maxX = Math.min(screenWidth, safeZoneMaxX); // Ensure maxX is not greater than screenWidth
+        int minY = Math.max(0, safeZoneMinY); // Ensure minY is not less than 0
+        int maxY = Math.min(screenHeight, safeZoneMaxY); // Ensure maxY is not greater than screenHeight
+    
+        // Generate random X and Y coordinates within the defined range
+        int coinFlip = rand.nextInt(2);
+        int coinFlip2 = rand.nextInt(2);
+        if (coinFlip == 0) {
+            x = rand.nextInt(minX);
+        } else {
+            x = ThreadLocalRandom.current().nextInt(maxX, screenWidth + 1); // Random X coordinate to the right of the safe zone
+        } if (coinFlip2 == 0) {
+            y = rand.nextInt(minY);
+        } else {
+            y = ThreadLocalRandom.current().nextInt(maxY, screenHeight + 1); // Random Y coordinate below the safe zone
+        }
+        // source: https://stackoverflow.com/questions/363681/how-do-i-generate-random-integers-within-a-specific-range-in-java
+    
         healthPoints = 3;
         speed = 2;
         direction = "down";
         isAlive = true;
     }
+    
+    
 
     public boolean enemyCollidesWithPlayer() {
         if (rectanglesOverlap(x - (game.tileSize / 2), y - (game.tileSize / 2), x + (game.tileSize / 2),
@@ -210,6 +241,6 @@ public class NormalEnemy extends Entity {
             g2.drawImage(image, x - game.tileSize, y, game.tileSize * 2, game.tileSize, null);
         } else if (direction == "up") {
             g2.drawImage(image, x, y - game.tileSize, game.tileSize, game.tileSize * 2, null);
-        } 
+        }
     }
 }
