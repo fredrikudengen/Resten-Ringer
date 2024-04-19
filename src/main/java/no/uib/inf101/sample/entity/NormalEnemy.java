@@ -3,6 +3,7 @@ package no.uib.inf101.sample.entity;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 import no.uib.inf101.sample.Game;
 import no.uib.inf101.sample.Inf101Graphics;
@@ -49,10 +50,16 @@ public class NormalEnemy extends Entity {
         int screenHeight = game.screenHeight;
 
         // Define the safe zone boundaries
-        int safeZoneMinX = Math.max(0, player.x - safeZone);
-        int safeZoneMaxX = Math.min(screenWidth, player.x + safeZone);
-        int safeZoneMinY = Math.max(0, player.y - safeZone);
-        int safeZoneMaxY = Math.min(screenHeight, player.y + safeZone);
+        int safeZoneMinX = Math.max(1, player.x - safeZone);
+        int safeZoneMaxX = Math.min(screenWidth - 1, (player.x + safeZone) - 1);
+        int safeZoneMinY = Math.max(1, player.y - safeZone);
+        int safeZoneMaxY = Math.min(screenHeight- 1, (player.y + safeZone) - 1);
+        // System.out.println("screen width is : " + screenWidth);
+        // System.out.println("screen height is : " + screenHeight);
+        // System.out.println("safezone minX : " + safeZoneMinX);
+        // System.out.println("safezone maxX : " + safeZoneMaxX);
+        // System.out.println("safezone minY : " + safeZoneMinY);
+        // System.out.println("safezone maxY : " + safeZoneMaxY);
 
         // Generate random X and Y coordinates outside the safe zone boundaries
         int randomX, randomY;
@@ -64,7 +71,7 @@ public class NormalEnemy extends Entity {
             randomX = rand.nextInt(safeZoneMinX);
         } else {
             // Generate random X between safeZoneMaxX and screenWidth
-            randomX = rand.nextInt(screenWidth - safeZoneMaxX) + safeZoneMaxX;
+            randomX = ThreadLocalRandom.current().nextInt(safeZoneMaxX, screenWidth);
         }
 
         if (rand.nextBoolean()) {
@@ -72,7 +79,7 @@ public class NormalEnemy extends Entity {
             randomY = rand.nextInt(safeZoneMinY);
         } else {
             // Generate random Y between safeZoneMaxY and screenHeight
-            randomY = rand.nextInt(screenHeight - safeZoneMaxY) + safeZoneMaxY;
+            randomY = ThreadLocalRandom.current().nextInt(safeZoneMaxY, screenHeight);
         }
 
         x = randomX;
@@ -195,19 +202,6 @@ public class NormalEnemy extends Entity {
 
     }
 
-    // Getters and setters
-    public int getNormalEnemyX() {
-        return x;
-    }
-
-    public int getNormalEnemyY() {
-        return y;
-    }
-
-    public int getNormalEnemySpeed() {
-        return speed;
-    }
-
     public void draw(Graphics2D g2) {
 
         Image image = null;
@@ -253,5 +247,18 @@ public class NormalEnemy extends Entity {
         } else if (direction == "up") {
             g2.drawImage(image, x, y - game.tileSize, game.tileSize, game.tileSize * 2, null);
         }
+    }
+
+    // Getters and setters
+    public int getNormalEnemyX() {
+        return x;
+    }
+
+    public int getNormalEnemyY() {
+        return y;
+    }
+
+    public int getNormalEnemySpeed() {
+        return speed;
     }
 }

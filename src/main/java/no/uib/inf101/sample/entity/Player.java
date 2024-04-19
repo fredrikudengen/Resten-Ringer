@@ -51,93 +51,45 @@ public class Player extends Entity {
             isAlive = false;
         }
 
-        if (gameController.upPressed == true || gameController.downPressed == true || gameController.leftPressed == true
-                || gameController.rightPressed == true) {
-            isMoving = true;
-        } else {
-            isMoving = false;
-        }
-
-        if (gameController.shootDown == true && isMoving == false) {
-            direction = "down";
-        } else if (gameController.shootLeft == true && isMoving == false) {
-            direction = "left";
-        } else if (gameController.shootRight == true && isMoving == false) {
-            direction = "right";
-        } else if (gameController.shootUp == true && isMoving == false) {
+        if (gameController.upPressed == true) {
+            y -= speed;
             direction = "up";
-        } else if (isMoving == true) {
-
-            if (gameController.upPressed == true) {
-                y -= speed;
-                if (y <= 0) {
-                    y = 0;
-                }
-                if (gameController.shootDown == true) {
-                    direction = "down";
-                } else if (gameController.shootUp == true) {
-                    direction = "up";
-                } else if (gameController.shootLeft == true) {
-                    direction = "left";
-                } else if (gameController.shootRight == true) {
-                    direction = "right";
-                } else {
-                    direction = "up";
-                }
-            }
-
-            if (gameController.downPressed == true) {
-                y += speed;
-                if (y >= game.screenHeight - game.tileSize) {
-                    y = game.screenHeight - game.tileSize;
-                }
-                if (gameController.shootDown == true) {
-                    direction = "down";
-                } else if (gameController.shootUp == true) {
-                    direction = "up";
-                } else if (gameController.shootLeft == true) {
-                    direction = "left";
-                } else if (gameController.shootRight == true) {
-                    direction = "right";
-                } else {
-                    direction = "down";
-                }
-            }
-            if (gameController.leftPressed == true) {
-                x -= speed;
-                if (x <= 0) {
-                    x = 0;
-                }
-                if (gameController.shootDown == true) {
-                    direction = "down";
-                } else if (gameController.shootUp == true) {
-                    direction = "up";
-                } else if (gameController.shootLeft == true) {
-                    direction = "left";
-                } else if (gameController.shootRight == true) {
-                    direction = "right";
-                } else {
-                    direction = "left";
-                }
-            }
-            if (gameController.rightPressed == true) {
-                x += speed;
-                if (x >= game.screenWidth - game.tileSize) {
-                    x = game.screenWidth - game.tileSize;
-                }
-                if (gameController.shootDown == true) {
-                    direction = "down";
-                } else if (gameController.shootUp == true) {
-                    direction = "up";
-                } else if (gameController.shootLeft == true) {
-                    direction = "left";
-                } else if (gameController.shootRight == true) {
-                    direction = "right";
-                } else {
-                    direction = "right";
-                }
+            if (y <= 0) {
+                y = 0;
             }
         }
+
+        if (gameController.downPressed == true) {
+            y += speed;
+            direction = "down";
+            if (y >= game.screenHeight - game.tileSize) {
+                y = game.screenHeight - game.tileSize;
+            }
+        }
+        if (gameController.leftPressed == true) {
+            x -= speed;
+            direction = "left";
+            if (x <= 0) {
+                x = 0;
+            }
+        }
+        if (gameController.rightPressed == true) {
+            x += speed;
+            direction = "right";
+            if (x >= game.screenWidth - game.tileSize) {
+                x = game.screenWidth - game.tileSize;
+            }
+        }
+        if (gameController.shootDown == true) {
+            direction = "down";
+        } else if (gameController.shootUp == true) {
+            direction = "up";
+        } else if (gameController.shootLeft == true) {
+            direction = "left";
+        } else if (gameController.shootRight == true) {
+            direction = "right";
+        }
+
         imageCounter++;
         if (imageCounter > 10) {
             if (imageNum == 1) {
@@ -197,8 +149,10 @@ public class Player extends Entity {
             g2.drawImage(image, x, y, game.tileSize, game.tileSize * 2, null);
         }
 
+        // Draw hearts
         for (int i = 0; i < healthPoints; i++) {
-            g2.drawImage(heart, game.screenWidth - 40 - ((game.tileSize/2 + 5) * i), 20, game.tileSize / 2, game.tileSize / 2, null);
+            g2.drawImage(heart, game.screenWidth - 40 - ((game.tileSize / 2 + 5) * i), 20, game.tileSize / 2,
+                    game.tileSize / 2, null);
         }
     }
 

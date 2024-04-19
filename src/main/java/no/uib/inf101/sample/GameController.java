@@ -82,15 +82,19 @@ public class GameController implements java.awt.event.KeyListener {
         }
         if (e.getKeyCode() == KeyEvent.VK_UP) {
             shootUp = false;
+            shotKeyPressed = false;
         }
         else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
             shootDown = false;
+            shotKeyPressed = false;
         }
         else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
             shootLeft = false;
+            shotKeyPressed = false;
         }
         else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
             shootRight = false;
+            shotKeyPressed = false;
         }
     }
 }
