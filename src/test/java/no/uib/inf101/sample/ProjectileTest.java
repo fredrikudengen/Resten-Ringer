@@ -16,7 +16,7 @@ class ProjectileTest {
     @Test
     void testUpdate() {
         Game game = new Game();
-        GameController gameController = new GameController(game);
+        GameController gameController = new GameController();
         Player player = new Player(game, gameController);
 
         NormalEnemy normalEnemy = new NormalEnemy(game, player);

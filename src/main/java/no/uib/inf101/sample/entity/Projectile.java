@@ -2,7 +2,6 @@ package no.uib.inf101.sample.entity;
 
 import java.awt.Graphics2D;
 import java.awt.Image;
-import java.awt.Toolkit;
 
 import no.uib.inf101.sample.Game;
 import no.uib.inf101.sample.GameController;
@@ -27,7 +26,8 @@ public class Projectile extends Entity {
     private Image right1 = Inf101Graphics.loadImageFromResources("Right_bullet_1.png");
     private Image right2 = Inf101Graphics.loadImageFromResources("Right_bullet_2.png");
 
-    public Projectile(Game game, Player player, GameController gameController, String shotDirection, NormalEnemy normalEnemy) {
+    public Projectile(Game game, Player player, GameController gameController, String shotDirection,
+            NormalEnemy normalEnemy) {
         this.game = game;
         this.player = player;
         this.gameController = gameController;
@@ -38,22 +38,23 @@ public class Projectile extends Entity {
     }
 
     public void setDefaultValues() {
-        x = player.getPlayerX();
+        x = player.x;
 
-        y = player.getPlayerY();
+        y = player.y;
 
         speed = 8;
-        
+
         isAlive = true;
     }
 
     public boolean ProjectileCollidesWithEnemy(int i, int j) {
-        if (rectanglesOverlap(game.enemyList.get(i).getNormalEnemyX() - (game.tileSize / 2),
-                game.enemyList.get(i).getNormalEnemyY() - (game.tileSize / 2),
-                game.enemyList.get(i).getNormalEnemyX() + (game.tileSize / 2),
-                game.enemyList.get(i).getNormalEnemyY() + (game.tileSize / 2), (game.projectileList.get(j).getProjectileX()) - (game.bulletSize / 2),
-                game.projectileList.get(j).getProjectileY() + (game.bulletSize / 2),
-                (game.projectileList.get(j).getProjectileX()) + (game.bulletSize / 2), (game.projectileList.get(j).getProjectileY()) + (game.bulletSize / 2))) {
+        if (rectanglesOverlap(game.enemyList.get(i).x - (game.tileSize / 2),
+                game.enemyList.get(i).y - (game.tileSize / 2),
+                game.enemyList.get(i).x + (game.tileSize / 2),
+                game.enemyList.get(i).y + (game.tileSize / 2), (game.projectileList.get(j).x) - (game.bulletSize / 2),
+                game.projectileList.get(j).y + (game.bulletSize / 2),
+                (game.projectileList.get(j).x) + (game.bulletSize / 2),
+                (game.projectileList.get(j).y) + (game.bulletSize / 2))) {
             game.enemyList.get(i).healthPoints--;
             if (game.enemyList.get(i).healthPoints <= 0) {
                 game.enemyList.get(i).isAlive = false;
@@ -70,19 +71,6 @@ public class Projectile extends Entity {
         } else {
             return false;
         }
-    }
-
-    // Getters and setters
-    public int getProjectileX() {
-        return x;
-    }
-
-    public int getProjectileY() {
-        return y;
-    }
-
-    public int getProjectileSpeed() {
-        return speed;
     }
 
     // Called upon once every frame in Game
@@ -167,5 +155,18 @@ public class Projectile extends Entity {
                 g2.drawImage(image, x, y + 30, game.bulletSize, game.bulletSize * 2, null);
             }
         }
+    }
+
+    // Getters and setters
+    public int getProjectileX() {
+        return x;
+    }
+
+    public int getProjectileY() {
+        return y;
+    }
+
+    public int getProjectileSpeed() {
+        return speed;
     }
 }

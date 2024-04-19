@@ -4,14 +4,11 @@ import java.awt.event.KeyEvent;
 
 public class GameController implements java.awt.event.KeyListener {
 
-    Game game;
-
     public boolean upPressed, downPressed, leftPressed, rightPressed;
     public boolean shootUp, shootDown, shootLeft, shootRight;
     public boolean shotKeyPressed;
 
-    public GameController(Game game) {
-        this.game = game;
+    public GameController() {
     }
 
     @Override

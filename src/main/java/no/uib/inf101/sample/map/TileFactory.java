@@ -16,7 +16,7 @@ public class TileFactory {
 
     // Stores map data
     int mapTileNum[][];
-    
+
     public TileFactory(Game game) {
 
         this.game = game;
@@ -29,6 +29,7 @@ public class TileFactory {
         loadMap("gameMap1.txt");
 
     }
+
     public void getTileImage() {
         tile[0] = new Tile();
         tile[0].image = Inf101Graphics.loadImageFromResources("grass.png");
@@ -38,10 +39,10 @@ public class TileFactory {
 
         tile[2] = new Tile();
         tile[2].image = Inf101Graphics.loadImageFromResources("water.png");
-}
+    }
 
     public void loadMap(String mapFile) {
-        try{
+        try {
             // Imports textfile
             InputStream is = getClass().getResourceAsStream(mapFile);
             // Reads textfile
@@ -52,8 +53,8 @@ public class TileFactory {
 
             // Map text file is the same size as our board
             while (col < game.cols && row < game.rows) {
-            // Reads a single line in the map file
-            String line = br.readLine();
+                // Reads a single line in the map file
+                String line = br.readLine();
                 // Puts read string in an array
                 while (col < game.cols && row < game.rows) {
                     // Changes string in line to integer
@@ -62,15 +63,16 @@ public class TileFactory {
                     int num = Integer.parseInt(numbers[col]);
                     mapTileNum[col][row] = num;
                     col++;
-                    
-                } if (col == game.cols) {
+
+                }
+                if (col == game.cols) {
                     col = 0;
                     row++;
                 }
-                } br.close();
+            }
+            br.close();
 
-
-        } catch(Exception e) {
+        } catch (Exception e) {
         }
     }
 
@@ -85,7 +87,7 @@ public class TileFactory {
 
             int tileNum = mapTileNum[col][row]; // Extracts number for a tile // Works as an index
             g2.drawImage(tile[tileNum].image, x, y, game.tileSize, game.tileSize, null);
-            //Draws next tile
+            // Draws next tile
             col++;
             x += game.tileSize;
 
@@ -97,7 +99,7 @@ public class TileFactory {
                 row++;
                 y += game.tileSize;
             }
-            
+
         }
     }
 }

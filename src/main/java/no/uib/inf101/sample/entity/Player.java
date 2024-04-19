@@ -5,12 +5,14 @@ import java.awt.Image;
 
 import no.uib.inf101.sample.Game;
 import no.uib.inf101.sample.GameController;
+import no.uib.inf101.sample.GameState;
 import no.uib.inf101.sample.Inf101Graphics;
 
 public class Player extends Entity {
 
     GameController gameController;
     Game game;
+    GameState gameState;
 
     String direction;
 
@@ -49,6 +51,10 @@ public class Player extends Entity {
 
         if (healthPoints <= 0) {
             isAlive = false;
+        }
+
+        if (isAlive == false) {
+            gameState = GameState.GAME_OVER;
         }
 
         if (gameController.upPressed == true) {
@@ -175,5 +181,9 @@ public class Player extends Entity {
 
     public int getPlayerSpeed() {
         return speed;
+    }
+
+    public GameState getGameState(){
+        return gameState;
     }
 }

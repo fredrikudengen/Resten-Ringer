@@ -53,7 +53,7 @@ public class NormalEnemy extends Entity {
         int safeZoneMinX = Math.max(1, player.x - safeZone);
         int safeZoneMaxX = Math.min(screenWidth - 1, (player.x + safeZone) - 1);
         int safeZoneMinY = Math.max(1, player.y - safeZone);
-        int safeZoneMaxY = Math.min(screenHeight- 1, (player.y + safeZone) - 1);
+        int safeZoneMaxY = Math.min(screenHeight - 1, (player.y + safeZone) - 1);
         // System.out.println("screen width is : " + screenWidth);
         // System.out.println("screen height is : " + screenHeight);
         // System.out.println("safezone minX : " + safeZoneMinX);

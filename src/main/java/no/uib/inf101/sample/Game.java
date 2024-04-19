@@ -46,10 +46,11 @@ public class Game extends JPanel implements Runnable {
 
     Game game;
     Thread gameThread;
-    GameController gameController = new GameController(this);
+    GameController gameController = new GameController();
     Player player = new Player(this, gameController);
     NormalEnemy normalEnemy = new NormalEnemy(this, player);
     TileFactory tileFactory = new TileFactory(this);
+    GameState gameState;
 
     public Game() {
         this.game = this;
@@ -60,6 +61,7 @@ public class Game extends JPanel implements Runnable {
         this.addKeyListener(gameController);
         this.setFocusable(true);
         this.requestFocusInWindow();
+        gameState = GameState.ACTIVE_GAME;
 
         // Create 3 enemies at start (if enemyMax is 3)
         for (enemiesAtStart = 0; enemiesAtStart <= enemyMax; enemiesAtStart++) {
@@ -214,7 +216,7 @@ public class Game extends JPanel implements Runnable {
             }
         }
 
-        if (player.isAlive == false) {
+        if (player.getGameState() == GameState.GAME_OVER) {
             g2.setColor(Color.BLACK);
             g2.fillRect(0, 0, getWidth(), getHeight());
 

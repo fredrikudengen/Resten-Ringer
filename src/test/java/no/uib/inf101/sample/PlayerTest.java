@@ -13,7 +13,7 @@ public class PlayerTest {
     public void testPlayerDefaultValues() {
         // Create a Game instance and a GameController instance
         Game game = new Game();
-        GameController gameController = new GameController(game);
+        GameController gameController = new GameController();
 
         // Create a Player instance
         Player player = new Player(game, gameController);
@@ -32,7 +32,7 @@ public class PlayerTest {
     public void testPlayerMovement() {
         // Create a Game instance and a GameController instance (you might need mocks or stubs)
         Game game = new Game();
-        GameController gameController = new GameController(game);
+        GameController gameController = new GameController();
 
         // Create a Player instance
         Player player = new Player(game, gameController);
