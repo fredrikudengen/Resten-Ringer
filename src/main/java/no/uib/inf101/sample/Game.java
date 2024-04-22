@@ -159,15 +159,16 @@ public class Game extends JPanel implements Runnable {
         int enemyCounter = enemyList.size();
 
         if (enemyList.isEmpty()) {
-            for (int i = projectileList.size() - 1; i >= 0; i--) {
-                projectileList.get(i).update();
-            }
-            enemyMax++;
-            while (enemyCounter <= enemyMax) {
-                NormalEnemy newNormalEnemy = new NormalEnemy(game, player);
-                enemyList.add(newNormalEnemy);
-                enemyCounter++;
-            }
+            gameState = GameState.VICTORY;
+            // for (int i = projectileList.size() - 1; i >= 0; i--) {
+            //     projectileList.get(i).update();
+            // }
+            // enemyMax++;
+            // while (enemyCounter <= enemyMax) {
+            //     NormalEnemy newNormalEnemy = new NormalEnemy(game, player);
+            //     enemyList.add(newNormalEnemy);
+            //     enemyCounter++;
+            // }
 
         }
 
@@ -224,6 +225,14 @@ public class Game extends JPanel implements Runnable {
             g2.setColor(Color.RED);
             g2.setFont(new Font("Arial", Font.BOLD, 20));
             g2.drawString("Game Over", screenHeight / 2, screenWidth / 2 - 80);
+        }
+        if (player.getGameState() == GameState.VICTORY) {
+            g2.setColor(Color.BLACK);
+            g2.fillRect(0, 0, getWidth(), getHeight());
+
+            g2.setColor(Color.RED);
+            g2.setFont(new Font("Arial", Font.BOLD, 20));
+            g2.drawString("Victory!", screenHeight / 2, screenWidth / 2 - 80);
         }
     }
 }

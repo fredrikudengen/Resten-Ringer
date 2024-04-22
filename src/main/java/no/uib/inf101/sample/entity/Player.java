@@ -1,5 +1,7 @@
 package no.uib.inf101.sample.entity;
 
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Image;
 
@@ -226,9 +228,13 @@ public class Player extends Entity {
 
         // Draw hearts
         for (int i = 0; i < healthPoints; i++) {
-            g2.drawImage(beer, game.screenWidth - 40 - ((game.tileSize / 2 + 5) * i), 20, game.tileSize / 2,
-                    game.tileSize / 2, null);
+            g2.drawImage(beer, 10 + (i* (game.tileSize / 2 + 5)), 20, game.tileSize / 2, game.tileSize / 2, null);
         }
+
+        int enemiesLeft = game.enemyList.size();
+        g2.setColor(Color.WHITE);
+        g2.setFont(new Font("Symbol Bold", Font.BOLD, 14));
+        g2.drawString("ENEMIES LEFT: " + enemiesLeft, 10, 70);
     }
 
     // Getters and setters
