@@ -32,6 +32,12 @@ public class Player extends Entity {
     private Image left2 = Inf101Graphics.loadImageFromResources("Left_shotgun_walking_2.png");
     private Image right1 = Inf101Graphics.loadImageFromResources("Right_shotgun_walking_1.png");
     private Image right2 = Inf101Graphics.loadImageFromResources("Right_shotgun_walking_2.png");
+    private Image downHit1 = Inf101Graphics.loadImageFromResources("Down_hit_1.png");
+    private Image downHit2 = Inf101Graphics.loadImageFromResources("Down_hit_2.png");
+    private Image leftHit1 = Inf101Graphics.loadImageFromResources("Left_hit_1.png");
+    private Image leftHit2 = Inf101Graphics.loadImageFromResources("Left_hit_2.png");
+    private Image rightHit1 = Inf101Graphics.loadImageFromResources("Right_hit_1.png");
+    private Image rightHit2 = Inf101Graphics.loadImageFromResources("Right_hit_2.png");
 
     private Image beer = Inf101Graphics.loadImageFromResources("beer.png");
 
@@ -56,42 +62,28 @@ public class Player extends Entity {
     }
 
     public void update() {
-
         if (healthPoints <= 0) {
-            gameState = GameState.GAME_OVER;        
+            gameState = GameState.GAME_OVER;
         }
-
 
         if (gameController.downPressed || gameController.leftPressed || gameController.rightPressed
                 || gameController.upPressed) {
             if (gameController.upPressed == true) {
                 y -= speed;
                 direction = "up";
-                if (y <= 0) {
-                    y = 0;
-                }
             }
 
             if (gameController.downPressed == true) {
                 y += speed;
                 direction = "down";
-                if (y >= game.screenHeight - game.tileSize) {
-                    y = game.screenHeight - game.tileSize;
-                }
             }
             if (gameController.leftPressed == true) {
                 x -= speed;
                 direction = "left";
-                if (x <= 0) {
-                    x = 0;
-                }
             }
             if (gameController.rightPressed == true) {
                 x += speed;
                 direction = "right";
-                if (x >= game.screenWidth - game.tileSize) {
-                    x = game.screenWidth - game.tileSize;
-                }
             }
             imageCounter++;
             if (imageCounter > 10) {
@@ -113,54 +105,123 @@ public class Player extends Entity {
             direction = "right";
         }
 
+        if (y <= 0) {
+            y = 0;
+        }
+        if (y >= game.screenHeight - game.tileSize) {
+            y = game.screenHeight - game.tileSize;
+        }
+        if (x <= 0) {
+            x = 0;
+        }
+        if (x >= game.screenWidth - game.tileSize) {
+            x = game.screenWidth - game.tileSize;
+        }
+
     }
 
     public void draw(Graphics2D g2) {
+        if (isShocked) {
+            Image hitImage = null;
+            switch (direction) {
+                case "up":
+                    if (imageNum == 1) {
+                        hitImage = downHit1;
+                    }
+                    if (imageNum == 2) {
+                        hitImage = downHit2;
+                    }
+                    break;
+                case "down":
+                    if (imageNum == 1) {
+                        hitImage = downHit1;
+                    }
+                    if (imageNum == 2) {
+                        hitImage = downHit2;
+                    }
+                    break;
+                case "left":
+                    if (imageNum == 1) {
+                        hitImage = rightHit1;
+                    }
+                    if (imageNum == 2) {
+                        hitImage = rightHit2;
+                    }
+                    break;
+                case "right":
+                    if (imageNum == 1) {
+                        hitImage = leftHit1;
+                    }
+                    if (imageNum == 2) {
+                        hitImage = leftHit2;
+                    }
+                    break;
+            }
 
-        Image image = null;
-        switch (direction) {
-            case "up":
-                if (imageNum == 1) {
-                    image = up1;
+            // Draw player
+            if (direction == "right") {
+                g2.drawImage(hitImage, x, y, game.tileSize * 2, game.tileSize, null);
+            } else if (direction == "left") {
+                g2.drawImage(hitImage, x - game.tileSize, y, game.tileSize * 2, game.tileSize,
+                        null);
+            } else if (direction == "up") {
+                g2.drawImage(hitImage, x, y, game.tileSize, game.tileSize * 2, null);
+            } else if (direction == "down") {
+                g2.drawImage(hitImage, x, y, game.tileSize, game.tileSize * 2, null);
+            }
+            if (isShocked) {
+                long currentTime = System.nanoTime();
+                if (currentTime - shockStartTime >= SHOCK_DURATION) {
+                    isShocked = false;
                 }
-                if (imageNum == 2) {
-                    image = up2;
-                }
-                break;
-            case "down":
-                if (imageNum == 1) {
-                    image = down1;
-                }
-                if (imageNum == 2) {
-                    image = down2;
-                }
-                break;
-            case "left":
-                if (imageNum == 1) {
-                    image = left1;
-                }
-                if (imageNum == 2) {
-                    image = left2;
-                }
-                break;
-            case "right":
-                if (imageNum == 1) {
-                    image = right1;
-                }
-                if (imageNum == 2) {
-                    image = right2;
-                }
-                break;
-        }
-        // Draw player
-        if (direction == "right") {
-            g2.drawImage(image, x, y, game.tileSize * 2, game.tileSize, null);
-        } else if (direction == "left") {
-            g2.drawImage(image, x - game.tileSize, y, game.tileSize * 2, game.tileSize, null);
-        } else if (direction == "up") {
-            g2.drawImage(image, x, y - game.tileSize, game.tileSize, game.tileSize * 2, null);
-        } else if (direction == "down") {
-            g2.drawImage(image, x, y, game.tileSize, game.tileSize * 2, null);
+            }
+
+        } else {
+            Image playerImage = null;
+            switch (direction) {
+                case "up":
+                    if (imageNum == 1) {
+                        playerImage = up1;
+                    }
+                    if (imageNum == 2) {
+                        playerImage = up2;
+                    }
+                    break;
+                case "down":
+                    if (imageNum == 1) {
+                        playerImage = down1;
+                    }
+                    if (imageNum == 2) {
+                        playerImage = down2;
+                    }
+                    break;
+                case "left":
+                    if (imageNum == 1) {
+                        playerImage = left1;
+                    }
+                    if (imageNum == 2) {
+                        playerImage = left2;
+                    }
+                    break;
+                case "right":
+                    if (imageNum == 1) {
+                        playerImage = right1;
+                    }
+                    if (imageNum == 2) {
+                        playerImage = right2;
+                    }
+                    break;
+            }
+            // Draw player
+            if (direction == "right") {
+                g2.drawImage(playerImage, x, y, game.tileSize * 2, game.tileSize, null);
+            } else if (direction == "left") {
+                g2.drawImage(playerImage, x - game.tileSize, y, game.tileSize * 2, game.tileSize, null);
+            } else if (direction == "up") {
+                g2.drawImage(playerImage, x, y - game.tileSize, game.tileSize, game.tileSize * 2, null);
+            } else if (direction == "down") {
+                g2.drawImage(playerImage, x, y, game.tileSize, game.tileSize * 2, null);
+            }
         }
 
         // Draw hearts
@@ -168,37 +229,6 @@ public class Player extends Entity {
             g2.drawImage(beer, game.screenWidth - 40 - ((game.tileSize / 2 + 5) * i), 20, game.tileSize / 2,
                     game.tileSize / 2, null);
         }
-
-        // if (isShocked) {
-        // if (direction == "left") {
-        // image = hitLeft;
-        // } else if (direction == "right") {
-        // image = hitRight;
-        // } else if (direction == "up") {
-        // image = hitDown;
-        // } else if (direction == "down") {
-        // image = hitDown;
-        // }
-        // }
-        // if (isShocked) {
-        // long currentTime = System.nanoTime();
-        // if (currentTime - shockStartTime >= SHOCK_DURATION) {
-        // isShocked = false;
-        // }
-        // }
-
-        // // Draw player
-        // if (image == hitRight) {
-        // g2.drawImage(image, x, y, game.tileSize * 2, game.tileSize, null);
-        // } else if (direction == hitLeft) {
-        // g2.drawImage(image, x - game.tileSize, y, game.tileSize * 2, game.tileSize,
-        // null);
-        // } else if (direction == hitDown) {
-        // g2.drawImage(image, x, y - game.tileSize, game.tileSize, game.tileSize * 2,
-        // null);
-        // } else if (direction == hitDown) {
-        // g2.drawImage(image, x, y, game.tileSize, game.tileSize * 2, null);
-        // }
     }
 
     // Getters and setters

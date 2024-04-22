@@ -151,7 +151,7 @@ public class Game extends JPanel implements Runnable {
                 // Check conditions for removing the projectile
                 if (screenWidth < projectile.getProjectileX() || projectile.getProjectileX() < 0
                         || screenHeight < projectile.getProjectileY() || projectile.getProjectileY() < 0
-                        || projectile.projectTileHitEnemy(i, j)) {
+                        || projectile.projectTileHitEnemy(i)) {
                     projectileList.remove(j); // Remove the projectile if necessary
                 }
             }
@@ -172,9 +172,8 @@ public class Game extends JPanel implements Runnable {
         }
 
         for (int i = enemyList.size() - 1; i >= 0; i--) {
-            NormalEnemy normalEnemy = enemyList.get(i); // Retrieve the enemy
-            normalEnemy.update(); // Update the enemy
-            if (normalEnemy.isAlive == false) {
+            enemyList.get(i).update(); // Update the enemy
+            if (enemyList.get(i).getNormalEnemyIsALive() == false) {
                 enemyList.remove(i);
             }
         }

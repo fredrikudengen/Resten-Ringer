@@ -122,19 +122,23 @@ public class NormalEnemy extends Entity {
 
     public void knockBackPlayer() {
         if (enemyCollidesWithPlayer() == true) {
+            player.setShocked();
             if (direction == "up") {
+                y -= 50;
                 if (player.y - 100 < 0) {
                     player.x += 100;
                 } else {
                     player.y -= 100;
                 }
             } else if (direction == "left") {
+                x += 50;
                 if (player.x - 100 < 0) {
                     player.y += 100;
                 } else {
                     player.x -= 100;
                 }
             } else if (direction == "right") {
+                x -= 50;
                 if (player.x + 100 > game.screenWidth) {
                     player.y += 100;
                 } else {
@@ -254,5 +258,9 @@ public class NormalEnemy extends Entity {
 
     public int getNormalEnemySpeed() {
         return speed;
+    }
+
+    public boolean getNormalEnemyIsALive(){
+        return isAlive;
     }
 }

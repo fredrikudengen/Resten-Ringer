@@ -47,14 +47,14 @@ public class Projectile extends Entity {
         isAlive = true;
     }
 
-    public boolean ProjectileCollidesWithEnemy(int i, int j) {
-        if (rectanglesOverlap(game.enemyList.get(i).x - (game.tileSize / 2),
-                game.enemyList.get(i).y - (game.tileSize / 2),
-                game.enemyList.get(i).x + (game.tileSize / 2),
-                game.enemyList.get(i).y + (game.tileSize / 2), (game.projectileList.get(j).x) - (game.bulletSize / 2),
-                game.projectileList.get(j).y + (game.bulletSize / 2),
-                (game.projectileList.get(j).x) + (game.bulletSize / 2),
-                (game.projectileList.get(j).y) + (game.bulletSize / 2))) {
+    public boolean ProjectileCollidesWithEnemy(int i) {
+        if (rectanglesOverlap(game.enemyList.get(i).x,
+                game.enemyList.get(i).y,
+                game.enemyList.get(i).x + game.tileSize,
+                game.enemyList.get(i).y + game.tileSize, x,
+                y,
+                x + game.bulletSize,
+                y + game.bulletSize)) {
             game.enemyList.get(i).healthPoints--;
             if (game.enemyList.get(i).healthPoints <= 0) {
                 game.enemyList.get(i).isAlive = false;
@@ -65,8 +65,8 @@ public class Projectile extends Entity {
         }
     }
 
-    public boolean projectTileHitEnemy(int i, int j) {
-        if (ProjectileCollidesWithEnemy(i, j) == true) {
+    public boolean projectTileHitEnemy(int i) {
+        if (ProjectileCollidesWithEnemy(i) == true) {
             return true;
         } else {
             return false;
