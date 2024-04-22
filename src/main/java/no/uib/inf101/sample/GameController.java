@@ -8,7 +8,10 @@ public class GameController implements java.awt.event.KeyListener {
     public boolean shootUp, shootDown, shootLeft, shootRight;
     public boolean shotKeyPressed;
 
-    public GameController() {
+    Game game;
+
+    public GameController(Game game) {
+        this.game = game;
     }
 
     @Override
@@ -18,6 +21,28 @@ public class GameController implements java.awt.event.KeyListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
+        if(game.gameState == GameState.TITLE_SCREEN) {
+            if (e.getKeyCode() == KeyEvent.VK_W) {
+                game.commandNum --;
+                if (game.commandNum < 0) {
+                    game.commandNum = 1;
+                }
+            }
+            if (e.getKeyCode() == KeyEvent.VK_S) {
+                game.commandNum ++;
+                if (game.commandNum > 1) {
+                    game.commandNum = 0;
+                }
+            }
+            if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                if (game.commandNum == 0){
+                    game.gameState = GameState.ACTIVE_GAME;
+                } else if (game.commandNum == 1) {
+                    System.exit(0);
+                }
+
+            }
+        }
         if (e.getKeyCode() == KeyEvent.VK_W) {
             upPressed = true;
         }

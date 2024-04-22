@@ -1,7 +1,5 @@
 package no.uib.inf101.sample.entity;
 
-import java.awt.Color;
-import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Image;
 
@@ -166,10 +164,11 @@ public class Player extends Entity {
             } else if (direction == "left") {
                 g2.drawImage(hitImage, x - game.tileSize, y, game.tileSize * 2, game.tileSize, null);
             } else if (direction == "up") {
-                g2.drawImage(hitImage, x, y - game.tileSize, game.tileSize, game.tileSize * 2, null);
+                g2.drawImage(hitImage, x, y, game.tileSize, game.tileSize * 2, null);
             } else if (direction == "down") {
                 g2.drawImage(hitImage, x, y, game.tileSize, game.tileSize * 2, null);
             }
+
             if (isShocked) {
                 long currentTime = System.nanoTime();
                 if (currentTime - shockStartTime >= SHOCK_DURATION) {
@@ -219,7 +218,7 @@ public class Player extends Entity {
             } else if (direction == "left") {
                 g2.drawImage(playerImage, x - game.tileSize, y, game.tileSize * 2, game.tileSize, null);
             } else if (direction == "up") {
-                g2.drawImage(playerImage, x, y, game.tileSize, game.tileSize * 2, null);
+                g2.drawImage(playerImage, x, y - game.tileSize, game.tileSize, game.tileSize * 2, null);
             } else if (direction == "down") {
                 g2.drawImage(playerImage, x, y, game.tileSize, game.tileSize * 2, null);
             }
@@ -229,20 +228,12 @@ public class Player extends Entity {
         for (int i = 0; i < healthPoints; i++) {
             g2.drawImage(beer, 10 + (i * (game.tileSize / 2 + 5)), 20, game.tileSize / 2, game.tileSize / 2, null);
         }
-
-        int enemiesLeft = game.enemyList.size();
-        g2.setColor(Color.WHITE);
-        g2.setFont(new Font("Symbol Bold", Font.BOLD, 14));
-        g2.drawString("ENEMIES LEFT: " + enemiesLeft, 10, 70);
     }
-
-    // Getters and setters
     public String getDirection() {
         return direction;
     }
-
-    public boolean isAlive() {
-        return isAlive;
+    public GameState getGameState() {
+        return gameState;
     }
 
     public int getPlayerX() {
@@ -251,13 +242,5 @@ public class Player extends Entity {
 
     public int getPlayerY() {
         return y;
-    }
-
-    public int getPlayerSpeed() {
-        return speed;
-    }
-
-    public GameState getGameState() {
-        return gameState;
     }
 }

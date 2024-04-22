@@ -5,13 +5,16 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
+import no.uib.inf101.sample.entity.Enemy;
 import no.uib.inf101.sample.entity.NormalEnemy;
 import no.uib.inf101.sample.entity.Player;
 import no.uib.inf101.sample.entity.Projectile;
+import no.uib.inf101.sample.entity.SlowEnemy;
 import no.uib.inf101.sample.map.TileFactory;
 
 public class Game extends JPanel implements Runnable {
@@ -35,39 +38,54 @@ public class Game extends JPanel implements Runnable {
     int bulletTimer = 40;
 
     public ArrayList<Projectile> projectileList = new ArrayList<>();
-    public ArrayList<NormalEnemy> enemyList = new ArrayList<>();
+    public ArrayList<Enemy> enemyList = new ArrayList<>();
 
     // FPS
     int fps = 60;
 
-    int enemyMax = 3;
+    int enemyMax = 4;
 
     int enemiesAtStart = 0;
 
+    public int commandNum = 0;
+
     Game game;
     Thread gameThread;
-    GameController gameController = new GameController();
+    GameController gameController = new GameController(this);
     Player player = new Player(this, gameController);
     NormalEnemy normalEnemy = new NormalEnemy(this, player);
     TileFactory tileFactory = new TileFactory(this);
     GameState gameState;
+
+    private Image background = Inf101Graphics.loadImageFromResources("title_background.png");
+    private Image title = Inf101Graphics.loadImageFromResources("Resten_ringer.png");
+    private Image beer = Inf101Graphics.loadImageFromResources("beer.png");
+    private Image beer2 = Inf101Graphics.loadImageFromResources("random_beer_1.jpg");
+    private Image beer3 = Inf101Graphics.loadImageFromResources("random_beer_2.jpg");
+    private Image keepCalm = Inf101Graphics.loadImageFromResources("keep_calm.jpg");
 
     public Game() {
         this.game = this;
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
         this.setBackground(Color.BLACK);
         this.setDoubleBuffered(true); // improves rendering, doesn't display the render before the whole screen is
-                                            // ready
+                                      // ready
         this.addKeyListener(gameController);
         this.setFocusable(true);
         this.requestFocusInWindow();
-        gameState = GameState.ACTIVE_GAME;
+        gameState = GameState.TITLE_SCREEN;
 
         // Create 3 enemies at start (if enemyMax is 3)
-        for (enemiesAtStart = 0; enemiesAtStart <= enemyMax; enemiesAtStart++) {
+        for (enemiesAtStart = 0; enemiesAtStart <= (enemyMax / 2); enemiesAtStart++) {
             if (enemiesAtStart < enemyMax) {
                 NormalEnemy newNormalEnemy = new NormalEnemy(game, player);
                 enemyList.add(newNormalEnemy);
+            }
+        }
+        for (enemiesAtStart = 0; enemiesAtStart <= (enemyMax / 2); enemiesAtStart++) {
+            if (enemiesAtStart < enemyMax) {
+                SlowEnemy newSlowEnemy = new SlowEnemy(game, player);
+                enemyList.add(newSlowEnemy);
             }
         }
     }
@@ -161,20 +179,20 @@ public class Game extends JPanel implements Runnable {
         if (enemyList.isEmpty()) {
             gameState = GameState.VICTORY;
             // for (int i = projectileList.size() - 1; i >= 0; i--) {
-            //     projectileList.get(i).update();
+            // projectileList.get(i).update();
             // }
             // enemyMax++;
             // while (enemyCounter <= enemyMax) {
-            //     NormalEnemy newNormalEnemy = new NormalEnemy(game, player);
-            //     enemyList.add(newNormalEnemy);
-            //     enemyCounter++;
+            // NormalEnemy newNormalEnemy = new NormalEnemy(game, player);
+            // enemyList.add(newNormalEnemy);
+            // enemyCounter++;
             // }
 
         }
 
         for (int i = enemyList.size() - 1; i >= 0; i--) {
             enemyList.get(i).update(); // Update the enemy
-            if (enemyList.get(i).getNormalEnemyIsALive() == false) {
+            if (enemyList.get(i).isAlive == false) {
                 enemyList.remove(i);
             }
         }
@@ -201,22 +219,31 @@ public class Game extends JPanel implements Runnable {
 
         Graphics2D g2 = (Graphics2D) g;
 
-       if (gameState == GameState.ACTIVE_GAME) {
-        tileFactory.draw(g2);
+        if (gameState == GameState.TITLE_SCREEN) {
+            drawTitleScreen(g2);
+        }
 
-        player.draw(g2);
+        if (gameState == GameState.ACTIVE_GAME) {
+            tileFactory.draw(g2);
 
-        for (int i = 0; i < enemyList.size(); i++) {
-            if (enemyList.get(i) != null) {
-                enemyList.get(i).draw(g2);
+            player.draw(g2);
+
+            int enemiesLeft = game.enemyList.size();
+            g2.setColor(Color.WHITE);
+            g2.setFont(new Font("Symbol Bold", Font.BOLD, 14));
+            g2.drawString("ENEMIES LEFT: " + enemiesLeft, 10, 70);
+
+            for (int i = 0; i < enemyList.size(); i++) {
+                if (enemyList.get(i) != null) {
+                    enemyList.get(i).draw(g2);
+                }
+            }
+            for (int i = 0; i < projectileList.size(); i++) {
+                if (projectileList.get(i) != null) {
+                    projectileList.get(i).draw(g2);
+                }
             }
         }
-        for (int i = 0; i < projectileList.size(); i++) {
-            if (projectileList.get(i) != null) {
-                projectileList.get(i).draw(g2);
-            }
-        }
-       }
 
         if (player.getGameState() == GameState.GAME_OVER) {
             g2.setColor(Color.BLACK);
@@ -235,4 +262,38 @@ public class Game extends JPanel implements Runnable {
             g2.drawString("Victory!", screenHeight / 2, screenWidth / 2 - 80);
         }
     }
+
+    private void drawTitleScreen(Graphics2D g2) {
+        g2.drawImage(background, 0, 0, screenWidth, screenHeight, null);
+        g2.drawImage(title, 100, 100, 612, 148, null);
+        g2.drawImage(beer2, 50, 350, tileSize * 3, tileSize * 3, null);
+        g2.drawImage(beer3, 600, 300, tileSize * 3, tileSize * 3, null);
+        g2.drawImage(keepCalm, 70, 30, tileSize * 2, tileSize * 2, null);
+
+        g2.setFont(new Font("IMPACT", Font.BOLD, 50));
+        g2.setColor(Color.BLACK);
+        String text = "NEW GAME";
+        int x = xCenterText(text, g2);
+        int y = tileSize * 7;
+        g2.drawString(text, x, y);
+        if (commandNum == 0) {
+            g2.drawImage(beer, x - (tileSize + 15), y - tileSize, tileSize, tileSize, null);
+        }
+
+        text = "QUIT";
+        x = xCenterText(text, g2);
+        y += tileSize * 1.5;
+        g2.drawString(text, x, y);
+        if (commandNum == 1) {
+            g2.drawImage(beer, x - (tileSize + 15), y - tileSize, tileSize, tileSize, null);
+        }
+
+    }
+
+    private int xCenterText(String text, Graphics2D g2) {
+        int lenght = (int) g2.getFontMetrics().getStringBounds(text, g2).getWidth();
+        int x = screenWidth / 2 - lenght / 2;
+        return x;
+    }
+
 }

@@ -7,13 +7,13 @@ public class Entity {
     public Projectile projectile;
     public Player player;
     public NormalEnemy normalEnemy;
+    public SlowEnemy slowEnemy;
     public Game game;
 
     public int x;
     public int y;
     public int speed;
     public int healthPoints;
-
     public boolean isAlive;
 
     public static boolean rectanglesOverlap(int x1, int y1, int x2, int y2,
@@ -35,4 +35,20 @@ public class Entity {
         }
     }
 
+    // Getters and setters
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public int getSpeed() {
+        return speed;
+    }
+
+    public boolean isAlive() {
+        return isAlive;
+    }
 }
