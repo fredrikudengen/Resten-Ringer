@@ -57,7 +57,7 @@ public class Game extends JPanel implements Runnable {
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
         this.setBackground(Color.BLACK);
         this.setDoubleBuffered(true); // improves rendering, doesn't display the render before the whole screen is
-                                      // ready
+                                            // ready
         this.addKeyListener(gameController);
         this.setFocusable(true);
         this.requestFocusInWindow();
@@ -89,7 +89,7 @@ public class Game extends JPanel implements Runnable {
         while (running == true) {
 
             // Check if the game should stop (e.g., player dies)
-            if (!player.isAlive) {
+            if (gameState == GameState.GAME_OVER) {
                 stopGame(); // Call method to stop the game
             }
 
@@ -201,6 +201,7 @@ public class Game extends JPanel implements Runnable {
 
         Graphics2D g2 = (Graphics2D) g;
 
+       if (gameState == GameState.ACTIVE_GAME) {
         tileFactory.draw(g2);
 
         player.draw(g2);
@@ -215,6 +216,7 @@ public class Game extends JPanel implements Runnable {
                 projectileList.get(i).draw(g2);
             }
         }
+       }
 
         if (player.getGameState() == GameState.GAME_OVER) {
             g2.setColor(Color.BLACK);

@@ -20,6 +20,9 @@ public class Player extends Entity {
     int imageCounter = 0;
 
     boolean isMoving = false;
+    boolean isShocked = false;
+    static final long SHOCK_DURATION = 1000000000;
+    long shockStartTime = 0;
 
     private Image up1 = Inf101Graphics.loadImageFromResources("Up_shotgun_walking_1.png");
     private Image up2 = Inf101Graphics.loadImageFromResources("Up_shotgun_walking_2.png");
@@ -30,7 +33,7 @@ public class Player extends Entity {
     private Image right1 = Inf101Graphics.loadImageFromResources("Right_shotgun_walking_1.png");
     private Image right2 = Inf101Graphics.loadImageFromResources("Right_shotgun_walking_2.png");
 
-    private Image heart = Inf101Graphics.loadImageFromResources("heart.png");
+    private Image beer = Inf101Graphics.loadImageFromResources("beer.png");
 
     public Player(Game game, GameController gameController) {
         this.game = game;
@@ -47,43 +50,57 @@ public class Player extends Entity {
         isAlive = true;
     }
 
+    public void setShocked() {
+        isShocked = true;
+        shockStartTime = System.nanoTime();
+    }
+
     public void update() {
 
         if (healthPoints <= 0) {
-            isAlive = false;
+            gameState = GameState.GAME_OVER;        
         }
 
-        if (isAlive == false) {
-            gameState = GameState.GAME_OVER;
-        }
 
-        if (gameController.upPressed == true) {
-            y -= speed;
-            direction = "up";
-            if (y <= 0) {
-                y = 0;
+        if (gameController.downPressed || gameController.leftPressed || gameController.rightPressed
+                || gameController.upPressed) {
+            if (gameController.upPressed == true) {
+                y -= speed;
+                direction = "up";
+                if (y <= 0) {
+                    y = 0;
+                }
             }
-        }
 
-        if (gameController.downPressed == true) {
-            y += speed;
-            direction = "down";
-            if (y >= game.screenHeight - game.tileSize) {
-                y = game.screenHeight - game.tileSize;
+            if (gameController.downPressed == true) {
+                y += speed;
+                direction = "down";
+                if (y >= game.screenHeight - game.tileSize) {
+                    y = game.screenHeight - game.tileSize;
+                }
             }
-        }
-        if (gameController.leftPressed == true) {
-            x -= speed;
-            direction = "left";
-            if (x <= 0) {
-                x = 0;
+            if (gameController.leftPressed == true) {
+                x -= speed;
+                direction = "left";
+                if (x <= 0) {
+                    x = 0;
+                }
             }
-        }
-        if (gameController.rightPressed == true) {
-            x += speed;
-            direction = "right";
-            if (x >= game.screenWidth - game.tileSize) {
-                x = game.screenWidth - game.tileSize;
+            if (gameController.rightPressed == true) {
+                x += speed;
+                direction = "right";
+                if (x >= game.screenWidth - game.tileSize) {
+                    x = game.screenWidth - game.tileSize;
+                }
+            }
+            imageCounter++;
+            if (imageCounter > 10) {
+                if (imageNum == 1) {
+                    imageNum = 2;
+                } else if (imageNum == 2) {
+                    imageNum = 1;
+                }
+                imageCounter = 0;
             }
         }
         if (gameController.shootDown == true) {
@@ -96,15 +113,6 @@ public class Player extends Entity {
             direction = "right";
         }
 
-        imageCounter++;
-        if (imageCounter > 10) {
-            if (imageNum == 1) {
-                imageNum = 2;
-            } else if (imageNum == 2) {
-                imageNum = 1;
-            }
-            imageCounter = 0;
-        }
     }
 
     public void draw(Graphics2D g2) {
@@ -157,9 +165,40 @@ public class Player extends Entity {
 
         // Draw hearts
         for (int i = 0; i < healthPoints; i++) {
-            g2.drawImage(heart, game.screenWidth - 40 - ((game.tileSize / 2 + 5) * i), 20, game.tileSize / 2,
+            g2.drawImage(beer, game.screenWidth - 40 - ((game.tileSize / 2 + 5) * i), 20, game.tileSize / 2,
                     game.tileSize / 2, null);
         }
+
+        // if (isShocked) {
+        // if (direction == "left") {
+        // image = hitLeft;
+        // } else if (direction == "right") {
+        // image = hitRight;
+        // } else if (direction == "up") {
+        // image = hitDown;
+        // } else if (direction == "down") {
+        // image = hitDown;
+        // }
+        // }
+        // if (isShocked) {
+        // long currentTime = System.nanoTime();
+        // if (currentTime - shockStartTime >= SHOCK_DURATION) {
+        // isShocked = false;
+        // }
+        // }
+
+        // // Draw player
+        // if (image == hitRight) {
+        // g2.drawImage(image, x, y, game.tileSize * 2, game.tileSize, null);
+        // } else if (direction == hitLeft) {
+        // g2.drawImage(image, x - game.tileSize, y, game.tileSize * 2, game.tileSize,
+        // null);
+        // } else if (direction == hitDown) {
+        // g2.drawImage(image, x, y - game.tileSize, game.tileSize, game.tileSize * 2,
+        // null);
+        // } else if (direction == hitDown) {
+        // g2.drawImage(image, x, y, game.tileSize, game.tileSize * 2, null);
+        // }
     }
 
     // Getters and setters
@@ -183,7 +222,7 @@ public class Player extends Entity {
         return speed;
     }
 
-    public GameState getGameState(){
+    public GameState getGameState() {
         return gameState;
     }
 }
