@@ -22,7 +22,7 @@ public class Player extends Entity {
     int imageCounter = 0;
 
     boolean isMoving = false;
-    boolean isShocked = false;
+    boolean isShocked;
     static final long SHOCK_DURATION = 1000000000;
     long shockStartTime = 0;
 
@@ -56,6 +56,7 @@ public class Player extends Entity {
         speed = 4;
         direction = "right";
         isAlive = true;
+        isShocked = false;
     }
 
     public void setShocked() {
@@ -144,30 +145,28 @@ public class Player extends Entity {
                     break;
                 case "left":
                     if (imageNum == 1) {
-                        hitImage = rightHit1;
-                    }
-                    if (imageNum == 2) {
-                        hitImage = rightHit2;
-                    }
-                    break;
-                case "right":
-                    if (imageNum == 1) {
                         hitImage = leftHit1;
                     }
                     if (imageNum == 2) {
                         hitImage = leftHit2;
                     }
                     break;
+                case "right":
+                    if (imageNum == 1) {
+                        hitImage = rightHit1;
+                    }
+                    if (imageNum == 2) {
+                        hitImage = rightHit2;
+                    }
+                    break;
             }
 
-            // Draw player
             if (direction == "right") {
                 g2.drawImage(hitImage, x, y, game.tileSize * 2, game.tileSize, null);
             } else if (direction == "left") {
-                g2.drawImage(hitImage, x - game.tileSize, y, game.tileSize * 2, game.tileSize,
-                        null);
+                g2.drawImage(hitImage, x - game.tileSize, y, game.tileSize * 2, game.tileSize, null);
             } else if (direction == "up") {
-                g2.drawImage(hitImage, x, y, game.tileSize, game.tileSize * 2, null);
+                g2.drawImage(hitImage, x, y - game.tileSize, game.tileSize, game.tileSize * 2, null);
             } else if (direction == "down") {
                 g2.drawImage(hitImage, x, y, game.tileSize, game.tileSize * 2, null);
             }
@@ -220,7 +219,7 @@ public class Player extends Entity {
             } else if (direction == "left") {
                 g2.drawImage(playerImage, x - game.tileSize, y, game.tileSize * 2, game.tileSize, null);
             } else if (direction == "up") {
-                g2.drawImage(playerImage, x, y - game.tileSize, game.tileSize, game.tileSize * 2, null);
+                g2.drawImage(playerImage, x, y, game.tileSize, game.tileSize * 2, null);
             } else if (direction == "down") {
                 g2.drawImage(playerImage, x, y, game.tileSize, game.tileSize * 2, null);
             }
@@ -228,7 +227,7 @@ public class Player extends Entity {
 
         // Draw hearts
         for (int i = 0; i < healthPoints; i++) {
-            g2.drawImage(beer, 10 + (i* (game.tileSize / 2 + 5)), 20, game.tileSize / 2, game.tileSize / 2, null);
+            g2.drawImage(beer, 10 + (i * (game.tileSize / 2 + 5)), 20, game.tileSize / 2, game.tileSize / 2, null);
         }
 
         int enemiesLeft = game.enemyList.size();

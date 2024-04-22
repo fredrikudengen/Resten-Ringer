@@ -226,7 +226,7 @@ public class Game extends JPanel implements Runnable {
             g2.setFont(new Font("Arial", Font.BOLD, 20));
             g2.drawString("Game Over", screenHeight / 2, screenWidth / 2 - 80);
         }
-        if (player.getGameState() == GameState.VICTORY) {
+        if (gameState == GameState.VICTORY) {
             g2.setColor(Color.BLACK);
             g2.fillRect(0, 0, getWidth(), getHeight());
 

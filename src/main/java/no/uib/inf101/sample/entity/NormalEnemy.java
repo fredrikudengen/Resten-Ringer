@@ -152,7 +152,7 @@ public class NormalEnemy extends Entity {
         if (isStopped) {
             long currentTime = System.nanoTime();
             // Check if the enemy collides with the player
-            if (enemyCollidesWithPlayer() == true) {
+            if (enemyCollidesWithPlayer() && !(player.isShocked)) {
                 // Perform actions when collision occurs
                 // For example, reduce player's health
                 player.healthPoints--;
@@ -172,7 +172,7 @@ public class NormalEnemy extends Entity {
         }
 
         // Check if the enemy collides with the player
-        if (enemyCollidesWithPlayer() == true) {
+        if (enemyCollidesWithPlayer() && !(player.isShocked)) {
             // Perform actions when collision occurs
             // For example, reduce player's health
             player.healthPoints--;
