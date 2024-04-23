@@ -15,6 +15,7 @@ public class Player extends Entity {
     GameState gameState;
 
     String direction;
+    String knockBackDirection;
 
     int imageNum = 1;
     int imageCounter = 0;
@@ -38,6 +39,10 @@ public class Player extends Entity {
     private Image leftHit2 = Inf101Graphics.loadImageFromResources("Left_hit_2.png");
     private Image rightHit1 = Inf101Graphics.loadImageFromResources("Right_hit_1.png");
     private Image rightHit2 = Inf101Graphics.loadImageFromResources("Right_hit_2.png");
+
+    private Image Leila1 = Inf101Graphics.loadImageFromResources("Leila_sprite_1.png");
+    private Image Leila2 = Inf101Graphics.loadImageFromResources("Leila_sprite_2.png");
+
 
     private Image beer = Inf101Graphics.loadImageFromResources("beer.png");
 
@@ -72,19 +77,26 @@ public class Player extends Entity {
             if (gameController.upPressed == true) {
                 y -= speed;
                 direction = "up";
+                knockBackDirection = "up";
             }
 
             if (gameController.downPressed == true) {
                 y += speed;
                 direction = "down";
+                knockBackDirection = "down";
+
             }
             if (gameController.leftPressed == true) {
                 x -= speed;
                 direction = "left";
+                knockBackDirection = "left";
+
             }
             if (gameController.rightPressed == true) {
                 x += speed;
                 direction = "right";
+                knockBackDirection = "right";
+
             }
             imageCounter++;
             if (imageCounter > 10) {

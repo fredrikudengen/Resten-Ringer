@@ -13,7 +13,7 @@ public class PlayerTest {
     public void testPlayerDefaultValues() {
         // Create a Game instance and a GameController instance
         Game game = new Game();
-        GameController gameController = new GameController();
+        GameController gameController = new GameController(game);
 
         // Create a Player instance
         Player player = new Player(game, gameController);
@@ -22,7 +22,7 @@ public class PlayerTest {
         assertEquals(140, player.x);
         assertEquals(100, player.getPlayerY());
         assertEquals(10, player.healthPoints);
-        assertEquals(4, player.getPlayerSpeed());
+        assertEquals(4, player.getSpeed());
         assertEquals("down", player.getDirection());
         assertTrue(player.isAlive);
     }
@@ -32,7 +32,7 @@ public class PlayerTest {
     public void testPlayerMovement() {
         // Create a Game instance and a GameController instance (you might need mocks or stubs)
         Game game = new Game();
-        GameController gameController = new GameController();
+        GameController gameController = new GameController(game);
 
         // Create a Player instance
         Player player = new Player(game, gameController);

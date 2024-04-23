@@ -43,7 +43,7 @@ public class Enemy extends Entity {
         this.player = player;
     }
 
-    public void setXAndY(){
+    public void setXAndY() {
         Random rand = new Random();
         int screenWidth = game.screenWidth;
         int screenHeight = game.screenHeight;
@@ -78,30 +78,31 @@ public class Enemy extends Entity {
         x = randomX;
         y = randomY;
     }
-    
+
     public void simulateEnemyMoves() {
         xNeededToMove = player.getPlayerX() - x;
         yNeededToMove = player.getPlayerY() - y;
         if (yNeededToMove < 0) {
-            y -= speed;
-            yNeededToMove += speed;
-            direction = "up";
+        y -= speed;
+        yNeededToMove += speed;
+        direction = "up";
         }
         if (xNeededToMove < 0) {
-            x -= speed;
-            xNeededToMove += speed;
-            direction = "left";
+        x -= speed;
+        xNeededToMove += speed;
+        direction = "left";
         }
         if (xNeededToMove > 0) {
-            x += speed;
-            xNeededToMove -= speed;
-            direction = "right";
+        x += speed;
+        xNeededToMove -= speed;
+        direction = "right";
         }
         if (yNeededToMove > 0) {
-            y += speed;
-            yNeededToMove -= speed;
+        y += speed;
+        yNeededToMove -= speed;
         }
     }
+
     public void draw(Graphics2D g2) {
 
         Image image = null;
@@ -150,16 +151,13 @@ public class Enemy extends Entity {
     }
 
     public boolean enemyCollidesWithPlayer() {
-        if (rectanglesOverlap(x, y, x + game.tileSize,
-                y + game.tileSize, player.getPlayerX(),
+        return rectanglesOverlap(x + 9, y, x + game.tileSize - 9,
+                y + game.tileSize, player.getPlayerX() + 9,
                 player.getPlayerY(),
-                player.getPlayerX() + game.tileSize, player.getPlayerY() + game.tileSize)) {
-            return true;
-        } else {
-            return false;
-        }
+                player.getPlayerX() + game.tileSize - 9, player.getPlayerY() + game.tileSize);
+
     }
-    
+
     public void knockBackPlayer() {
         if (enemyCollidesWithPlayer() == true) {
             player.setShocked();
@@ -168,25 +166,26 @@ public class Enemy extends Entity {
                 if (player.y - 100 < 0) {
                     player.x += 100;
                 } else {
-                    player.y -= 100;
+                    player.y -= 50;
                 }
             } else if (direction == "left") {
                 x += 50;
                 if (player.x - 100 < 0) {
                     player.y += 100;
                 } else {
-                    player.x -= 100;
+                    player.x -= 50;
                 }
             } else if (direction == "right") {
                 x -= 50;
                 if (player.x + 100 > game.screenWidth) {
                     player.y += 100;
                 } else {
-                    player.x += 100;
+                    player.x += 50;
                 }
             }
         }
     }
+
     public void update() {
         if (isStopped) {
             long currentTime = System.nanoTime();

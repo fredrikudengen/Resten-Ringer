@@ -11,7 +11,7 @@ class NormalEnemyTest {
     @Test
     void testEnemyCollidesWithPlayer() {
         Game game = new Game();
-        GameController gameController = new GameController();
+        GameController gameController = new GameController(game);
         Player player = new Player(game, gameController);
         NormalEnemy enemy = new NormalEnemy(game, player);
 
@@ -30,7 +30,7 @@ class NormalEnemyTest {
     @Test
     void testUpdate() {
         Game game = new Game();
-        GameController gameController = new GameController();
+        GameController gameController = new GameController(game);
         Player player = new Player(game, gameController);
         NormalEnemy enemy = new NormalEnemy(game, player);
 
