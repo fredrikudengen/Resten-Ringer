@@ -1,6 +1,5 @@
 package no.uib.inf101.sample;
 
-import no.uib.inf101.sample.entity.Entity;
 import no.uib.inf101.sample.entity.Player;
 import no.uib.inf101.sample.entity.enemy.Enemy;
 
@@ -77,11 +76,6 @@ public class CollisionDetection {
         int entityTopRow = entityTopY / game.tileSize;
         int entityBottomRow = entityBottomY / game.tileSize;
 
-        System.out.println("entityBottomRow = " + entityBottomRow);
-        System.out.println("entityLeftCol = " + entityLeftCol);
-        System.out.println("entityRightCol = "+ entityRightCol);
-        System.out.println("entityTopRow = "+ entityTopRow);
-        
         int tileNum1, tileNum2;
 
         if (enemy.movementDirection == "up") {

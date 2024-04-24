@@ -67,8 +67,6 @@ public class Player extends Entity {
     }
 
     public void update() {
-        System.out.println("X = " + x);
-        System.out.println("Y = " + y);
         if (healthPoints <= 0) {
             gameState = GameState.GAME_OVER;
         }

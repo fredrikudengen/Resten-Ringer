@@ -10,13 +10,12 @@ public class NormalEnemy extends Enemy {
 
     Game game;
     Player player;
-    
+
     public NormalEnemy(Game game, Player player) {
         super(game, player);
         this.game = game;
         this.player = player;
         this.movementDirection = "right";
-
         setDefaultValues();
     }
 

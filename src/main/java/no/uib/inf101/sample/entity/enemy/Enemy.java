@@ -4,14 +4,13 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Rectangle;
 import java.util.Random;
-import java.util.concurrent.ThreadLocalRandom;
 
 import no.uib.inf101.sample.Game;
 import no.uib.inf101.sample.Inf101Graphics;
 import no.uib.inf101.sample.entity.Entity;
 import no.uib.inf101.sample.entity.Player;
 
-public class Enemy extends Entity {
+public abstract class Enemy extends Entity {
 
     Game game;
     Player player;
@@ -27,18 +26,24 @@ public class Enemy extends Entity {
     private long stopStartTime = 0;
     private static final long STOP_DURATION = 500000000; // 0.5 seconds in milliseconds
 
-    private Image up1 = Inf101Graphics.loadImageFromResources("Up_shotgun_walking_1.png");
-    private Image up2 = Inf101Graphics.loadImageFromResources("Up_shotgun_walking_2.png");
-    private Image down1 = Inf101Graphics.loadImageFromResources("Down_shotgun_walking_1.png");
-    private Image down2 = Inf101Graphics.loadImageFromResources("Down_shotgun_walking_2.png");
-    private Image left1 = Inf101Graphics.loadImageFromResources("Left_shotgun_walking_1.png");
-    private Image left2 = Inf101Graphics.loadImageFromResources("Left_shotgun_walking_2.png");
-    private Image right1 = Inf101Graphics.loadImageFromResources("Right_shotgun_walking_1.png");
-    private Image right2 = Inf101Graphics.loadImageFromResources("Right_shotgun_walking_2.png");
     private Image normal_enemy_up_1 = Inf101Graphics.loadImageFromResources("Up_normal_enemy_1.png");
     private Image normal_enemy_up_2 = Inf101Graphics.loadImageFromResources("Up_normal_enemy_2.png");
     private Image normal_enemy_down_1 = Inf101Graphics.loadImageFromResources("Down_normal_enemy_1.png");
     private Image normal_enemy_down_2 = Inf101Graphics.loadImageFromResources("Down_normal_enemy_2.png");
+
+    private Image slow_enemy_left_1 = Inf101Graphics.loadImageFromResources("Left_slow_enemy_1.png");
+    private Image slow_enemy_left_2 = Inf101Graphics.loadImageFromResources("Left_slow_enemy_2.png");
+    private Image slow_enemy_right_1 = Inf101Graphics.loadImageFromResources("Right_slow_enemy_1.png");
+    private Image slow_enemy_right_2 = Inf101Graphics.loadImageFromResources("Right_slow_enemy_2.png");
+    private Image slow_enemy_up_1 = Inf101Graphics.loadImageFromResources("Up_slow_enemy_1.png");
+    private Image slow_enemy_up_2 = Inf101Graphics.loadImageFromResources("Up_slow_enemy_2.png");
+
+    private Image fast_enemy_up_1 = Inf101Graphics.loadImageFromResources("Up_police_1.png");
+    private Image fast_enemy_up_2 = Inf101Graphics.loadImageFromResources("Up_police_2.png");
+    private Image fast_enemy_left_1 = Inf101Graphics.loadImageFromResources("Left_police_1.png");
+    private Image fast_enemy_left_2 = Inf101Graphics.loadImageFromResources("Left_police_2.png");
+    private Image fast_enemy_right_1 = Inf101Graphics.loadImageFromResources("Right_police_1.png");
+    private Image fast_enemy_right_2 = Inf101Graphics.loadImageFromResources("Right_police_2.png");
 
     public Enemy(Game game, Player player) {
         this.game = game;
@@ -47,10 +52,12 @@ public class Enemy extends Entity {
         setXAndY();
     }
 
+    public abstract void setDefaultValues();
+
     public void setXAndY() {
         Random rand = new Random();
 
-        int spawnNumber = rand.nextInt(3);
+        int spawnNumber = rand.nextInt(4);
         switch (spawnNumber) {
             case 0:
                 x = 50;
@@ -64,6 +71,9 @@ public class Enemy extends Entity {
                 x = game.screenWidth - 100;
                 y = 50;
                 break;
+            case 3:
+                x = 50;
+                y = game.screenHeight - 50;
         }
     }
 
@@ -189,16 +199,16 @@ public class Enemy extends Entity {
         if (enemy instanceof SlowEnemy) {
             switch (movementDirection) {
                 case "up":
-                    image = (imageNum == 1) ? normal_enemy_up_1 : normal_enemy_up_2;
+                    image = (imageNum == 1) ? slow_enemy_up_1 : slow_enemy_up_2;
                     break;
                 case "down":
-                    image = (imageNum == 1) ? normal_enemy_down_1 : normal_enemy_down_2;
+                    image = (imageNum == 1) ? slow_enemy_right_1 : slow_enemy_right_2;
                     break;
                 case "left":
-                    image = (imageNum == 1) ? normal_enemy_down_1 : normal_enemy_down_2;
+                    image = (imageNum == 1) ? slow_enemy_left_1 : slow_enemy_left_2;
                     break;
                 case "right":
-                    image = (imageNum == 1) ? normal_enemy_down_1 : normal_enemy_down_2;
+                    image = (imageNum == 1) ? slow_enemy_right_1 : slow_enemy_right_2;
                     break;
             }
         }
@@ -225,7 +235,7 @@ public class Enemy extends Entity {
                     image = (imageNum == 1) ? fast_enemy_up_1 : fast_enemy_up_2;
                     break;
                 case "down":
-                    image = (imageNum == 1) ? fast_enemy_down_1 : fast_enemy_down_2;
+                    image = (imageNum == 1) ? fast_enemy_left_1 : fast_enemy_left_2;
                     break;
                 case "left":
                     image = (imageNum == 1) ? fast_enemy_left_1 : fast_enemy_left_2;
@@ -247,13 +257,27 @@ public class Enemy extends Entity {
         if (enemyCollidesWithPlayer() == true) {
             player.setShocked();
             if (movementDirection == "up") {
-                y -= 50;
+                if (y - 50 < 0) {
+                    x -= 50;
+                } else {
+                    y -= 50;
+                }
             } else if (movementDirection == "left") {
-                x += 50;
+                if (x + 50 < game.screenWidth) {
+                    y += 50;
+                } else {
+                    x += 50;
+                }
             } else if (movementDirection == "right") {
-                x -= 50;
+                if (x - 50 < 0) {
+                    y += 50;
+                } else {
+                    x -= 50;
+                }
             } else if (movementDirection == "down") {
-                y += 50;
+                if (y + 50 < game.screenHeight) {
+                    y += 50;
+                }
             }
         }
     }

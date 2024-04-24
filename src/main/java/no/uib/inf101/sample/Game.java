@@ -47,6 +47,10 @@ public class Game extends JPanel implements Runnable {
     int enemyMax = 3;
 
     int enemiesAtStart = 0;
+    int waveNumber;
+
+    private long stopStartTime = 0;
+    private static final long STOP_DURATION = 3000000000L;
 
     public int commandNum = 0;
 
@@ -85,10 +89,10 @@ public class Game extends JPanel implements Runnable {
                 enemyList.add(newNormalEnemy);
             }
         }
-        // SlowEnemy newSlowEnemy = new SlowEnemy(game, player);
-        // enemyList.add(newSlowEnemy);
-        // FastEnemy newFastEnemy = new FastEnemy(game, player);
-        // enemyList.add(newFastEnemy);
+        SlowEnemy newSlowEnemy = new SlowEnemy(game, player);
+        enemyList.add(newSlowEnemy);
+        FastEnemy newFastEnemy = new FastEnemy(game, player);
+        enemyList.add(newFastEnemy);
 
     }
 
@@ -142,60 +146,68 @@ public class Game extends JPanel implements Runnable {
     }
 
     public void update() {
-
-        if (player.isAlive == true) {
-            player.update();
-        }
-
-        // Check if arrow keys are pressed and create projectile accordingly
-        if (gameController.shotKeyPressed) {
-            // Check if the previous projectile is not alive before creating a new one
-            if (bulletTimerCheck == false) {
-
-                Projectile newProjectile = new Projectile(this, player, gameController,
-                        gameController.getShotDirection(),
-                        normalEnemy);
-                projectileList.add(newProjectile);
-                gameController.shotKeyPressed = false;
-                bulletTimerCheck = true;
-            } else {
-                gameController.shotKeyPressed = false;
+        if (gameState == GameState.ACTIVE_GAME) {
+            if (player.isAlive == true) {
+                player.update();
             }
-        }
 
-        for (int i = enemyList.size() - 1; i >= 0; i--) {
-            for (int j = projectileList.size() - 1; j >= 0; j--) {
-                Projectile projectile = projectileList.get(j); // Retrieve the projectile
-                projectile.update(); // Update the projectile
+            // Check if arrow keys are pressed and create projectile accordingly
+            if (gameController.shotKeyPressed) {
+                // Check if the previous projectile is not alive before creating a new one
+                if (bulletTimerCheck == false) {
 
-                // Check conditions for removing the projectile
-                if (screenWidth < projectile.getProjectileX() || projectile.getProjectileX() < 0
-                        || screenHeight < projectile.getProjectileY() || projectile.getProjectileY() < 0
-                        || projectile.projectTileHitEnemy(i)) {
-                    projectileList.remove(j); // Remove the projectile if necessary
+                    Projectile newProjectile = new Projectile(this, player, gameController,
+                            gameController.getShotDirection(),
+                            normalEnemy);
+                    projectileList.add(newProjectile);
+                    gameController.shotKeyPressed = false;
+                    bulletTimerCheck = true;
+                } else {
+                    gameController.shotKeyPressed = false;
+                }
+            }
+
+            for (int i = enemyList.size() - 1; i >= 0; i--) {
+                for (int j = projectileList.size() - 1; j >= 0; j--) {
+                    Projectile projectile = projectileList.get(j); // Retrieve the projectile
+                    projectile.update(); // Update the projectile
+
+                    // Check conditions for removing the projectile
+                    if (screenWidth < projectile.getProjectileX() || projectile.getProjectileX() < 0
+                            || screenHeight < projectile.getProjectileY() || projectile.getProjectileY() < 0
+                            || projectile.projectTileHitEnemy(i)) {
+                        projectileList.remove(j); // Remove the projectile if necessary
+                    }
+                }
+            }
+            for (int i = enemyList.size() - 1; i >= 0; i--) {
+                enemyList.get(i).update(); // Update the enemy
+                if (enemyList.get(i).isAlive == false) {
+                    enemyList.remove(i);
                 }
             }
         }
-        int enemyCounter = enemyList.size();
 
+        // Check if all enemies are defeated
         if (enemyList.isEmpty()) {
-            gameState = GameState.VICTORY;
-            // for (int i = projectileList.size() - 1; i >= 0; i--) {
-            // projectileList.get(i).update();
-            // }
-            // enemyMax++;
-            // while (enemyCounter <= enemyMax) {
-            // NormalEnemy newNormalEnemy = new NormalEnemy(game, player);
-            // enemyList.add(newNormalEnemy);
-            // enemyCounter++;
-            // }
-
-        }
-
-        for (int i = enemyList.size() - 1; i >= 0; i--) {
-            enemyList.get(i).update(); // Update the enemy
-            if (enemyList.get(i).isAlive == false) {
-                enemyList.remove(i);
+            // Set game state to WAVE_COMPLETE
+            gameState = GameState.WAVE_COMPLETE;
+            if (gameController.enterKeyPressed) {
+                waveNumber++;
+                gameState = GameState.ACTIVE_GAME;
+                // Create 3 enemies at start (if enemyMax is 3)
+                for (enemiesAtStart = 0; enemiesAtStart <= (enemyMax / 2); enemiesAtStart++) {
+                    if (enemiesAtStart < enemyMax) {
+                        NormalEnemy newNormalEnemy = new NormalEnemy(game, player);
+                        enemyList.add(newNormalEnemy);
+                    }
+                }
+                SlowEnemy newSlowEnemy = new SlowEnemy(game, player);
+                enemyList.add(newSlowEnemy);
+                FastEnemy newFastEnemy = new FastEnemy(game, player);
+                enemyList.add(newFastEnemy);
+                player.x = getWidth() / 2;
+                player.y = getHeight() / 2;
             }
         }
 
@@ -226,14 +238,13 @@ public class Game extends JPanel implements Runnable {
         }
 
         if (gameState == GameState.ACTIVE_GAME) {
-            tileFactory.draw(g2);
             g2.drawImage(map, 0, 0, screenWidth, screenHeight, null);
 
             player.draw(g2);
 
             int enemiesLeft = game.enemyList.size();
             g2.setColor(Color.WHITE);
-            g2.setFont(new Font("Symbol Bold", Font.BOLD, 14));
+            g2.setFont(new Font("Symbol Bold", Font.BOLD, 20));
             g2.drawString("ENEMIES LEFT: " + enemiesLeft, 10, 70);
 
             for (int i = 0; i < enemyList.size(); i++) {
@@ -254,7 +265,7 @@ public class Game extends JPanel implements Runnable {
 
             g2.setColor(Color.RED);
             g2.setFont(new Font("Arial", Font.BOLD, 20));
-            g2.drawString("Game Over", screenHeight / 2, screenWidth / 2 - 80);
+            g2.drawString("Game Over", getHeight() / 2, getHeight() / 2 - 80);
         }
         if (gameState == GameState.VICTORY) {
             g2.setColor(Color.BLACK);
@@ -262,7 +273,18 @@ public class Game extends JPanel implements Runnable {
 
             g2.setColor(Color.RED);
             g2.setFont(new Font("Arial", Font.BOLD, 20));
-            g2.drawString("Victory!", screenHeight / 2, screenWidth / 2 - 80);
+            g2.drawString("Victory!", getWidth() / 2, getHeight() / 2 - 80);
+        }
+        if (gameState == GameState.WAVE_COMPLETE) {
+            g2.setColor(Color.BLACK);
+            g2.fillRect(0, 0, getWidth(), getHeight());
+            g2.setColor(Color.RED);
+            int x = xCenterText("Wave 1 completed", g2);
+            g2.drawString("Wave " + waveNumber + "completed,", x, getHeight() / 2 - 40);
+            String text = "Press enter to have another drink.";
+            x = xCenterText(text, g2);
+            g2.drawString(text, x, getHeight() / 2);
+
         }
     }
 

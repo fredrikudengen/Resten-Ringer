@@ -7,7 +7,7 @@ public class GameController implements java.awt.event.KeyListener {
     public boolean upPressed, downPressed, leftPressed, rightPressed;
     public boolean shootUp, shootDown, shootLeft, shootRight;
     public boolean shotKeyPressed;
-
+    public boolean enterKeyPressed = false;
     Game game;
 
     public GameController(Game game) {
@@ -21,6 +21,11 @@ public class GameController implements java.awt.event.KeyListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
+        if (game.gameState == GameState.WAVE_COMPLETE) {
+            if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                enterKeyPressed = true;
+            }
+        }
         if(game.gameState == GameState.TITLE_SCREEN) {
             if (e.getKeyCode() == KeyEvent.VK_W) {
                 game.commandNum --;
