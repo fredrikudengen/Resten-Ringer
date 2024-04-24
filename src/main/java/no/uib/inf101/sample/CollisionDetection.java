@@ -81,25 +81,7 @@ public class CollisionDetection {
         System.out.println("entityLeftCol = " + entityLeftCol);
         System.out.println("entityRightCol = "+ entityRightCol);
         System.out.println("entityTopRow = "+ entityTopRow);
-
-        // if (entityTopRow > 11) {
-        //     entityTopRow = 11;
-        // }
-        // if (entityRightCol > 15) {
-        //     entityRightCol = 15;
-        // }
-        // if (entityBottomRow > 11) {
-        //     entityBottomRow = 11;
-        // }
-        // if (entityRightCol > 15) {
-        //     entityRightCol = 15;
-        // } 
-
         
-
-
-
-
         int tileNum1, tileNum2;
 
         if (enemy.movementDirection == "up") {

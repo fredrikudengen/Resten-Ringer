@@ -35,6 +35,10 @@ public class Enemy extends Entity {
     private Image left2 = Inf101Graphics.loadImageFromResources("Left_shotgun_walking_2.png");
     private Image right1 = Inf101Graphics.loadImageFromResources("Right_shotgun_walking_1.png");
     private Image right2 = Inf101Graphics.loadImageFromResources("Right_shotgun_walking_2.png");
+    private Image normal_enemy_up_1 = Inf101Graphics.loadImageFromResources("Up_normal_enemy_1.png");
+    private Image normal_enemy_up_2 = Inf101Graphics.loadImageFromResources("Up_normal_enemy_2.png");
+    private Image normal_enemy_down_1 = Inf101Graphics.loadImageFromResources("Down_normal_enemy_1.png");
+    private Image normal_enemy_down_2 = Inf101Graphics.loadImageFromResources("Down_normal_enemy_2.png");
 
     public Enemy(Game game, Player player) {
         this.game = game;
@@ -114,7 +118,7 @@ public class Enemy extends Entity {
                     y += speed;
                     yNeededToMove -= speed;
                     movementDirection = "down";
-                } 
+                }
             }
         }
         if (Math.abs(xNeededToMove) <= Math.abs(yNeededToMove)) {
@@ -148,9 +152,9 @@ public class Enemy extends Entity {
                     }
                 }
             }
-        
+
             if (collisionOn == false) {
-                 if (yNeededToMove < 0) {
+                if (yNeededToMove < 0) {
                     y -= speed;
                     yNeededToMove += speed;
                     movementDirection = "up";
@@ -171,7 +175,6 @@ public class Enemy extends Entity {
         }
     }
 
-
     public boolean enemyCollidesWithPlayer() {
         return rectanglesOverlap(x + 9, y, x + game.tileSize - 9,
                 y + game.tileSize, player.getPlayerX() + 9,
@@ -181,112 +184,117 @@ public class Enemy extends Entity {
     }
 
     public void draw(Graphics2D g2) {
-        Image playerImage = null;
-        switch (movementDirection) {
-            case "up":
-                if (imageNum == 1) {
-                    playerImage = up1;
-                }
-                if (imageNum == 2) {
-                    playerImage = up2;
-                }
-                break;
-            case "down":
-                if (imageNum == 1) {
-                    playerImage = down1;
-                }
-                if (imageNum == 2) {
-                    playerImage = down2;
-                }
-                break;
-            case "left":
-                if (imageNum == 1) {
-                    playerImage = left1;
-                }
-                if (imageNum == 2) {
-                    playerImage = left2;
-                }
-                break;
-            case "right":
-                if (imageNum == 1) {
-                    playerImage = right1;
-                }
-                if (imageNum == 2) {
-                    playerImage = right2;
-                }
-                break;
-        }
+        // Image playerImage = null;
+        // switch (movementDirection) {
+        // case "up":
+        // if (imageNum == 1) {
+        // playerImage = up1;
+        // }
+        // if (imageNum == 2) {
+        // playerImage = up2;
+        // }
+        // break;
+        // case "down":
+        // if (imageNum == 1) {
+        // playerImage = down1;
+        // }
+        // if (imageNum == 2) {
+        // playerImage = down2;
+        // }
+        // break;
+        // case "left":
+        // if (imageNum == 1) {
+        // playerImage = left1;
+        // }
+        // if (imageNum == 2) {
+        // playerImage = left2;
+        // }
+        // break;
+        // case "right":
+        // if (imageNum == 1) {
+        // playerImage = right1;
+        // }
+        // if (imageNum == 2) {
+        // playerImage = right2;
+        // }
+        // break;
+        // }
         // Draw player
-        if (movementDirection == "right") {
-            g2.drawImage(playerImage, x, y, game.tileSize * 2, game.tileSize, null);
-        } else if (movementDirection == "left") {
-            g2.drawImage(playerImage, x - game.tileSize, y, game.tileSize * 2, game.tileSize, null);
-        } else if (movementDirection == "up") {
-            g2.drawImage(playerImage, x, y - game.tileSize, game.tileSize, game.tileSize * 2, null);
-        } else if (movementDirection == "down") {
-            g2.drawImage(playerImage, x, y, game.tileSize, game.tileSize * 2, null);
+        // if (movementDirection == "right") {
+        // g2.drawImage(playerImage, x, y, game.tileSize * 2, game.tileSize, null);
+        // } else if (movementDirection == "left") {
+        // g2.drawImage(playerImage, x - game.tileSize, y, game.tileSize * 2,
+        // game.tileSize, null);
+        // } else if (movementDirection == "up") {
+        // g2.drawImage(playerImage, x, y - game.tileSize, game.tileSize, game.tileSize
+        // * 2, null);
+        // } else if (movementDirection == "down") {
+        // g2.drawImage(playerImage, x, y, game.tileSize, game.tileSize * 2, null);
+        // }
+        // }
+        Enemy enemy = new Enemy(game, player);
+        Image image = null;
+
+        if (enemy instanceof NormalEnemy) {
+            switch (movementDirection) {
+                case "up":
+                    image = (imageNum == 1) ? normal_enemy_up_1 : normal_enemy_up_2;
+                    break;
+                case "down":
+                    image = (imageNum == 1) ? normal_enemy_down_1 : normal_enemy_down_2;
+                    break;
+                case "left":
+                    image = (imageNum == 1) ? normal_enemy_down_1 : normal_enemy_down_2;
+                    break;
+                case "right":
+                    image = (imageNum == 1) ? normal_enemy_down_1 : normal_enemy_down_2;
+                    break;
+            }
+            g2.drawImage(image, x, y, game.tileSize * 2, game.tileSize, null);
+            // if (enemy instanceof FastEnemy) {
+            // switch (direction) {
+            // case "up":
+            // image = (imageNum == 1) ? fast_enemy_up_1 : fast_enemy_up_2;
+            // break;
+            // case "down":
+            // image = (imageNum == 1) ? fast_enemy_down_1 : fast_enemy_down_2;
+            // break;
+            // case "left":
+            // image = (imageNum == 1) ? fast_enemy_left_1 : fast_enemy_left_2;
+            // break;
+            // case "right":
+            // image = (imageNum == 1) ? fast_enemy_right_1 : fast_enemy_right_2;
+            // break;
+            // }
+            // } else if (enemy instanceof SlowEnemy) {
+            // switch (direction) {
+            // case "up":
+            // image = (imageNum == 1) ? slow_enemy_up_1 : slow_enemy_up_2;
+            // break;
+            // case "down":
+            // image = (imageNum == 1) ? slow_enemy_down_1 : slow_enemy_down_2;
+            // break;
+            // case "left":
+            // image = (imageNum == 1) ? slow_enemy_left_1 : slow_enemy_left_2;
+            // break;
+            // case "right":
+            // image = (imageNum == 1) ? slow_enemy_right_1 : slow_enemy_right_2;
+            // break;
+            // }
+            // }
+
+            // if (image != null) {
+            // g2.drawImage(image, x, y, game.tileSize, game.tileSize, null);
+            // }
         }
     }
-    // Enemy enemy = new Enemy(game, player);
-    // Image image = null;
-
-    // if (enemy instanceof FastEnemy) {
-    // switch (direction) {
-    // case "up":
-    // image = (imageNum == 1) ? fast_enemy_up_1 : fast_enemy_up_2;
-    // break;
-    // case "down":
-    // image = (imageNum == 1) ? fast_enemy_down_1 : fast_enemy_down_2;
-    // break;
-    // case "left":
-    // image = (imageNum == 1) ? fast_enemy_left_1 : fast_enemy_left_2;
-    // break;
-    // case "right":
-    // image = (imageNum == 1) ? fast_enemy_right_1 : fast_enemy_right_2;
-    // break;
-    // }
-    // } else if (enemy instanceof NormalEnemy) {
-    // switch (direction) {
-    // case "up":
-    // image = (imageNum == 1) ? normal_enemy_up_1 : normal_enemy_up_2;
-    // break;
-    // case "down":
-    // image = (imageNum == 1) ? normal_enemy_down_1 : normal_enemy_down_2;
-    // break;
-    // case "left":
-    // image = (imageNum == 1) ? normal_enemy_left_1 : normal_enemy_left_2;
-    // break;
-    // case "right":
-    // image = (imageNum == 1) ? normal_enemy_right_1 : normal_enemy_right_2;
-    // break;
-    // }
-    // } else if (enemy instanceof SlowEnemy) {
-    // switch (direction) {
-    // case "up":
-    // image = (imageNum == 1) ? slow_enemy_up_1 : slow_enemy_up_2;
-    // break;
-    // case "down":
-    // image = (imageNum == 1) ? slow_enemy_down_1 : slow_enemy_down_2;
-    // break;
-    // case "left":
-    // image = (imageNum == 1) ? slow_enemy_left_1 : slow_enemy_left_2;
-    // break;
-    // case "right":
-    // image = (imageNum == 1) ? slow_enemy_right_1 : slow_enemy_right_2;
-    // break;
-    // }
-    // }
-
-    // if (image != null) {
-    // g2.drawImage(image, x, y, game.tileSize, game.tileSize, null);
-    // }
 
     public void knockBackPlayer() {
         if (enemyCollidesWithPlayer() == true) {
             player.setShocked();
             if (movementDirection == "up") {
                 y -= 50;
-                
+
             } else if (movementDirection == "left") {
                 x += 50;
                 if (player.x - 100 < 0) {

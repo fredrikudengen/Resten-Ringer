@@ -85,10 +85,10 @@ public class Game extends JPanel implements Runnable {
                 enemyList.add(newNormalEnemy);
             }
         }
-        SlowEnemy newSlowEnemy = new SlowEnemy(game, player);
-        enemyList.add(newSlowEnemy);
-        FastEnemy newFastEnemy = new FastEnemy(game, player);
-        enemyList.add(newFastEnemy);
+        // SlowEnemy newSlowEnemy = new SlowEnemy(game, player);
+        // enemyList.add(newSlowEnemy);
+        // FastEnemy newFastEnemy = new FastEnemy(game, player);
+        // enemyList.add(newFastEnemy);
 
     }
 
