@@ -238,7 +238,7 @@ public class Game extends JPanel implements Runnable {
 
             for (int i = 0; i < enemyList.size(); i++) {
                 if (enemyList.get(i) != null) {
-                    enemyList.get(i).draw(g2);
+                    enemyList.get(i).draw(enemyList.get(i), g2);
                 }
             }
             for (int i = 0; i < projectileList.size(); i++) {

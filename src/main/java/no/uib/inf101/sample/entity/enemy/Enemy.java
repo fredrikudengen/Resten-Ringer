@@ -183,57 +183,25 @@ public class Enemy extends Entity {
 
     }
 
-    public void draw(Graphics2D g2) {
-        // Image playerImage = null;
-        // switch (movementDirection) {
-        // case "up":
-        // if (imageNum == 1) {
-        // playerImage = up1;
-        // }
-        // if (imageNum == 2) {
-        // playerImage = up2;
-        // }
-        // break;
-        // case "down":
-        // if (imageNum == 1) {
-        // playerImage = down1;
-        // }
-        // if (imageNum == 2) {
-        // playerImage = down2;
-        // }
-        // break;
-        // case "left":
-        // if (imageNum == 1) {
-        // playerImage = left1;
-        // }
-        // if (imageNum == 2) {
-        // playerImage = left2;
-        // }
-        // break;
-        // case "right":
-        // if (imageNum == 1) {
-        // playerImage = right1;
-        // }
-        // if (imageNum == 2) {
-        // playerImage = right2;
-        // }
-        // break;
-        // }
-        // Draw player
-        // if (movementDirection == "right") {
-        // g2.drawImage(playerImage, x, y, game.tileSize * 2, game.tileSize, null);
-        // } else if (movementDirection == "left") {
-        // g2.drawImage(playerImage, x - game.tileSize, y, game.tileSize * 2,
-        // game.tileSize, null);
-        // } else if (movementDirection == "up") {
-        // g2.drawImage(playerImage, x, y - game.tileSize, game.tileSize, game.tileSize
-        // * 2, null);
-        // } else if (movementDirection == "down") {
-        // g2.drawImage(playerImage, x, y, game.tileSize, game.tileSize * 2, null);
-        // }
-        // }
-        Enemy enemy = new Enemy(game, player);
+    public void draw(Enemy enemy, Graphics2D g2) {
         Image image = null;
+
+        if (enemy instanceof SlowEnemy) {
+            switch (movementDirection) {
+                case "up":
+                    image = (imageNum == 1) ? normal_enemy_up_1 : normal_enemy_up_2;
+                    break;
+                case "down":
+                    image = (imageNum == 1) ? normal_enemy_down_1 : normal_enemy_down_2;
+                    break;
+                case "left":
+                    image = (imageNum == 1) ? normal_enemy_down_1 : normal_enemy_down_2;
+                    break;
+                case "right":
+                    image = (imageNum == 1) ? normal_enemy_down_1 : normal_enemy_down_2;
+                    break;
+            }
+        }
 
         if (enemy instanceof NormalEnemy) {
             switch (movementDirection) {
@@ -250,43 +218,29 @@ public class Enemy extends Entity {
                     image = (imageNum == 1) ? normal_enemy_down_1 : normal_enemy_down_2;
                     break;
             }
-            g2.drawImage(image, x, y, game.tileSize * 2, game.tileSize, null);
-            // if (enemy instanceof FastEnemy) {
-            // switch (direction) {
-            // case "up":
-            // image = (imageNum == 1) ? fast_enemy_up_1 : fast_enemy_up_2;
-            // break;
-            // case "down":
-            // image = (imageNum == 1) ? fast_enemy_down_1 : fast_enemy_down_2;
-            // break;
-            // case "left":
-            // image = (imageNum == 1) ? fast_enemy_left_1 : fast_enemy_left_2;
-            // break;
-            // case "right":
-            // image = (imageNum == 1) ? fast_enemy_right_1 : fast_enemy_right_2;
-            // break;
-            // }
-            // } else if (enemy instanceof SlowEnemy) {
-            // switch (direction) {
-            // case "up":
-            // image = (imageNum == 1) ? slow_enemy_up_1 : slow_enemy_up_2;
-            // break;
-            // case "down":
-            // image = (imageNum == 1) ? slow_enemy_down_1 : slow_enemy_down_2;
-            // break;
-            // case "left":
-            // image = (imageNum == 1) ? slow_enemy_left_1 : slow_enemy_left_2;
-            // break;
-            // case "right":
-            // image = (imageNum == 1) ? slow_enemy_right_1 : slow_enemy_right_2;
-            // break;
-            // }
-            // }
-
-            // if (image != null) {
-            // g2.drawImage(image, x, y, game.tileSize, game.tileSize, null);
-            // }
         }
+        if (enemy instanceof FastEnemy) {
+            switch (movementDirection) {
+                case "up":
+                    image = (imageNum == 1) ? fast_enemy_up_1 : fast_enemy_up_2;
+                    break;
+                case "down":
+                    image = (imageNum == 1) ? fast_enemy_down_1 : fast_enemy_down_2;
+                    break;
+                case "left":
+                    image = (imageNum == 1) ? fast_enemy_left_1 : fast_enemy_left_2;
+                    break;
+                case "right":
+                    image = (imageNum == 1) ? fast_enemy_right_1 : fast_enemy_right_2;
+                    break;
+            }
+
+        }
+
+        if (image != null) {
+            g2.drawImage(image, x, y, game.tileSize, game.tileSize, null);
+        }
+
     }
 
     public void knockBackPlayer() {
@@ -294,21 +248,12 @@ public class Enemy extends Entity {
             player.setShocked();
             if (movementDirection == "up") {
                 y -= 50;
-
             } else if (movementDirection == "left") {
                 x += 50;
-                if (player.x - 100 < 0) {
-                    player.y += 100;
-                } else {
-                    player.x -= 50;
-                }
             } else if (movementDirection == "right") {
                 x -= 50;
-                if (player.x + 100 > game.screenWidth) {
-                    player.y += 100;
-                } else {
-                    player.x += 50;
-                }
+            } else if (movementDirection == "down") {
+                y += 50;
             }
         }
     }
