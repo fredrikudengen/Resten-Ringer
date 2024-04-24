@@ -44,13 +44,10 @@ public class Game extends JPanel implements Runnable {
     // FPS
     int fps = 60;
 
-    int enemyMax = 3;
+    int enemyMax = 2;
 
     int enemiesAtStart = 0;
-    int waveNumber;
-
-    private long stopStartTime = 0;
-    private static final long STOP_DURATION = 3000000000L;
+    int waveNumber = 1;
 
     public int commandNum = 0;
 
@@ -196,7 +193,7 @@ public class Game extends JPanel implements Runnable {
                 waveNumber++;
                 gameState = GameState.ACTIVE_GAME;
                 // Create 3 enemies at start (if enemyMax is 3)
-                for (enemiesAtStart = 0; enemiesAtStart <= (enemyMax / 2); enemiesAtStart++) {
+                for (enemiesAtStart = 0; enemiesAtStart <= (enemyMax); enemiesAtStart++) {
                     if (enemiesAtStart < enemyMax) {
                         NormalEnemy newNormalEnemy = new NormalEnemy(game, player);
                         enemyList.add(newNormalEnemy);
@@ -208,6 +205,7 @@ public class Game extends JPanel implements Runnable {
                 enemyList.add(newFastEnemy);
                 player.x = getWidth() / 2;
                 player.y = getHeight() / 2;
+                enemyMax ++;
             }
         }
 
@@ -272,13 +270,14 @@ public class Game extends JPanel implements Runnable {
             g2.fillRect(0, 0, getWidth(), getHeight());
 
             g2.setColor(Color.RED);
-            g2.setFont(new Font("Arial", Font.BOLD, 20));
+            g2.setFont(new Font("Arial", Font.BOLD, 26));
             g2.drawString("Victory!", getWidth() / 2, getHeight() / 2 - 80);
         }
         if (gameState == GameState.WAVE_COMPLETE) {
             g2.setColor(Color.BLACK);
             g2.fillRect(0, 0, getWidth(), getHeight());
             g2.setColor(Color.RED);
+            g2.setFont(new Font("Arial", Font.BOLD, 26));
             int x = xCenterText("Wave 1 completed", g2);
             g2.drawString("Wave " + waveNumber + "completed,", x, getHeight() / 2 - 40);
             String text = "Press enter to have another drink.";
