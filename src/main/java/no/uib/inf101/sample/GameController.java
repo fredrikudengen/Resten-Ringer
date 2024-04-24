@@ -2,6 +2,8 @@ package no.uib.inf101.sample;
 
 import java.awt.event.KeyEvent;
 
+import no.uib.inf101.sample.sound.SoundPlayer;
+
 public class GameController implements java.awt.event.KeyListener {
 
     public boolean upPressed, downPressed, leftPressed, rightPressed;
@@ -40,7 +42,9 @@ public class GameController implements java.awt.event.KeyListener {
             }
             if (e.getKeyCode() == KeyEvent.VK_ENTER) {
                 if (game.commandNum == 0) {
+                    SoundPlayer.glassShatter();
                     game.gameState = GameState.ACTIVE_GAME;
+
                 } else if (game.commandNum == 1) {
                     System.exit(0);
                 }

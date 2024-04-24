@@ -17,6 +17,7 @@ import no.uib.inf101.sample.entity.enemy.FastEnemy;
 import no.uib.inf101.sample.entity.enemy.NormalEnemy;
 import no.uib.inf101.sample.entity.enemy.SlowEnemy;
 import no.uib.inf101.sample.map.TileFactory;
+import no.uib.inf101.sample.sound.SoundPlayer;
 
 public class Game extends JPanel implements Runnable {
 
@@ -59,6 +60,7 @@ public class Game extends JPanel implements Runnable {
     TileFactory tileFactory = new TileFactory(this);
     GameState gameState;
     public CollisionDetection collisionDetection = new CollisionDetection(this);
+    SoundPlayer soundPlayer = new SoundPlayer();
 
     private Image background = Inf101Graphics.loadImageFromResources("title_background.png");
     private Image title = Inf101Graphics.loadImageFromResources("Resten_ringer.png");
@@ -152,11 +154,12 @@ public class Game extends JPanel implements Runnable {
             if (gameController.shotKeyPressed) {
                 // Check if the previous projectile is not alive before creating a new one
                 if (bulletTimerCheck == false) {
-
+                    
                     Projectile newProjectile = new Projectile(this, player, gameController,
                             gameController.getShotDirection(),
                             normalEnemy);
                     projectileList.add(newProjectile);
+                    SoundPlayer.gunShot();
                     gameController.shotKeyPressed = false;
                     bulletTimerCheck = true;
                 } else {
@@ -180,6 +183,13 @@ public class Game extends JPanel implements Runnable {
             for (int i = enemyList.size() - 1; i >= 0; i--) {
                 enemyList.get(i).update(); // Update the enemy
                 if (enemyList.get(i).isAlive == false) {
+                    if (enemyList.get(i) instanceof NormalEnemy) {
+                        SoundPlayer.manDie1();
+                    } else if (enemyList.get(i) instanceof SlowEnemy) {
+                        SoundPlayer.manDie3();
+                    } else {
+                        SoundPlayer.mandDie2();
+                    }
                     enemyList.remove(i);
                 }
             }
@@ -190,6 +200,7 @@ public class Game extends JPanel implements Runnable {
             // Set game state to WAVE_COMPLETE
             gameState = GameState.WAVE_COMPLETE;
             if (gameController.enterKeyPressed) {
+                SoundPlayer.playBeerCanOpen();
                 waveNumber++;
                 gameState = GameState.ACTIVE_GAME;
                 // Create 3 enemies at start (if enemyMax is 3)
@@ -258,6 +269,7 @@ public class Game extends JPanel implements Runnable {
         }
 
         if (player.getGameState() == GameState.GAME_OVER) {
+            SoundPlayer.gameOver();
             g2.setColor(Color.BLACK);
             g2.fillRect(0, 0, getWidth(), getHeight());
 
@@ -279,7 +291,7 @@ public class Game extends JPanel implements Runnable {
             g2.setColor(Color.RED);
             g2.setFont(new Font("Arial", Font.BOLD, 26));
             int x = xCenterText("Wave 1 completed", g2);
-            g2.drawString("Wave " + waveNumber + "completed,", x, getHeight() / 2 - 40);
+            g2.drawString("Wave " + waveNumber + " completed,", x, getHeight() / 2 - 40);
             String text = "Press enter to have another drink.";
             x = xCenterText(text, g2);
             g2.drawString(text, x, getHeight() / 2);
