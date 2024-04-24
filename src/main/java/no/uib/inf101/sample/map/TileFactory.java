@@ -12,10 +12,10 @@ import java.io.InputStreamReader;
 
 public class TileFactory {
     Game game;
-    Tile[] tile;
+    public Tile[] tile;
 
     // Stores map data
-    int mapTileNum[][];
+    public int mapTileNum[][];
 
     public TileFactory(Game game) {
 
@@ -36,6 +36,7 @@ public class TileFactory {
 
         tile[1] = new Tile();
         tile[1].image = Inf101Graphics.loadImageFromResources("wall.png");
+        tile[1].collision = true;
 
         tile[2] = new Tile();
         tile[2].image = Inf101Graphics.loadImageFromResources("water.png");

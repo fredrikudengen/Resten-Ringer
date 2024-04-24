@@ -1,7 +1,7 @@
 package no.uib.inf101.sample;
 
-import no.uib.inf101.sample.entity.NormalEnemy;
 import no.uib.inf101.sample.entity.Player;
+import no.uib.inf101.sample.entity.enemy.NormalEnemy;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

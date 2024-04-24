@@ -1,6 +1,10 @@
 package no.uib.inf101.sample.entity;
 
+import java.awt.Rectangle;
+
 import no.uib.inf101.sample.Game;
+import no.uib.inf101.sample.entity.enemy.NormalEnemy;
+import no.uib.inf101.sample.entity.enemy.SlowEnemy;
 
 public class Entity {
 
@@ -15,6 +19,10 @@ public class Entity {
     public int speed;
     public int healthPoints;
     public boolean isAlive;
+    public String movementDirection = "right";
+
+    public Rectangle hitBox;
+    public boolean collisionOn = false;
 
     public static boolean rectanglesOverlap(int x1, int y1, int x2, int y2,
             int x3, int y3, int x4, int y4) {
@@ -44,7 +52,7 @@ public class Entity {
         return y;
     }
 
-    public int getSpeed() {
+    public double getSpeed() {
         return speed;
     }
 

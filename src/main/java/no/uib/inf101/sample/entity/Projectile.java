@@ -6,6 +6,7 @@ import java.awt.Image;
 import no.uib.inf101.sample.Game;
 import no.uib.inf101.sample.GameController;
 import no.uib.inf101.sample.Inf101Graphics;
+import no.uib.inf101.sample.entity.enemy.NormalEnemy;
 
 public class Projectile extends Entity {
 
@@ -166,7 +167,7 @@ public class Projectile extends Entity {
         return y;
     }
 
-    public int getProjectileSpeed() {
+    public double getProjectileSpeed() {
         return speed;
     }
 }

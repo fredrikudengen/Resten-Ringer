@@ -10,11 +10,12 @@ import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
-import no.uib.inf101.sample.entity.Enemy;
-import no.uib.inf101.sample.entity.NormalEnemy;
+import no.uib.inf101.sample.entity.Entity;
 import no.uib.inf101.sample.entity.Player;
 import no.uib.inf101.sample.entity.Projectile;
-import no.uib.inf101.sample.entity.SlowEnemy;
+import no.uib.inf101.sample.entity.enemy.Enemy;
+import no.uib.inf101.sample.entity.enemy.NormalEnemy;
+import no.uib.inf101.sample.entity.enemy.SlowEnemy;
 import no.uib.inf101.sample.map.TileFactory;
 
 public class Game extends JPanel implements Runnable {
@@ -56,6 +57,7 @@ public class Game extends JPanel implements Runnable {
     NormalEnemy normalEnemy = new NormalEnemy(this, player);
     TileFactory tileFactory = new TileFactory(this);
     GameState gameState;
+    public CollisionDetection collisionDetection = new CollisionDetection(this);
 
     private Image background = Inf101Graphics.loadImageFromResources("title_background.png");
     private Image title = Inf101Graphics.loadImageFromResources("Resten_ringer.png");
@@ -63,13 +65,15 @@ public class Game extends JPanel implements Runnable {
     private Image beer2 = Inf101Graphics.loadImageFromResources("random_beer_1.jpg");
     private Image beer3 = Inf101Graphics.loadImageFromResources("random_beer_2.jpg");
     private Image keepCalm = Inf101Graphics.loadImageFromResources("keep_calm.jpg");
+    private Image map = Inf101Graphics.loadImageFromResources("mapreal.png");
+
 
     public Game() {
         this.game = this;
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
         this.setBackground(Color.BLACK);
         this.setDoubleBuffered(true); // improves rendering, doesn't display the render before the whole screen is
-                                      // ready
+                                            // ready
         this.addKeyListener(gameController);
         this.setFocusable(true);
         this.requestFocusInWindow();
@@ -225,6 +229,8 @@ public class Game extends JPanel implements Runnable {
 
         if (gameState == GameState.ACTIVE_GAME) {
             tileFactory.draw(g2);
+            g2.drawImage(map, 0, 0, screenWidth, screenHeight, null);
+
 
             player.draw(g2);
 
