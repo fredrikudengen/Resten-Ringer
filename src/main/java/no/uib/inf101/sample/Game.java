@@ -10,10 +10,10 @@ import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
-import no.uib.inf101.sample.entity.Entity;
 import no.uib.inf101.sample.entity.Player;
 import no.uib.inf101.sample.entity.Projectile;
 import no.uib.inf101.sample.entity.enemy.Enemy;
+import no.uib.inf101.sample.entity.enemy.FastEnemy;
 import no.uib.inf101.sample.entity.enemy.NormalEnemy;
 import no.uib.inf101.sample.entity.enemy.SlowEnemy;
 import no.uib.inf101.sample.map.TileFactory;
@@ -44,7 +44,7 @@ public class Game extends JPanel implements Runnable {
     // FPS
     int fps = 60;
 
-    int enemyMax = 4;
+    int enemyMax = 3;
 
     int enemiesAtStart = 0;
 
@@ -67,13 +67,12 @@ public class Game extends JPanel implements Runnable {
     private Image keepCalm = Inf101Graphics.loadImageFromResources("keep_calm.jpg");
     private Image map = Inf101Graphics.loadImageFromResources("mapreal.png");
 
-
     public Game() {
         this.game = this;
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
         this.setBackground(Color.BLACK);
         this.setDoubleBuffered(true); // improves rendering, doesn't display the render before the whole screen is
-                                            // ready
+                                      // ready
         this.addKeyListener(gameController);
         this.setFocusable(true);
         this.requestFocusInWindow();
@@ -86,12 +85,11 @@ public class Game extends JPanel implements Runnable {
                 enemyList.add(newNormalEnemy);
             }
         }
-        for (enemiesAtStart = 0; enemiesAtStart <= (enemyMax / 2); enemiesAtStart++) {
-            if (enemiesAtStart < enemyMax) {
-                SlowEnemy newSlowEnemy = new SlowEnemy(game, player);
-                enemyList.add(newSlowEnemy);
-            }
-        }
+        SlowEnemy newSlowEnemy = new SlowEnemy(game, player);
+        enemyList.add(newSlowEnemy);
+        FastEnemy newFastEnemy = new FastEnemy(game, player);
+        enemyList.add(newFastEnemy);
+
     }
 
     public void startGameThread() {
@@ -230,7 +228,6 @@ public class Game extends JPanel implements Runnable {
         if (gameState == GameState.ACTIVE_GAME) {
             tileFactory.draw(g2);
             g2.drawImage(map, 0, 0, screenWidth, screenHeight, null);
-
 
             player.draw(g2);
 

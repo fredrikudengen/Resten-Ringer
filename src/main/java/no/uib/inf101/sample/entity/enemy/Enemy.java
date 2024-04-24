@@ -18,9 +18,6 @@ public class Enemy extends Entity {
 
     int imageNum = 1;
     int imageCounter = 0;
-
-    int safeZone = 100;
-
     boolean isMoving = false;
 
     int xNeededToMove;
@@ -43,109 +40,137 @@ public class Enemy extends Entity {
         this.game = game;
         this.player = player;
         hitBox = new Rectangle(8, 16, 32, 32);
+        setXAndY();
     }
 
     public void setXAndY() {
         Random rand = new Random();
-        int screenWidth = game.screenWidth;
-        int screenHeight = game.screenHeight;
 
-        // Define the safe zone boundaries
-        int safeZoneMinX = Math.max(1, player.x - safeZone);
-        int safeZoneMaxX = Math.min(screenWidth - 1, (player.x + safeZone) - 1);
-        int safeZoneMinY = Math.max(1, player.y - safeZone);
-        int safeZoneMaxY = Math.min(screenHeight - 1, (player.y + safeZone) - 1);
-
-        // Generate random X and Y coordinates outside the safe zone boundaries
-        int randomX, randomY;
-
-        // Coin toss to find whether enemy should spawn to the left/above or to the
-        // right/below the player
-        if (rand.nextBoolean()) {
-            // Generate random X outside the safe zone boundaries
-            randomX = rand.nextInt(safeZoneMinX);
-        } else {
-            // Generate random X between safeZoneMaxX and screenWidth
-            randomX = ThreadLocalRandom.current().nextInt(safeZoneMaxX, screenWidth);
+        int spawnNumber = rand.nextInt(3);
+        switch (spawnNumber) {
+            case 0:
+                x = 50;
+                y = 50;
+                break;
+            case 1:
+                x = game.screenWidth - 100;
+                y = game.screenHeight - 100;
+                break;
+            case 2:
+                x = game.screenWidth - 100;
+                y = 50;
+                break;
         }
-
-        if (rand.nextBoolean()) {
-            // Generate random Y outside the safe zone boundaries
-            randomY = rand.nextInt(safeZoneMinY);
-        } else {
-            // Generate random Y between safeZoneMaxY and screenHeight
-            randomY = ThreadLocalRandom.current().nextInt(safeZoneMaxY, screenHeight);
-        }
-
-        x = randomX;
-        y = randomY;
     }
 
     public void simulateEnemyMoves() {
         xNeededToMove = player.getPlayerX() - x;
         yNeededToMove = player.getPlayerY() - y;
-        
-        // Check tile collision
-        collisionOn = false;
-        //game.collisionDetection.checkTile(this);
-        if (collisionOn == true) {
-            if (movementDirection == "up") {
-                if (xNeededToMove < 0) {
-                    x -= speed;
-                    movementDirection = "left";
-                } else {
-                    x += speed;
-                    movementDirection = "right";
-                }
-            } else if (movementDirection == "down") {
-                if (xNeededToMove < 0) {
-                    x -= speed;
-                    movementDirection = "left";
-                } else {
-                    x += speed;
-                    movementDirection = "right";
-                }
-            } else if (movementDirection == "left") {
+        if (Math.abs(xNeededToMove) > Math.abs(yNeededToMove)) {
+            // Check tile collision
+            collisionOn = false;
+            game.collisionDetection.checkTile(this);
+            if (collisionOn == true) {
+                if (movementDirection == "left") {
                     if (yNeededToMove < 0) {
                         y -= speed;
-                        movementDirection = "up";
                     } else if (yNeededToMove > 0) {
                         y += speed;
-                        movementDirection = "down";
                     }
-            } else if (movementDirection == "right") {
+                } else if (movementDirection == "right") {
                     if (yNeededToMove < 0) {
                         y -= speed;
-                        movementDirection = "up";
                     } else if (yNeededToMove > 0) {
                         y += speed;
-                        movementDirection = "down";
-                    } 
+                    }
+                } else if (movementDirection == "up") {
+                    if (xNeededToMove < 0) {
+                        x -= speed;
+                    } else {
+                        x += speed;
+                    }
+                } else if (movementDirection == "down") {
+                    if (xNeededToMove < 0) {
+                        x -= speed;
+                    } else {
+                        x += speed;
+                    }
                 }
-        }
+            }
             if (collisionOn == false) {
-                if (yNeededToMove < 0) {
-                    y -= speed;
-                    yNeededToMove += speed;
-                    movementDirection = "up";
-                }
-                else if (xNeededToMove < 0) {
+                if (xNeededToMove < 0) {
                     x -= speed;
                     xNeededToMove += speed;
                     movementDirection = "left";
+                } else if (xNeededToMove > 0) {
+                    x += speed;
+                    xNeededToMove -= speed;
+                    movementDirection = "right";
+                } else if (yNeededToMove < 0) {
+                    y -= speed;
+                    yNeededToMove += speed;
+                    movementDirection = "up";
+                } else if (yNeededToMove > 0) {
+                    y += speed;
+                    yNeededToMove -= speed;
+                    movementDirection = "down";
+                } 
+            }
+        }
+        if (Math.abs(xNeededToMove) <= Math.abs(yNeededToMove)) {
+            // Check tile collision
+            collisionOn = false;
+            game.collisionDetection.checkTile(this);
+            if (collisionOn == true) {
+                if (movementDirection == "up") {
+                    if (xNeededToMove < 0) {
+                        x -= speed;
+                    } else {
+                        x += speed;
+                    }
+                } else if (movementDirection == "down") {
+                    if (xNeededToMove < 0) {
+                        x -= speed;
+                    } else {
+                        x += speed;
+                    }
+                } else if (movementDirection == "left") {
+                    if (yNeededToMove < 0) {
+                        y -= speed;
+                    } else if (yNeededToMove > 0) {
+                        y += speed;
+                    }
+                } else if (movementDirection == "right") {
+                    if (yNeededToMove < 0) {
+                        y -= speed;
+                    } else if (yNeededToMove > 0) {
+                        y += speed;
+                    }
                 }
-                else if (xNeededToMove > 0) {
+            }
+        
+            if (collisionOn == false) {
+                 if (yNeededToMove < 0) {
+                    y -= speed;
+                    yNeededToMove += speed;
+                    movementDirection = "up";
+                } else if (yNeededToMove > 0) {
+                    y += speed;
+                    yNeededToMove -= speed;
+                    movementDirection = "down";
+                } else if (xNeededToMove < 0) {
+                    x -= speed;
+                    xNeededToMove += speed;
+                    movementDirection = "left";
+                } else if (xNeededToMove > 0) {
                     x += speed;
                     xNeededToMove -= speed;
                     movementDirection = "right";
                 }
-                else if (yNeededToMove > 0) {
-                    y += speed;
-                    yNeededToMove -= speed;
-                }
             }
-        
+        }
     }
+
 
     public boolean enemyCollidesWithPlayer() {
         return rectanglesOverlap(x + 9, y, x + game.tileSize - 9,
@@ -157,51 +182,51 @@ public class Enemy extends Entity {
 
     public void draw(Graphics2D g2) {
         Image playerImage = null;
-            switch (movementDirection) {
-                case "up":
-                    if (imageNum == 1) {
-                        playerImage = up1;
-                    }
-                    if (imageNum == 2) {
-                        playerImage = up2;
-                    }
-                    break;
-                case "down":
-                    if (imageNum == 1) {
-                        playerImage = down1;
-                    }
-                    if (imageNum == 2) {
-                        playerImage = down2;
-                    }
-                    break;
-                case "left":
-                    if (imageNum == 1) {
-                        playerImage = left1;
-                    }
-                    if (imageNum == 2) {
-                        playerImage = left2;
-                    }
-                    break;
-                case "right":
-                    if (imageNum == 1) {
-                        playerImage = right1;
-                    }
-                    if (imageNum == 2) {
-                        playerImage = right2;
-                    }
-                    break;
-            }
-            // Draw player
-            if (movementDirection == "right") {
-                g2.drawImage(playerImage, x, y, game.tileSize * 2, game.tileSize, null);
-            } else if (movementDirection == "left") {
-                g2.drawImage(playerImage, x - game.tileSize, y, game.tileSize * 2, game.tileSize, null);
-            } else if (movementDirection == "up") {
-                g2.drawImage(playerImage, x, y - game.tileSize, game.tileSize, game.tileSize * 2, null);
-            } else if (movementDirection == "down") {
-                g2.drawImage(playerImage, x, y, game.tileSize, game.tileSize * 2, null);
-            }
+        switch (movementDirection) {
+            case "up":
+                if (imageNum == 1) {
+                    playerImage = up1;
+                }
+                if (imageNum == 2) {
+                    playerImage = up2;
+                }
+                break;
+            case "down":
+                if (imageNum == 1) {
+                    playerImage = down1;
+                }
+                if (imageNum == 2) {
+                    playerImage = down2;
+                }
+                break;
+            case "left":
+                if (imageNum == 1) {
+                    playerImage = left1;
+                }
+                if (imageNum == 2) {
+                    playerImage = left2;
+                }
+                break;
+            case "right":
+                if (imageNum == 1) {
+                    playerImage = right1;
+                }
+                if (imageNum == 2) {
+                    playerImage = right2;
+                }
+                break;
         }
+        // Draw player
+        if (movementDirection == "right") {
+            g2.drawImage(playerImage, x, y, game.tileSize * 2, game.tileSize, null);
+        } else if (movementDirection == "left") {
+            g2.drawImage(playerImage, x - game.tileSize, y, game.tileSize * 2, game.tileSize, null);
+        } else if (movementDirection == "up") {
+            g2.drawImage(playerImage, x, y - game.tileSize, game.tileSize, game.tileSize * 2, null);
+        } else if (movementDirection == "down") {
+            g2.drawImage(playerImage, x, y, game.tileSize, game.tileSize * 2, null);
+        }
+    }
     // Enemy enemy = new Enemy(game, player);
     // Image image = null;
 
@@ -261,11 +286,7 @@ public class Enemy extends Entity {
             player.setShocked();
             if (movementDirection == "up") {
                 y -= 50;
-                if (player.y - 100 < 0) {
-                    player.x += 100;
-                } else {
-                    player.y -= 50;
-                }
+                
             } else if (movementDirection == "left") {
                 x += 50;
                 if (player.x - 100 < 0) {

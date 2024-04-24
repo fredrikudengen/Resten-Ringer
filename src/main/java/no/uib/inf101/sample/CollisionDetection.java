@@ -66,6 +66,7 @@ public class CollisionDetection {
 
     public void checkTile(Enemy enemy) {
 
+
         int entityLeftX = enemy.x + enemy.hitBox.x;
         int entityRightX = enemy.x + enemy.hitBox.x + enemy.hitBox.width;
         int entityTopY = enemy.y + enemy.hitBox.y;
@@ -76,12 +77,23 @@ public class CollisionDetection {
         int entityTopRow = entityTopY / game.tileSize;
         int entityBottomRow = entityBottomY / game.tileSize;
 
-        if (entityTopRow > 12) {
-            entityTopRow = 11;
-        }
-        if (entityRightCol > 16) {
-            entityRightCol = 15;
-        }
+        System.out.println("entityBottomRow = " + entityBottomRow);
+        System.out.println("entityLeftCol = " + entityLeftCol);
+        System.out.println("entityRightCol = "+ entityRightCol);
+        System.out.println("entityTopRow = "+ entityTopRow);
+
+        // if (entityTopRow > 11) {
+        //     entityTopRow = 11;
+        // }
+        // if (entityRightCol > 15) {
+        //     entityRightCol = 15;
+        // }
+        // if (entityBottomRow > 11) {
+        //     entityBottomRow = 11;
+        // }
+        // if (entityRightCol > 15) {
+        //     entityRightCol = 15;
+        // } 
 
         
 
