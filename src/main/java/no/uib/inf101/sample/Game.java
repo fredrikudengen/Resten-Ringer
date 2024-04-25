@@ -17,6 +17,7 @@ import no.uib.inf101.sample.entity.enemy.FastEnemy;
 import no.uib.inf101.sample.entity.enemy.NormalEnemy;
 import no.uib.inf101.sample.entity.enemy.SlowEnemy;
 import no.uib.inf101.sample.map.TileFactory;
+import no.uib.inf101.sample.sound.GameSong;
 import no.uib.inf101.sample.sound.SoundPlayer;
 
 public class Game extends JPanel implements Runnable {
@@ -54,13 +55,13 @@ public class Game extends JPanel implements Runnable {
 
     Game game;
     Thread gameThread;
+    GameState gameState;
+    TileFactory tileFactory = new TileFactory(this);
+    public CollisionDetection collisionDetection = new CollisionDetection(this);
+    SoundPlayer soundPlayer = new SoundPlayer();
     GameController gameController = new GameController(this);
     Player player = new Player(this, gameController);
     NormalEnemy normalEnemy = new NormalEnemy(this, player);
-    TileFactory tileFactory = new TileFactory(this);
-    GameState gameState;
-    public CollisionDetection collisionDetection = new CollisionDetection(this);
-    SoundPlayer soundPlayer = new SoundPlayer();
 
     private Image background = Inf101Graphics.loadImageFromResources("title_background.png");
     private Image title = Inf101Graphics.loadImageFromResources("Resten_ringer.png");
@@ -154,7 +155,7 @@ public class Game extends JPanel implements Runnable {
             if (gameController.shotKeyPressed) {
                 // Check if the previous projectile is not alive before creating a new one
                 if (bulletTimerCheck == false) {
-                    
+
                     Projectile newProjectile = new Projectile(this, player, gameController,
                             gameController.getShotDirection(),
                             normalEnemy);
@@ -216,7 +217,7 @@ public class Game extends JPanel implements Runnable {
                 enemyList.add(newFastEnemy);
                 player.x = getWidth() / 2;
                 player.y = getHeight() / 2;
-                enemyMax ++;
+                enemyMax++;
             }
         }
 

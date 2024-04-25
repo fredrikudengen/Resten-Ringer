@@ -112,7 +112,7 @@ public class SoundPlayer {
     public static void glassShatter() {
         try {
             // Open an audio input stream for sound clip 3.
-            AudioInputStream audioIn = AudioSystem.getAudioInputStream(SoundPlayer.class.getResource("man-die3.wav"));
+            AudioInputStream audioIn = AudioSystem.getAudioInputStream(SoundPlayer.class.getResource("glass-shatter.wav"));
             
             // Get a sound clip resource.
             Clip clip = AudioSystem.getClip();

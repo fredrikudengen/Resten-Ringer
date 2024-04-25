@@ -65,7 +65,6 @@ public class CollisionDetection {
 
     public void checkTile(Enemy enemy) {
 
-
         int entityLeftX = enemy.x + enemy.hitBox.x;
         int entityRightX = enemy.x + enemy.hitBox.x + enemy.hitBox.width;
         int entityTopY = enemy.y + enemy.hitBox.y;
@@ -77,6 +76,22 @@ public class CollisionDetection {
         int entityBottomRow = entityBottomY / game.tileSize;
 
         int tileNum1, tileNum2;
+
+        // In case of an ArrayIndexOutOfBoundsException: Index 12 out of bounds for
+        // length 12
+        
+        if (entityBottomRow > 11) {
+            entityBottomRow = 11;
+        }
+        if (entityLeftCol > 11) {
+            entityLeftCol = 11;
+        }
+        if (entityRightCol > 11) {
+            entityRightCol = 11;
+        }
+        if (entityTopRow > 11) {
+            entityTopRow = 11;
+        }
 
         if (enemy.movementDirection == "up") {
             entityTopRow = (entityTopY - enemy.speed) / game.tileSize;
