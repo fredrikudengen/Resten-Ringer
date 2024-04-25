@@ -181,7 +181,8 @@ public class Game extends JPanel implements Runnable {
         if (player.getHealthpoints() <= 0) {
             gameState = GameState.GAME_OVER;
             resetAllValues();
-
+        }
+        if (gameState == GameState.GAME_OVER) {
             if (gameController.RKeyPressed) {
                 gameState = GameState.TITLE_SCREEN;
             }
