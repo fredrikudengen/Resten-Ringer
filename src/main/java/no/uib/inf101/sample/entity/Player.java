@@ -54,7 +54,7 @@ public class Player extends Entity {
     public void setDefaultValues() {
         x = game.screenWidth / 2 - game.tileSize / 2;
         y = game.screenHeight / 2 - game.tileSize / 2;
-        healthPoints = 3;
+        healthPoints = 6;
         speed = 4;
         direction = "right";
         isAlive = true;
@@ -67,9 +67,6 @@ public class Player extends Entity {
     }
 
     public void update() {
-        if (healthPoints <= 0) {
-            gameState = GameState.GAME_OVER;
-        }
         // Check tile collision
         collisionOn = false;
         game.collisionDetection.checkTile(this);
@@ -349,4 +346,15 @@ public class Player extends Entity {
     public int getPlayerY() {
         return y;
     }
+
+    public void setHealthpoints(int healthPoints) {
+        this.healthPoints = healthPoints;
+    }
+
+    public int getHealthpoints() {
+        return this.healthPoints;
+    }
+
+
+    
 }

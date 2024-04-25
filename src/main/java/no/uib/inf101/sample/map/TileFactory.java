@@ -72,7 +72,6 @@ public class TileFactory {
                 }
             }
             br.close();
-
         } catch (Exception e) {
         }
     }

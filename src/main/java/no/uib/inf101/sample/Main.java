@@ -17,8 +17,8 @@ public class Main {
     // Create an instance of Game
     Game gamePanel = new Game();    
 
-    // GameController gameController = new GameController(gamePanel);
-    // Player player = new Player(100, 100, 3, gamePanel, gameController); 
+    //"hestkuk"
+    //- Caroline 2010
 
     // Add the GamePanel to the JFrame
     frame.add(gamePanel);

@@ -49,13 +49,19 @@ public class Game extends JPanel implements Runnable {
     int enemiesAtStart = 0;
     int waveNumber = 1;
 
+    String modeSelect = "";
+
     public int commandNum = 0;
+
+    private int yTitle = 100; // Move yTitle to class level
+    private int numTitle = 1; // Move num to class level
+    private int counterTitle = 1;
 
     boolean gameOverSoundPlay = false;
 
     Game game;
     Thread gameThread;
-    GameState gameState;
+    public GameState gameState;
     TileFactory tileFactory = new TileFactory(this);
     public CollisionDetection collisionDetection = new CollisionDetection(this);
     SoundPlayer soundPlayer = new SoundPlayer();
@@ -71,6 +77,12 @@ public class Game extends JPanel implements Runnable {
     private Image beer3 = Inf101Graphics.loadImageFromResources("random_beer_2.jpg");
     private Image keepCalm = Inf101Graphics.loadImageFromResources("keep_calm.jpg");
     private Image map = Inf101Graphics.loadImageFromResources("mapreal.png");
+    private Image emptyBeer = Inf101Graphics.loadImageFromResources("beer_empty.png");
+    private Image gameOver = Inf101Graphics.loadImageFromResources("GAMEOVER.png");
+    private Image victoryScreen = Inf101Graphics.loadImageFromResources("victoryScreen.png");
+    private Image waterCooler = Inf101Graphics.loadImageFromResources("water_cooler.png");
+    private Image bottleOfAlcohol = Inf101Graphics.loadImageFromResources("bottle_of_alcohol.png");
+    private Image levelSelect = Inf101Graphics.loadImageFromResources("level_select.png");
 
     public Game() {
         this.game = this;
@@ -84,17 +96,7 @@ public class Game extends JPanel implements Runnable {
         gameState = GameState.TITLE_SCREEN;
         this.gameSong = new GameSong();
 
-        // Create 3 enemies at start (if enemyMax is 3)
-        for (enemiesAtStart = 0; enemiesAtStart <= (enemyMax / 2); enemiesAtStart++) {
-            if (enemiesAtStart < enemyMax) {
-                NormalEnemy newNormalEnemy = new NormalEnemy(game, player);
-                enemyList.add(newNormalEnemy);
-            }
-        }
-        SlowEnemy newSlowEnemy = new SlowEnemy(game, player);
-        enemyList.add(newSlowEnemy);
-        FastEnemy newFastEnemy = new FastEnemy(game, player);
-        enemyList.add(newFastEnemy);
+        resetAllValues();
 
     }
 
@@ -142,6 +144,23 @@ public class Game extends JPanel implements Runnable {
         }
     }
 
+    public void resetAllValues() {
+        player.setHealthpoints(7);
+        commandNum = 0;
+        // Create 3 enemies at start (if enemyMax is 3)
+        for (enemiesAtStart = 0; enemiesAtStart <= (enemyMax / 2); enemiesAtStart++) {
+            if (enemiesAtStart < enemyMax) {
+                NormalEnemy newNormalEnemy = new NormalEnemy(game, player);
+                enemyList.add(newNormalEnemy);
+            }
+        }
+        SlowEnemy newSlowEnemy = new SlowEnemy(game, player);
+        enemyList.add(newSlowEnemy);
+        FastEnemy newFastEnemy = new FastEnemy(game, player);
+        enemyList.add(newFastEnemy);
+
+    }
+
     public void update() {
         String currentSong = gameSong.getSongName();
 
@@ -151,12 +170,49 @@ public class Game extends JPanel implements Runnable {
         } else if (gameState == GameState.ACTIVE_GAME && !currentSong.equals("metroid-theme.mid")) {
             gameSong.setSongName("metroid-theme.mid");
             gameSong.run();
-        } else if (player.getGameState() == GameState.GAME_OVER && (!gameOverSoundPlay)) {
+        } else if (gameState == GameState.GAME_OVER && (!gameOverSoundPlay)) {
             gameSong.doPauseMidiSounds();
             gameOverSoundPlay = true;
             SoundPlayer.gameOver();
+        } else if (gameState == GameState.VICTORY && !currentSong.equals("Victory.mid")) {
+            gameSong.setSongName("Victory.mid");
+            gameSong.run();
         }
-        if (gameState == GameState.ACTIVE_GAME) {
+        if (player.getHealthpoints() <= 0) {
+            gameState = GameState.GAME_OVER;
+            resetAllValues();
+
+            if (gameController.RKeyPressed) {
+                gameState = GameState.TITLE_SCREEN;
+            }
+        }
+        if (modeSelect.equals("sober mode")) {
+            modeSelect = "";
+            player.setHealthpoints(10);
+            resetAllValues();
+
+            // removes FastEnemy (last enemy added)
+            enemyList.remove(-1);
+            gameState = GameState.ACTIVE_GAME;
+        }
+        if (modeSelect.equals("tipsy mode")) {
+            modeSelect = "";
+            resetAllValues();
+            SlowEnemy newSlowEnemy = new SlowEnemy(game, player);
+            enemyList.add(newSlowEnemy);
+
+            gameState = GameState.ACTIVE_GAME;
+        }
+        if (modeSelect.equals("drunk mode")) {
+            modeSelect = "";
+            player.setHealthpoints(4);
+            enemyMax += 1;
+            resetAllValues();
+            SlowEnemy newSlowEnemy = new SlowEnemy(game, player);
+            enemyList.add(newSlowEnemy);
+            gameState = GameState.ACTIVE_GAME;
+        }
+        if (gameState == GameState.ACTIVE_GAME && player.getGameState() != GameState.GAME_OVER) {
 
             if (player.isAlive == true) {
                 player.update();
@@ -205,43 +261,39 @@ public class Game extends JPanel implements Runnable {
                     enemyList.remove(i);
                 }
             }
-        }
 
-        // Check if all enemies are defeated
-        if (enemyList.isEmpty())
-
-        {
-            // Set game state to WAVE_COMPLETE
-            if (waveNumber >= 3) {
-                gameState = GameState.VICTORY;
-            } else {
-                gameState = GameState.WAVE_COMPLETE;
-                if (gameController.enterKeyPressed) {
-                    SoundPlayer.playBeerCanOpen();
-                    waveNumber++;
-                    gameState = GameState.ACTIVE_GAME;
-                    // Create 3 enemies at start (if enemyMax is 3)
-                    for (enemiesAtStart = 0; enemiesAtStart <= (enemyMax); enemiesAtStart++) {
-                        if (enemiesAtStart < enemyMax) {
-                            NormalEnemy newNormalEnemy = new NormalEnemy(game, player);
-                            enemyList.add(newNormalEnemy);
-                        }
-                    }
-                    SlowEnemy newSlowEnemy = new SlowEnemy(game, player);
-                    enemyList.add(newSlowEnemy);
-                    FastEnemy newFastEnemy = new FastEnemy(game, player);
-                    enemyList.add(newFastEnemy);
-                    player.x = getWidth() / 2;
-                    player.y = getHeight() / 2;
-                    enemyMax++;
+            // Check if all enemies are defeated
+            if (enemyList.isEmpty()) {
+                // Set game state to WAVE_COMPLETE
+                if (waveNumber >= 3) {
+                    gameState = GameState.VICTORY;
+                } else {
+                    gameState = GameState.WAVE_COMPLETE;
                 }
+            }
+            if (gameState == GameState.WAVE_COMPLETE && gameController.enterKeyPressed) {
+                gameState = GameState.ACTIVE_GAME;
+                SoundPlayer.playBeerCanOpen();
+                waveNumber++;
+                enemyMax++;
+                // Create 3 enemies at start (if enemyMax is 3)
+                for (enemiesAtStart = 0; enemiesAtStart <= (enemyMax); enemiesAtStart++) {
+                    if (enemiesAtStart < enemyMax) {
+                        NormalEnemy newNormalEnemy = new NormalEnemy(game, player);
+                        enemyList.add(newNormalEnemy);
+                    }
+                }
+                SlowEnemy newSlowEnemy = new SlowEnemy(game, player);
+                enemyList.add(newSlowEnemy);
+                FastEnemy newFastEnemy = new FastEnemy(game, player);
+                enemyList.add(newFastEnemy);
+                player.x = getWidth() / 2;
+                player.y = getHeight() / 2;
             }
         }
 
         bulletTimer--;
-        if (bulletTimer <= 0)
-
-        {
+        if (bulletTimer <= 0) {
             bulletTimerCheck = false;
             bulletTimer = 40;
         }
@@ -260,7 +312,11 @@ public class Game extends JPanel implements Runnable {
             drawTitleScreen(g2);
         }
 
-        if (gameState == GameState.ACTIVE_GAME) {
+        if (gameState == GameState.LEVEL_SELECT) {
+            drawLevelSelect(g2);
+        }
+
+        if (gameState == GameState.ACTIVE_GAME && player.getGameState() != GameState.GAME_OVER) {
             g2.drawImage(map, 0, 0, screenWidth, screenHeight, null);
 
             player.draw(g2);
@@ -282,45 +338,45 @@ public class Game extends JPanel implements Runnable {
             }
         }
 
-        if (player.getGameState() == GameState.GAME_OVER) {
-            g2.setColor(Color.BLACK);
-            g2.fillRect(0, 0, getWidth(), getHeight());
-
-            g2.setColor(Color.RED);
-            g2.setFont(new Font("Arial", Font.BOLD, 20));
-            g2.drawString("Game Over", getHeight() / 2, getHeight() / 2 - 80);
+        if (gameState == GameState.GAME_OVER) {
+            g2.drawImage(gameOver, 0, 0, getWidth(), getHeight(), null);
         }
         if (gameState == GameState.VICTORY) {
-            g2.setColor(Color.BLACK);
-            g2.fillRect(0, 0, getWidth(), getHeight());
-
-            g2.setColor(Color.RED);
-            g2.setFont(new Font("Arial", Font.BOLD, 26));
-            g2.drawString("Victory!", getWidth() / 2, getHeight() / 2 - 80);
+            g2.drawImage(victoryScreen, 0, 0, getWidth(), getHeight(), null);
         }
         if (gameState == GameState.WAVE_COMPLETE) {
-            g2.setColor(Color.BLACK);
-            g2.fillRect(0, 0, getWidth(), getHeight());
             g2.setColor(Color.RED);
             g2.setFont(new Font("Arial", Font.BOLD, 26));
             int x = xCenterText("Wave 1 completed", g2);
             g2.drawString("Wave " + waveNumber + " completed,", x, getHeight() / 2 - 40);
-            String text = "Press enter to have another drink.";
+            String text = "press enter to have another drink.";
             x = xCenterText(text, g2);
             g2.drawString(text, x, getHeight() / 2);
-
+            g2.drawImage(emptyBeer, getWidth() / 2 - (tileSize * 2 + 20), getHeight() / 2 + 20, tileSize * 4,
+                    tileSize * 4, null);
         }
     }
 
     private void drawTitleScreen(Graphics2D g2) {
         g2.drawImage(background, 0, 0, screenWidth, screenHeight, null);
-        g2.drawImage(title, 100, 100, 612, 148, null);
+        if (yTitle <= 105 && 95 <= yTitle) {
+            counterTitle++;
+            if (counterTitle > 5) {
+                yTitle += numTitle;
+                counterTitle = 0;
+                if (yTitle == 105 || yTitle == 95) {
+                    numTitle = -numTitle;
+                }
+            }
+        }
+        g2.drawImage(title, 100, yTitle, 612, 148, null);
         g2.drawImage(beer2, 50, 350, tileSize * 3, tileSize * 3, null);
         g2.drawImage(beer3, 600, 300, tileSize * 3, tileSize * 3, null);
         g2.drawImage(keepCalm, 70, 30, tileSize * 2, tileSize * 2, null);
 
         g2.setFont(new Font("IMPACT", Font.BOLD, 50));
         g2.setColor(Color.BLACK);
+
         String text = "NEW GAME";
         int x = xCenterText(text, g2);
         int y = tileSize * 7;
@@ -328,13 +384,36 @@ public class Game extends JPanel implements Runnable {
         if (commandNum == 0) {
             g2.drawImage(beer, x - (tileSize + 15), y - tileSize, tileSize, tileSize, null);
         }
-
-        text = "QUIT";
+        text = "LEVELS";
         x = xCenterText(text, g2);
         y += tileSize * 1.5;
         g2.drawString(text, x, y);
         if (commandNum == 1) {
             g2.drawImage(beer, x - (tileSize + 15), y - tileSize, tileSize, tileSize, null);
+        }
+        text = "QUIT";
+        x = xCenterText(text, g2);
+        y += tileSize * 1.5;
+        g2.drawString(text, x, y);
+        if (commandNum == 2) {
+            g2.drawImage(beer, x - (tileSize + 15), y - tileSize, tileSize, tileSize, null);
+        }
+
+    }
+
+    public void drawLevelSelect(Graphics2D g2) {
+        g2.drawImage(levelSelect, 0, 0, getWidth(), getHeight(), null);
+        int x = 70;
+        if (commandNum == 0) {
+            g2.drawImage(waterCooler, 35, 170, tileSize * 6, tileSize * 6, null);
+        }
+        x = 90 + (tileSize * 4 + 20);
+        if (commandNum == 1) {
+            g2.drawImage(beer, x, 260, tileSize * 3 + 20, tileSize * 3 + 20, null);
+        }
+        x = 50 + ((tileSize * 4 + 20) * 2);
+        if (commandNum == 2) {
+            g2.drawImage(bottleOfAlcohol, x, 190, tileSize * 5 + 30, tileSize * 5 + 30, null);
         }
 
     }
@@ -344,5 +423,4 @@ public class Game extends JPanel implements Runnable {
         int x = screenWidth / 2 - lenght / 2;
         return x;
     }
-
 }

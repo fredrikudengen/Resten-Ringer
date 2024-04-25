@@ -278,6 +278,7 @@ public abstract class Enemy extends Entity {
                 if (y + 50 < game.screenHeight) {
                     y += 50;
                 }
+                x -= 50;
             }
         }
     }

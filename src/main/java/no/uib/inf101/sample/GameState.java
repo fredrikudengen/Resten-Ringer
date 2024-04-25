@@ -5,5 +5,6 @@ public enum GameState {
     GAME_OVER,
     VICTORY,
     TITLE_SCREEN,
-    WAVE_COMPLETE
+    WAVE_COMPLETE,
+    LEVEL_SELECT
 }

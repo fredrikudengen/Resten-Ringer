@@ -79,7 +79,7 @@ public class CollisionDetection {
 
         // In case of an ArrayIndexOutOfBoundsException: Index 12 out of bounds for
         // length 12
-        
+
         if (entityBottomRow > 11) {
             entityBottomRow = 11;
         }
