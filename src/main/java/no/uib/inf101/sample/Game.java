@@ -34,8 +34,6 @@ public class Game extends JPanel implements Runnable {
     public final int screenWidth = tileSize * cols; // 768 pixels
     public final int screenHeight = tileSize * rows; // 576 pixels
 
-    private volatile boolean running = true; // Flag to control the game loop
-
     Projectile projectile;
     boolean bulletTimerCheck = false;
     int bulletTimer = 40;
@@ -53,6 +51,8 @@ public class Game extends JPanel implements Runnable {
 
     public int commandNum = 0;
 
+    boolean gameOverSoundPlay = false;
+
     Game game;
     Thread gameThread;
     GameState gameState;
@@ -62,6 +62,7 @@ public class Game extends JPanel implements Runnable {
     GameController gameController = new GameController(this);
     Player player = new Player(this, gameController);
     NormalEnemy normalEnemy = new NormalEnemy(this, player);
+    GameSong gameSong;
 
     private Image background = Inf101Graphics.loadImageFromResources("title_background.png");
     private Image title = Inf101Graphics.loadImageFromResources("Resten_ringer.png");
@@ -81,6 +82,7 @@ public class Game extends JPanel implements Runnable {
         this.setFocusable(true);
         this.requestFocusInWindow();
         gameState = GameState.TITLE_SCREEN;
+        this.gameSong = new GameSong();
 
         // Create 3 enemies at start (if enemyMax is 3)
         for (enemiesAtStart = 0; enemiesAtStart <= (enemyMax / 2); enemiesAtStart++) {
@@ -110,12 +112,7 @@ public class Game extends JPanel implements Runnable {
 
         double nextDrawTime = System.nanoTime() + drawInterval;
 
-        while (running == true) {
-
-            // Check if the game should stop (e.g., player dies)
-            if (gameState == GameState.GAME_OVER) {
-                stopGame(); // Call method to stop the game
-            }
+        while (gameThread != null) {
 
             // 1 UPDATE: update information such as character positions
             update();
@@ -146,7 +143,21 @@ public class Game extends JPanel implements Runnable {
     }
 
     public void update() {
+        String currentSong = gameSong.getSongName();
+
+        if (gameState == GameState.TITLE_SCREEN && !currentSong.equals("megaman.mid")) {
+            gameSong.setSongName("megaman.mid");
+            gameSong.run();
+        } else if (gameState == GameState.ACTIVE_GAME && !currentSong.equals("metroid-theme.mid")) {
+            gameSong.setSongName("metroid-theme.mid");
+            gameSong.run();
+        } else if (player.getGameState() == GameState.GAME_OVER && (!gameOverSoundPlay)) {
+            gameSong.doPauseMidiSounds();
+            gameOverSoundPlay = true;
+            SoundPlayer.gameOver();
+        }
         if (gameState == GameState.ACTIVE_GAME) {
+
             if (player.isAlive == true) {
                 player.update();
             }
@@ -197,41 +208,43 @@ public class Game extends JPanel implements Runnable {
         }
 
         // Check if all enemies are defeated
-        if (enemyList.isEmpty()) {
+        if (enemyList.isEmpty())
+
+        {
             // Set game state to WAVE_COMPLETE
-            gameState = GameState.WAVE_COMPLETE;
-            if (gameController.enterKeyPressed) {
-                SoundPlayer.playBeerCanOpen();
-                waveNumber++;
-                gameState = GameState.ACTIVE_GAME;
-                // Create 3 enemies at start (if enemyMax is 3)
-                for (enemiesAtStart = 0; enemiesAtStart <= (enemyMax); enemiesAtStart++) {
-                    if (enemiesAtStart < enemyMax) {
-                        NormalEnemy newNormalEnemy = new NormalEnemy(game, player);
-                        enemyList.add(newNormalEnemy);
+            if (waveNumber >= 3) {
+                gameState = GameState.VICTORY;
+            } else {
+                gameState = GameState.WAVE_COMPLETE;
+                if (gameController.enterKeyPressed) {
+                    SoundPlayer.playBeerCanOpen();
+                    waveNumber++;
+                    gameState = GameState.ACTIVE_GAME;
+                    // Create 3 enemies at start (if enemyMax is 3)
+                    for (enemiesAtStart = 0; enemiesAtStart <= (enemyMax); enemiesAtStart++) {
+                        if (enemiesAtStart < enemyMax) {
+                            NormalEnemy newNormalEnemy = new NormalEnemy(game, player);
+                            enemyList.add(newNormalEnemy);
+                        }
                     }
+                    SlowEnemy newSlowEnemy = new SlowEnemy(game, player);
+                    enemyList.add(newSlowEnemy);
+                    FastEnemy newFastEnemy = new FastEnemy(game, player);
+                    enemyList.add(newFastEnemy);
+                    player.x = getWidth() / 2;
+                    player.y = getHeight() / 2;
+                    enemyMax++;
                 }
-                SlowEnemy newSlowEnemy = new SlowEnemy(game, player);
-                enemyList.add(newSlowEnemy);
-                FastEnemy newFastEnemy = new FastEnemy(game, player);
-                enemyList.add(newFastEnemy);
-                player.x = getWidth() / 2;
-                player.y = getHeight() / 2;
-                enemyMax++;
             }
         }
 
         bulletTimer--;
-        if (bulletTimer <= 0) {
+        if (bulletTimer <= 0)
+
+        {
             bulletTimerCheck = false;
             bulletTimer = 40;
         }
-    }
-
-    // Method to stop the game
-    private void stopGame() {
-        running = false; // Set the flag to stop the game
-        // Perform any cleanup or additional actions when stopping the game
     }
 
     // The paintComponent method is called by the Java Swing framework every time
@@ -270,7 +283,6 @@ public class Game extends JPanel implements Runnable {
         }
 
         if (player.getGameState() == GameState.GAME_OVER) {
-            SoundPlayer.gameOver();
             g2.setColor(Color.BLACK);
             g2.fillRect(0, 0, getWidth(), getHeight());
 

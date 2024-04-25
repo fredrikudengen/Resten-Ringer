@@ -3,7 +3,6 @@ package no.uib.inf101.sample;
 import java.awt.event.KeyEvent;
 
 import no.uib.inf101.sample.sound.GameSong;
-import no.uib.inf101.sample.sound.SoundPlayer;
 
 public class GameController implements java.awt.event.KeyListener {
 
@@ -12,11 +11,10 @@ public class GameController implements java.awt.event.KeyListener {
     public boolean shotKeyPressed;
     public boolean enterKeyPressed;
     Game game;
-    GameSong gameSong;
 
     public GameController(Game game) {
         this.game = game;
-        this.gameSong = new GameSong();
+
     }
 
     @Override
@@ -31,7 +29,6 @@ public class GameController implements java.awt.event.KeyListener {
             }
         }
         if (game.gameState == GameState.TITLE_SCREEN) {
-            this.gameSong.run();
             if (e.getKeyCode() == KeyEvent.VK_W) {
 
                 game.commandNum--;
@@ -47,10 +44,6 @@ public class GameController implements java.awt.event.KeyListener {
             }
             if (e.getKeyCode() == KeyEvent.VK_ENTER) {
                 if (game.commandNum == 0) {
-                    // Change the song to be played
-                    this.gameSong.setSongName("metroid-theme.mid");
-                    // Start playing the new song
-                    this.gameSong.run();
                     game.gameState = GameState.ACTIVE_GAME;
 
                 } else if (game.commandNum == 1) {

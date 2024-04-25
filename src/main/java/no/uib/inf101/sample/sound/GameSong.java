@@ -9,6 +9,7 @@ public class GameSong implements Runnable {
     private String songName; // New field to hold the name of the song
     private Sequencer sequencer;
 
+
     public GameSong() {
         // Default song name
         this.songName = "metroid-theme.mid";
@@ -83,4 +84,8 @@ public class GameSong implements Runnable {
     public void setSongName(String songName) {
         this.songName = songName;
     }
+    public String getSongName() {
+        return songName;
+    }
 }
+

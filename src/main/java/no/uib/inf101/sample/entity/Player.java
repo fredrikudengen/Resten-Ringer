@@ -54,7 +54,7 @@ public class Player extends Entity {
     public void setDefaultValues() {
         x = game.screenWidth / 2 - game.tileSize / 2;
         y = game.screenHeight / 2 - game.tileSize / 2;
-        healthPoints = 10;
+        healthPoints = 3;
         speed = 4;
         direction = "right";
         isAlive = true;
