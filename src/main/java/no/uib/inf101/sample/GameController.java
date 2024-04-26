@@ -22,12 +22,14 @@ public class GameController implements java.awt.event.KeyListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
-        if (game.gameState == GameState.WAVE_COMPLETE) {
+        GameState gameState = game.getGameState();
+
+        if (gameState == GameState.WAVE_COMPLETE) {
             if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-                game.gameState = GameState.ACTIVE_GAME;
+                game.setGameState(GameState.ACTIVE_GAME);
             }
         }
-        if (game.gameState == GameState.LEVEL_SELECT) {
+        if (gameState == GameState.LEVEL_SELECT) {
             if (e.getKeyCode() == KeyEvent.VK_D) {
                 game.setCommandNum(game.getCommandNum() + 1);;
                 if (game.getCommandNum() > 2) {
@@ -41,29 +43,29 @@ public class GameController implements java.awt.event.KeyListener {
                 }
             }
             if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
-                game.gameState = GameState.TITLE_SCREEN;
+                game.setGameState(GameState.TITLE_SCREEN);
             }
             if (e.getKeyCode() == KeyEvent.VK_ENTER) {
                 if (game.getCommandNum() == 0) {
                     game.setModeSelect("sober mode"); 
-                    game.gameState = GameState.ACTIVE_GAME;
+                    game.setGameState(GameState.ACTIVE_GAME);
                 }
                 if (game.getCommandNum() == 1) {
                     game.setModeSelect("tipsy mode"); 
-                    game.gameState = GameState.ACTIVE_GAME;
+                    game.setGameState(GameState.ACTIVE_GAME);
                 }
                 if (game.getCommandNum() == 2) {
                     game.setModeSelect("drunk mode"); 
-                    game.gameState = GameState.ACTIVE_GAME;
+                    game.setGameState(GameState.ACTIVE_GAME);
                 }
             }
         }
-        if (game.gameState == GameState.VICTORY) {
+        if (gameState == GameState.VICTORY) {
             if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
-                game.gameState = GameState.TITLE_SCREEN;
+                game.setGameState(GameState.TITLE_SCREEN);
             }
         }
-        if (game.gameState == GameState.TITLE_SCREEN) {
+        if (gameState == GameState.TITLE_SCREEN) {
             if (e.getKeyCode() == KeyEvent.VK_W) {
 
                 game.setCommandNum(game.getCommandNum() - 1);
@@ -79,19 +81,19 @@ public class GameController implements java.awt.event.KeyListener {
             }
             if (e.getKeyCode() == KeyEvent.VK_ENTER) {
                 if (game.getCommandNum() == 0) {
-                    game.gameState = GameState.ACTIVE_GAME;
+                    game.setGameState(GameState.ACTIVE_GAME);
                 }
                 if (game.getCommandNum() == 1) {
-                    game.gameState = GameState.LEVEL_SELECT;
+                    game.setGameState(GameState.LEVEL_SELECT);
                 }
                 if (game.getCommandNum() == 2) {
                     System.exit(0);
                 }
             }
         }
-        if (game.gameState == GameState.GAME_OVER) {
+        if (gameState == GameState.GAME_OVER) {
             if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
-                game.gameState = GameState.TITLE_SCREEN;
+                game.setGameState(GameState.TITLE_SCREEN);
             }
         }
         if (e.getKeyCode() == KeyEvent.VK_W) {

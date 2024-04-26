@@ -33,8 +33,6 @@ public class Game extends JPanel implements Runnable {
     private final int screenHeight = tileSize * rows; // 576 pixels
 
     Projectile projectile;
-    private boolean bulletTimerCheck = false;
-    private int bulletTimer = 40;
 
     private ArrayList<Projectile> projectileList = new ArrayList<>();
     private ArrayList<Enemy> enemyList = new ArrayList<>();
@@ -42,20 +40,11 @@ public class Game extends JPanel implements Runnable {
     // FPS
     private int fps = 60;
 
-    private int enemyMax = 2;
-
-    private int enemiesAtStart = 0;
     private int waveNumber = 1;
 
     private String modeSelect = "";
 
     private int commandNum = 0;
-
-    private int yTitle = 100; // Move yTitle to class level
-    private int numTitle = 1; // Move num to class level
-    private int counterTitle = 1;
-
-    private boolean gameOverSoundPlay = false;
 
     Game game;
     Thread gameThread;
@@ -65,26 +54,14 @@ public class Game extends JPanel implements Runnable {
     SoundPlayer soundPlayer = new SoundPlayer();
     GameController gameController = new GameController(this);
     Player player = new Player(this, gameController);
-    NormalEnemy normalEnemy = new NormalEnemy(this, player);
-    GameSong gameSong;
-
-    private Image background = Inf101Graphics.loadImageFromResources("title_background.png");
-    private Image title = Inf101Graphics.loadImageFromResources("Resten_ringer.png");
-    private Image beer = Inf101Graphics.loadImageFromResources("beer.png");
-    private Image beer2 = Inf101Graphics.loadImageFromResources("random_beer_1.jpg");
-    private Image beer3 = Inf101Graphics.loadImageFromResources("random_beer_2.jpg");
-    private Image keepCalm = Inf101Graphics.loadImageFromResources("keep_calm.jpg");
-    private Image map = Inf101Graphics.loadImageFromResources("mapreal.png");
-    private Image emptyBeer = Inf101Graphics.loadImageFromResources("beer_empty.png");
-    private Image gameOver = Inf101Graphics.loadImageFromResources("GAMEOVER.png");
-    private Image victoryScreen = Inf101Graphics.loadImageFromResources("victoryScreen.png");
-    private Image waterCooler = Inf101Graphics.loadImageFromResources("water_cooler.png");
-    private Image bottleOfAlcohol = Inf101Graphics.loadImageFromResources("bottle_of_alcohol.png");
-    private Image levelSelect = Inf101Graphics.loadImageFromResources("level_select.png");
+    private DrawGame drawGame;
+    private UpdateGame updateGame;
 
     public Game() {
         System.out.println(screenWidth);
         this.game = this;
+        drawGame = new DrawGame(this, player);
+        updateGame = new UpdateGame(game, player, gameController);
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
         this.setBackground(Color.BLACK);
         this.setDoubleBuffered(true); // improves rendering, doesn't display the render before the whole screen is
@@ -92,9 +69,8 @@ public class Game extends JPanel implements Runnable {
         this.addKeyListener(gameController);
         this.setFocusable(true);
         this.requestFocusInWindow();
-        this.gameSong = new GameSong();
         gameState = GameState.TITLE_SCREEN;
-        resetAllValues();
+        updateGame.resetAllValues();
 
     }
 
@@ -115,7 +91,7 @@ public class Game extends JPanel implements Runnable {
         while (gameThread != null) {
 
             // 1 UPDATE: update information such as character positions
-            update();
+            updateGame.updateGame();
 
             // 2 DRAW: draw the screen with the updated information
             repaint();
@@ -142,165 +118,6 @@ public class Game extends JPanel implements Runnable {
         }
     }
 
-    private void resetAllValues() {
-        player.setHealthpoints(7);
-        commandNum = 0;
-        player.setX(screenWidth / 2);
-        player.setY(screenHeight / 2);
-        // Create 3 enemies at start (if enemyMax is 3)
-        for (enemiesAtStart = 0; enemiesAtStart <= (enemyMax / 2); enemiesAtStart++) {
-            if (enemiesAtStart < enemyMax) {
-                NormalEnemy newNormalEnemy = new NormalEnemy(game, player);
-                enemyList.add(newNormalEnemy);
-            }
-        }
-        SlowEnemy newSlowEnemy = new SlowEnemy(game, player);
-        enemyList.add(newSlowEnemy);
-        FastEnemy newFastEnemy = new FastEnemy(game, player);
-        enemyList.add(newFastEnemy);
-
-    }
-
-    public void update() {
-        String currentSong = gameSong.getSongName();
-
-        if (gameState == GameState.TITLE_SCREEN && !currentSong.equals("megaman.mid")) {
-            gameSong.setSongName("megaman.mid");
-            gameSong.run();
-        } else if (gameState == GameState.ACTIVE_GAME && !currentSong.equals("metroid-theme.mid")) {
-            gameSong.setSongName("metroid-theme.mid");
-            gameSong.run();
-        } else if (gameState == GameState.GAME_OVER && (!gameOverSoundPlay)) {
-            gameSong.doPauseMidiSounds();
-            gameOverSoundPlay = true;
-            SoundPlayer.gameOver();
-        } else if (gameState == GameState.VICTORY && !currentSong.equals("Victory.mid")) {
-            gameSong.setSongName("Victory.mid");
-            gameSong.run();
-        }
-        if (player.getHealthpoints() <= 0) {
-            gameState = GameState.GAME_OVER;
-            enemyList.clear();
-            resetAllValues();
-        }
-        if (gameState == GameState.GAME_OVER) {
-            if (gameController.RKeyPressed) {
-                gameState = GameState.TITLE_SCREEN;
-            }
-        }
-        if (modeSelect.equals("sober mode")) {
-            modeSelect = "";
-            player.setHealthpoints(10);
-            resetAllValues();
-
-            // removes FastEnemy (last enemy added)
-            enemyList.remove(-1);
-            gameState = GameState.ACTIVE_GAME;
-        }
-        if (modeSelect.equals("tipsy mode")) {
-            modeSelect = "";
-            resetAllValues();
-            SlowEnemy newSlowEnemy = new SlowEnemy(game, player);
-            enemyList.add(newSlowEnemy);
-
-            gameState = GameState.ACTIVE_GAME;
-        }
-        if (modeSelect.equals("drunk mode")) {
-            modeSelect = "";
-            player.setHealthpoints(4);
-            enemyMax += 1;
-            resetAllValues();
-            SlowEnemy newSlowEnemy = new SlowEnemy(game, player);
-            enemyList.add(newSlowEnemy);
-            gameState = GameState.ACTIVE_GAME;
-        }
-        if (gameState == GameState.ACTIVE_GAME) {
-
-            if (player.getIsAlive() == true) {
-                player.update();
-            }
-
-            // Check if arrow keys are pressed and create projectile accordingly
-            if (gameController.shotKeyPressed) {
-                // Check if the previous projectile is not alive before creating a new one
-                if (bulletTimerCheck == false) {
-
-                    Projectile newProjectile = new Projectile(this, player, gameController,
-                            gameController.getShotDirection(),
-                            normalEnemy);
-                    projectileList.add(newProjectile);
-                    SoundPlayer.gunShot();
-                    gameController.shotKeyPressed = false;
-                    bulletTimerCheck = true;
-                } else {
-                    gameController.shotKeyPressed = false;
-                }
-            }
-
-            for (int i = enemyList.size() - 1; i >= 0; i--) {
-                for (int j = projectileList.size() - 1; j >= 0; j--) {
-                    Projectile projectile = projectileList.get(j); // Retrieve the projectile
-                    projectile.update(); // Update the projectile
-
-                    // Check conditions for removing the projectile
-                    if (screenWidth < projectile.getX() || projectile.getX() < 0
-                            || screenHeight < projectile.getX() || projectile.getX() < 0
-                            || projectile.projectTileHitEnemy(i)) {
-                        projectileList.remove(j); // Remove the projectile if necessary
-                    }
-                }
-            }
-            for (int i = enemyList.size() - 1; i >= 0; i--) {
-                enemyList.get(i).update(); // Update the enemy
-                if (enemyList.get(i).getIsAlive() == false) {
-                    if (enemyList.get(i) instanceof NormalEnemy) {
-                        SoundPlayer.manDie1();
-                    } else if (enemyList.get(i) instanceof SlowEnemy) {
-                        SoundPlayer.manDie3();
-                    } else {
-                        SoundPlayer.mandDie2();
-                    }
-                    enemyList.remove(i);
-                }
-            }
-
-            // Check if all enemies are defeated
-            if (enemyList.isEmpty()) {
-                // Set game state to WAVE_COMPLETE
-                if (waveNumber >= 3) {
-                    gameState = GameState.VICTORY;
-                } else {
-                    gameState = GameState.WAVE_COMPLETE;
-                }
-            }
-            if (gameState == GameState.WAVE_COMPLETE && gameController.enterKeyPressed) {
-                gameState = GameState.ACTIVE_GAME;
-                SoundPlayer.playBeerCanOpen();
-                waveNumber++;
-                enemyMax++;
-                // Create 3 enemies at start (if enemyMax is 3)
-                for (enemiesAtStart = 0; enemiesAtStart <= (enemyMax); enemiesAtStart++) {
-                    if (enemiesAtStart < enemyMax) {
-                        NormalEnemy newNormalEnemy = new NormalEnemy(game, player);
-                        enemyList.add(newNormalEnemy);
-                    }
-                }
-                SlowEnemy newSlowEnemy = new SlowEnemy(game, player);
-                enemyList.add(newSlowEnemy);
-                FastEnemy newFastEnemy = new FastEnemy(game, player);
-                enemyList.add(newFastEnemy);
-                player.setX(screenWidth / 2);
-                player.setY(screenHeight / 2);
-            }
-        }
-
-        bulletTimer--;
-        if (bulletTimer <= 0) {
-            bulletTimerCheck = false;
-            bulletTimer = 40;
-        }
-    }
-
     // The paintComponent method is called by the Java Swing framework every time
     // either the window opens or resizes, or we call .repaint() on this object.
     // Note: NEVER call paintComponent directly yourself
@@ -310,129 +127,10 @@ public class Game extends JPanel implements Runnable {
 
         Graphics2D g2 = (Graphics2D) g;
 
-        if (gameState == GameState.TITLE_SCREEN) {
-            drawTitleScreen(g2);
-        }
-
-        if (gameState == GameState.LEVEL_SELECT) {
-            drawLevelSelect(g2);
-        }
-
-        if (gameState == GameState.ACTIVE_GAME) {
-            drawActiveGame(g2);
-        }
-
-        if (gameState == GameState.GAME_OVER) {
-            g2.drawImage(gameOver, 0, 0, screenWidth, screenHeight, null);
-        }
-        if (gameState == GameState.VICTORY) {
-            g2.drawImage(victoryScreen, 0, 0, screenWidth, screenHeight, null);
-        }
-        if (gameState == GameState.WAVE_COMPLETE) {
-            drawWaveComplete(g2);
-        }
-    }
-
-    private void drawWaveComplete(Graphics2D g2) {
-        g2.setColor(Color.RED);
-        g2.setFont(new Font("Arial", Font.BOLD, 26));
-        int x = xCenterText("Wave 1 completed", g2);
-        g2.drawString("Wave " + waveNumber + " completed,", x, screenHeight / 2 - 40);
-        String text = "press enter to have another drink.";
-        x = xCenterText(text, g2);
-        g2.drawString(text, x, screenHeight / 2);
-        g2.drawImage(emptyBeer, screenWidth / 2 - (tileSize * 2 + 20), screenHeight / 2 + 20, tileSize * 4,
-                tileSize * 4, null);
-    }
-
-    private void drawActiveGame(Graphics2D g2) {
-        g2.drawImage(map, 0, 0, screenWidth, screenHeight, null);
-
-        player.draw(g2);
-
-        int enemiesLeft = game.enemyList.size();
-        g2.setColor(Color.WHITE);
-        g2.setFont(new Font("Symbol Bold", Font.BOLD, 20));
-        g2.drawString("ENEMIES LEFT: " + enemiesLeft, 10, 70);
-
-        for (int i = 0; i < enemyList.size(); i++) {
-            if (enemyList.get(i) != null) {
-                enemyList.get(i).draw(enemyList.get(i), g2);
-            }
-        }
-        for (int i = 0; i < projectileList.size(); i++) {
-            if (projectileList.get(i) != null) {
-                projectileList.get(i).draw(g2);
-            }
-        }
-    }
-
-    private void drawTitleScreen(Graphics2D g2) {
-        g2.drawImage(background, 0, 0, screenWidth, screenHeight, null);
-        if (yTitle <= 105 && 95 <= yTitle) {
-            counterTitle++;
-            if (counterTitle > 5) {
-                yTitle += numTitle;
-                counterTitle = 0;
-                if (yTitle == 105 || yTitle == 95) {
-                    numTitle = -numTitle;
-                }
-            }
-        }
-        g2.drawImage(title, 100, yTitle, 612, 148, null);
-        g2.drawImage(beer2, 50, 350, tileSize * 3, tileSize * 3, null);
-        g2.drawImage(beer3, 600, 300, tileSize * 3, tileSize * 3, null);
-        g2.drawImage(keepCalm, 70, 30, tileSize * 2, tileSize * 2, null);
-
-        g2.setFont(new Font("IMPACT", Font.BOLD, 50));
-        g2.setColor(Color.BLACK);
-
-        String text = "NEW GAME";
-        int x = xCenterText(text, g2);
-        int y = tileSize * 7;
-        g2.drawString(text, x, y);
-        if (commandNum == 0) {
-            g2.drawImage(beer, x - (tileSize + 15), y - tileSize, tileSize, tileSize, null);
-        }
-        text = "LEVELS";
-        x = xCenterText(text, g2);
-        y += tileSize * 1.5;
-        g2.drawString(text, x, y);
-        if (commandNum == 1) {
-            g2.drawImage(beer, x - (tileSize + 15), y - tileSize, tileSize, tileSize, null);
-        }
-        text = "QUIT";
-        x = xCenterText(text, g2);
-        y += tileSize * 1.5;
-        g2.drawString(text, x, y);
-        if (commandNum == 2) {
-            g2.drawImage(beer, x - (tileSize + 15), y - tileSize, tileSize, tileSize, null);
-        }
+        drawGame.drawGame(g2);
 
     }
-
-    public void drawLevelSelect(Graphics2D g2) {
-        g2.drawImage(levelSelect, 0, 0, screenWidth, screenHeight, null);
-        int x = 70;
-        if (commandNum == 0) {
-            g2.drawImage(waterCooler, 35, 170, tileSize * 6, tileSize * 6, null);
-        }
-        x = 90 + (tileSize * 4 + 20);
-        if (commandNum == 1) {
-            g2.drawImage(beer, x, 260, tileSize * 3 + 20, tileSize * 3 + 20, null);
-        }
-        x = 50 + ((tileSize * 4 + 20) * 2);
-        if (commandNum == 2) {
-            g2.drawImage(bottleOfAlcohol, x, 190, tileSize * 5 + 30, tileSize * 5 + 30, null);
-        }
-
-    }
-
-    private int xCenterText(String text, Graphics2D g2) {
-        int lenght = (int) g2.getFontMetrics().getStringBounds(text, g2).getWidth();
-        int x = screenWidth / 2 - lenght / 2;
-        return x;
-    }
+        
 
     public int getCommandNum() {
         return this.commandNum;
@@ -474,4 +172,18 @@ public class Game extends JPanel implements Runnable {
         return this.enemyList;
     }
 
+    public GameState getGameState() {
+        return this.gameState;
+    }
+    public void setGameState(GameState gameState) {
+        this.gameState = gameState;
+    }
+
+    public int getWaveNumber() {
+        return this.waveNumber;
+    }
+
+    public ArrayList<Projectile> getProjectileList() {
+        return this.projectileList;
+    }
 }
