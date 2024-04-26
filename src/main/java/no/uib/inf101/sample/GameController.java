@@ -60,11 +60,6 @@ public class GameController implements java.awt.event.KeyListener {
                 }
             }
         }
-        if (gameState == GameState.VICTORY) {
-            if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
-                game.setGameState(GameState.TITLE_SCREEN);
-            }
-        }
         if (gameState == GameState.TITLE_SCREEN) {
             if (e.getKeyCode() == KeyEvent.VK_W) {
 

@@ -1,6 +1,7 @@
 package no.uib.inf101.sample.entity;
 
 import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
 
 import no.uib.inf101.sample.Game;
 import no.uib.inf101.sample.entity.enemy.NormalEnemy;
@@ -13,6 +14,7 @@ public abstract class Entity {
     NormalEnemy normalEnemy;
     SlowEnemy slowEnemy;
     Game game;
+    BufferedImage up1, up2, left1, left2, right1, right2, down1, down2, downHit1, downHit2, leftHit1, leftHit2, rightHit1, rightHit2, beer;
 
     protected int x;
     protected int y;
@@ -25,6 +27,7 @@ public abstract class Entity {
 
     protected Rectangle hitBox;
     protected boolean collisionOn = false;
+
 
     protected static boolean rectanglesOverlap(int x1, int y1, int x2, int y2,
             int x3, int y3, int x4, int y4) {

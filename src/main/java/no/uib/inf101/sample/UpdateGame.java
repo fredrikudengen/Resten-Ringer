@@ -65,7 +65,7 @@ public class UpdateGame {
         ArrayList<Enemy> enemyList = game.getEnemyList();
         String modeSelect = game.getModeSelect();
         playMusic();
-        
+
         if (player.getHealthpoints() <= 0) {
             game.setGameState(GameState.GAME_OVER);
             enemyList.clear();
@@ -78,6 +78,24 @@ public class UpdateGame {
                 resetAllValues();
             }
         }
+        // Check if all enemies are defeated
+        if (enemyList.isEmpty()) {
+            // Set game state to WAVE_COMPLETE
+            if (gameState == GameState.ACTIVE_GAME) {
+                if (waveNumber >= 3) {
+                    game.setGameState(GameState.VICTORY);
+                } else {
+                    game.setGameState(GameState.WAVE_COMPLETE);
+                }
+            }
+        }
+        if (gameState == GameState.VICTORY && gameController.RKeyPressed) {
+            resetAllValues();
+            game.setGameState(GameState.TITLE_SCREEN);
+        }
+        if (gameState == GameState.WAVE_COMPLETE && gameController.enterKeyPressed) {
+            waveComplete();
+        }
         if (modeSelect.equals("sober mode")) {
             game.setModeSelect("");
             player.setHealthpoints(10);
@@ -85,14 +103,12 @@ public class UpdateGame {
             // removes FastEnemy (last enemy added)
             enemyList.remove(enemyList.size() - 1);
             game.setGameState(GameState.ACTIVE_GAME);
-        }
-        else if (modeSelect.equals("tipsy mode")) {
+        } else if (modeSelect.equals("tipsy mode")) {
             game.setModeSelect("");
             SlowEnemy newSlowEnemy = new SlowEnemy(game, player);
             enemyList.add(newSlowEnemy);
             game.setGameState(GameState.ACTIVE_GAME);
-        }
-        else if (modeSelect.equals("drunk mode")) {
+        } else if (modeSelect.equals("drunk mode")) {
             game.setModeSelect("");
             player.setHealthpoints(4);
             enemyMax += 1;
@@ -102,7 +118,7 @@ public class UpdateGame {
             enemyList.add(newFastEnemy);
             game.setGameState(GameState.ACTIVE_GAME);
         }
-        
+
         if (gameState == GameState.ACTIVE_GAME) {
 
             updateActiveGame();
@@ -139,51 +155,34 @@ public class UpdateGame {
             player.update();
         }
 
-        createProjectile();
+        updateProjectile();
 
-        updateProjectileList();
-        
         playDeathSound();
-
-        waveComplete();
-    
     }
 
     private void waveComplete() {
-        GameState gameState = game.getGameState();
         ArrayList<Enemy> enemyList = game.getEnemyList();
         int screenHeight = game.getScreenHeight();
         int screenWidth = game.getScreenWidth();
 
-        // Check if all enemies are defeated
-        if (enemyList.isEmpty()) {
-            // Set game state to WAVE_COMPLETE
-            if (waveNumber >= 3) {
-                game.setGameState(GameState.VICTORY);
-            } else {
-                game.setGameState(GameState.WAVE_COMPLETE);
+        game.setGameState(GameState.ACTIVE_GAME);
+        SoundPlayer.playBeerCanOpen();
+        waveNumber++;
+        enemyMax++;
+        // Create 3 enemies at start (if enemyMax is 3)
+        for (enemiesAtStart = 0; enemiesAtStart <= (enemyMax); enemiesAtStart++) {
+            if (enemiesAtStart < enemyMax) {
+                NormalEnemy newNormalEnemy = new NormalEnemy(game, player);
+                enemyList.add(newNormalEnemy);
             }
         }
+        SlowEnemy newSlowEnemy = new SlowEnemy(game, player);
+        enemyList.add(newSlowEnemy);
+        FastEnemy newFastEnemy = new FastEnemy(game, player);
+        enemyList.add(newFastEnemy);
+        player.setX(screenWidth / 2);
+        player.setY(screenHeight / 2);
 
-        if (gameState == GameState.WAVE_COMPLETE && gameController.enterKeyPressed) {
-            game.setGameState(GameState.ACTIVE_GAME);
-            SoundPlayer.playBeerCanOpen();
-            waveNumber++;
-            enemyMax++;
-            // Create 3 enemies at start (if enemyMax is 3)
-            for (enemiesAtStart = 0; enemiesAtStart <= (enemyMax); enemiesAtStart++) {
-                if (enemiesAtStart < enemyMax) {
-                    NormalEnemy newNormalEnemy = new NormalEnemy(game, player);
-                    enemyList.add(newNormalEnemy);
-                }
-            }
-            SlowEnemy newSlowEnemy = new SlowEnemy(game, player);
-            enemyList.add(newSlowEnemy);
-            FastEnemy newFastEnemy = new FastEnemy(game, player);
-            enemyList.add(newFastEnemy);
-            player.setX(screenWidth / 2);
-            player.setY(screenHeight / 2);
-        }
     }
 
     private void playDeathSound() {
@@ -203,12 +202,26 @@ public class UpdateGame {
         }
     }
 
-    private void updateProjectileList() {
-        ArrayList<Enemy> enemyList = game.getEnemyList();
+    private void updateProjectile() {
         ArrayList<Projectile> projectileList = game.getProjectileList();
+        ArrayList<Enemy> enemyList = game.getEnemyList();
         int screenHeight = game.getScreenHeight();
         int screenWidth = game.getScreenWidth();
 
+        // Check if arrow keys are pressed and create projectile accordingly
+        if (gameController.shotKeyPressed) {
+            // Check if the previous projectile is not alive before creating a new one
+            if (bulletTimerCheck == false) {
+                Projectile newProjectile = new Projectile(game, player, gameController,
+                        gameController.getShotDirection());
+                projectileList.add(newProjectile);
+                SoundPlayer.gunShot();
+                gameController.shotKeyPressed = false;
+                bulletTimerCheck = true;
+            } else {
+                gameController.shotKeyPressed = false;
+            }
+        }
         for (int i = enemyList.size() - 1; i >= 0; i--) {
             for (int j = projectileList.size() - 1; j >= 0; j--) {
                 Projectile projectile = projectileList.get(j); // Retrieve the projectile
@@ -216,31 +229,10 @@ public class UpdateGame {
 
                 // Check conditions for removing the projectile
                 if (screenWidth < projectile.getX() || projectile.getX() < 0
-                        || screenHeight < projectile.getX() || projectile.getX() < 0
+                        || screenHeight < projectile.getY() || projectile.getY() < 0
                         || projectile.projectTileHitEnemy(i)) {
                     projectileList.remove(j); // Remove the projectile if necessary
                 }
-            }
-        }
-    }
-
-    private void createProjectile() {
-        ArrayList<Projectile> projectileList = game.getProjectileList();
-        // Check if arrow keys are pressed and create projectile accordingly
-        if (gameController.shotKeyPressed) {
-            // Check if the previous projectile is not alive before creating a new one
-            if (bulletTimerCheck == false) {
-                NormalEnemy normalEnemy = new NormalEnemy(game, player);
-
-                Projectile newProjectile = new Projectile(game, player, gameController,
-                        gameController.getShotDirection(),
-                        normalEnemy);
-                projectileList.add(newProjectile);
-                SoundPlayer.gunShot();
-                gameController.shotKeyPressed = false;
-                bulletTimerCheck = true;
-            } else {
-                gameController.shotKeyPressed = false;
             }
         }
     }

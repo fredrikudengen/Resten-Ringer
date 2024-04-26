@@ -6,7 +6,6 @@ import java.awt.Image;
 import no.uib.inf101.sample.Game;
 import no.uib.inf101.sample.GameController;
 import no.uib.inf101.sample.Inf101Graphics;
-import no.uib.inf101.sample.entity.enemy.NormalEnemy;
 
 public class Projectile extends Entity {
 
@@ -29,14 +28,11 @@ public class Projectile extends Entity {
     private Image right1 = Inf101Graphics.loadImageFromResources("Right_bullet_1.png");
     private Image right2 = Inf101Graphics.loadImageFromResources("Right_bullet_2.png");
 
-    public Projectile(Game game, Player player, GameController gameController, String shotDirection,
-            NormalEnemy normalEnemy) {
+    public Projectile(Game game, Player player, GameController gameController, String shotDirection) {
         this.game = game;
         this.player = player;
         this.gameController = gameController;
         this.shotDirection = shotDirection;
-        this.normalEnemy = normalEnemy;
-
         setDefaultValues();
     }
 
@@ -95,7 +91,7 @@ public class Projectile extends Entity {
             }
         } else if (shotDirection == "right") {
             x += speed;
-            if (x > game.getWidth()) {
+            if (x > game.getScreenWidth()) {
                 gameController.shootRight = false;
             }
         }

@@ -7,7 +7,7 @@ public class SoundPlayer {
     public static void playBeerCanOpen() {
         try {
             // Open an audio input stream for sound clip 1.
-            AudioInputStream audioIn = AudioSystem.getAudioInputStream(SoundPlayer.class.getResource("beer-can-open.wav"));
+            AudioInputStream audioIn = AudioSystem.getAudioInputStream(SoundPlayer.class.getResource("soundeffects/beer-can-open.wav"));
             
             // Get a sound clip resource.
             Clip clip = AudioSystem.getClip();
@@ -25,7 +25,7 @@ public class SoundPlayer {
     public static void gunShot() {
         try {
             // Open an audio input stream for sound clip 2.
-            AudioInputStream audioIn = AudioSystem.getAudioInputStream(SoundPlayer.class.getResource("gun-shot.wav"));
+            AudioInputStream audioIn = AudioSystem.getAudioInputStream(SoundPlayer.class.getResource("soundeffects/gun-shot.wav"));
             
             // Get a sound clip resource.
             Clip clip = AudioSystem.getClip();
@@ -43,7 +43,7 @@ public class SoundPlayer {
     public static void gameOver() {
         try {
             // Open an audio input stream for sound clip 3.
-            AudioInputStream audioIn = AudioSystem.getAudioInputStream(SoundPlayer.class.getResource("game-over.wav"));
+            AudioInputStream audioIn = AudioSystem.getAudioInputStream(SoundPlayer.class.getResource("soundeffects/game-over.wav"));
             
             // Get a sound clip resource.
             Clip clip = AudioSystem.getClip();
@@ -61,7 +61,7 @@ public class SoundPlayer {
     public static void manDie1() {
         try {
             // Open an audio input stream for sound clip 3.
-            AudioInputStream audioIn = AudioSystem.getAudioInputStream(SoundPlayer.class.getResource("man-die.wav"));
+            AudioInputStream audioIn = AudioSystem.getAudioInputStream(SoundPlayer.class.getResource("soundeffects/man-die.wav"));
             
             // Get a sound clip resource.
             Clip clip = AudioSystem.getClip();
@@ -78,7 +78,7 @@ public class SoundPlayer {
     public static void mandDie2() {
         try {
             // Open an audio input stream for sound clip 3.
-            AudioInputStream audioIn = AudioSystem.getAudioInputStream(SoundPlayer.class.getResource("man-die2.wav"));
+            AudioInputStream audioIn = AudioSystem.getAudioInputStream(SoundPlayer.class.getResource("soundeffects/man-die2.wav"));
             
             // Get a sound clip resource.
             Clip clip = AudioSystem.getClip();
@@ -95,7 +95,7 @@ public class SoundPlayer {
     public static void manDie3() {
         try {
             // Open an audio input stream for sound clip 3.
-            AudioInputStream audioIn = AudioSystem.getAudioInputStream(SoundPlayer.class.getResource("man-die3.wav"));
+            AudioInputStream audioIn = AudioSystem.getAudioInputStream(SoundPlayer.class.getResource("soundeffects/man-die3.wav"));
             
             // Get a sound clip resource.
             Clip clip = AudioSystem.getClip();

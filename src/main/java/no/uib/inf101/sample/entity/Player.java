@@ -22,28 +22,34 @@ public class Player extends Entity {
     private static final long SHOCK_DURATION = 1000000000;
     private long shockStartTime = 0;
 
-    private Image up1 = Inf101Graphics.loadImageFromResources("Up_shotgun_walking_1.png");
-    private Image up2 = Inf101Graphics.loadImageFromResources("Up_shotgun_walking_2.png");
-    private Image down1 = Inf101Graphics.loadImageFromResources("Down_shotgun_walking_1.png");
-    private Image down2 = Inf101Graphics.loadImageFromResources("Down_shotgun_walking_2.png");
-    private Image left1 = Inf101Graphics.loadImageFromResources("Left_shotgun_walking_1.png");
-    private Image left2 = Inf101Graphics.loadImageFromResources("Left_shotgun_walking_2.png");
-    private Image right1 = Inf101Graphics.loadImageFromResources("Right_shotgun_walking_1.png");
-    private Image right2 = Inf101Graphics.loadImageFromResources("Right_shotgun_walking_2.png");
-    private Image downHit1 = Inf101Graphics.loadImageFromResources("Down_hit_1.png");
-    private Image downHit2 = Inf101Graphics.loadImageFromResources("Down_hit_2.png");
-    private Image leftHit1 = Inf101Graphics.loadImageFromResources("Left_hit_1.png");
-    private Image leftHit2 = Inf101Graphics.loadImageFromResources("Left_hit_2.png");
-    private Image rightHit1 = Inf101Graphics.loadImageFromResources("Right_hit_1.png");
-    private Image rightHit2 = Inf101Graphics.loadImageFromResources("Right_hit_2.png");
+    private void getPlayerImage() {
+    up1 = Inf101Graphics.loadImageFromResources("Up_shotgun_walking_1.png");
+    up2 = Inf101Graphics.loadImageFromResources("Up_shotgun_walking_2.png");
+    down1 = Inf101Graphics.loadImageFromResources("Down_shotgun_walking_1.png");
+    down2 = Inf101Graphics.loadImageFromResources("Down_shotgun_walking_2.png");
+    left1 = Inf101Graphics.loadImageFromResources("Left_shotgun_walking_1.png");
+    left2 = Inf101Graphics.loadImageFromResources("Left_shotgun_walking_2.png");
+    right1 = Inf101Graphics.loadImageFromResources("Right_shotgun_walking_1.png");
+    right2 = Inf101Graphics.loadImageFromResources("Right_shotgun_walking_2.png");
+    downHit1 = Inf101Graphics.loadImageFromResources("Down_hit_1.png");
+    downHit2 = Inf101Graphics.loadImageFromResources("Down_hit_2.png");
+    leftHit1 = Inf101Graphics.loadImageFromResources("Left_hit_1.png");
+    leftHit2 = Inf101Graphics.loadImageFromResources("Left_hit_2.png");
+    rightHit1 = Inf101Graphics.loadImageFromResources("Right_hit_1.png");
+    rightHit2 = Inf101Graphics.loadImageFromResources("Right_hit_2.png");
+    }
 
-    private Image beer = Inf101Graphics.loadImageFromResources("beer.png");
+    private void loadHealthIcon(){
+        beer = Inf101Graphics.loadImageFromResources("beer.png");
+}
 
     public Player(Game game, GameController gameController) {
         this.game = game;
         this.gameController = gameController;
         hitBox = new Rectangle(8, 16, 32, 32);
         setDefaultValues();
+        getPlayerImage();
+        loadHealthIcon();
     }
 
     protected void setDefaultValues() {
