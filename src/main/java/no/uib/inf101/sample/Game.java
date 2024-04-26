@@ -39,12 +39,10 @@ public class Game extends JPanel implements Runnable {
 
     // FPS
     private int fps = 60;
-
-    private int waveNumber = 1;
-
     private String modeSelect = "";
 
     private int commandNum = 0;
+    private int waveNumber = 0;
 
     Game game;
     Thread gameThread;
@@ -70,8 +68,6 @@ public class Game extends JPanel implements Runnable {
         this.setFocusable(true);
         this.requestFocusInWindow();
         gameState = GameState.TITLE_SCREEN;
-        updateGame.resetAllValues();
-
     }
 
     public void startGameThread() {
@@ -179,11 +175,13 @@ public class Game extends JPanel implements Runnable {
         this.gameState = gameState;
     }
 
-    public int getWaveNumber() {
-        return this.waveNumber;
-    }
-
     public ArrayList<Projectile> getProjectileList() {
         return this.projectileList;
+    }
+    public int getWaveNum(){
+        return this.waveNumber;
+    }
+    public void setWaveNum(int waveNum){
+        this.waveNumber = waveNum;
     }
 }

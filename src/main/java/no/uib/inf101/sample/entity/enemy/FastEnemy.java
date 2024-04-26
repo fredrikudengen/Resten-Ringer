@@ -14,6 +14,7 @@ public class FastEnemy extends Enemy {
         this.player = player;
         this.movementDirection = "right";
         setDefaultValues();
+        getFastEnemyImage();
     }
 
     protected void setDefaultValues() {

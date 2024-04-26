@@ -41,7 +41,6 @@ public class UpdateGame {
         ArrayList<Enemy> enemyList = game.getEnemyList();
 
         player.setHealthpoints(7);
-        game.setCommandNum(0);
         player.setX(screenWidth / 2);
         player.setY(screenHeight / 2);
         if (addEnemies) {
@@ -68,8 +67,11 @@ public class UpdateGame {
 
         if (player.getHealthpoints() <= 0) {
             game.setGameState(GameState.GAME_OVER);
+        }
+        if (gameState == GameState.TITLE_SCREEN) {
+            addEnemies = true;
             enemyList.clear();
-            addEnemies = false;
+            resetAllValues();
         }
         if (gameState == GameState.GAME_OVER) {
             if (gameController.RKeyPressed) {
@@ -82,15 +84,27 @@ public class UpdateGame {
         if (enemyList.isEmpty()) {
             // Set game state to WAVE_COMPLETE
             if (gameState == GameState.ACTIVE_GAME) {
-                if (waveNumber >= 3) {
+                if (game.getWaveNum() == 2) {
                     game.setGameState(GameState.VICTORY);
                 } else {
                     game.setGameState(GameState.WAVE_COMPLETE);
+                    game.setWaveNum(game.getWaveNum() + 1);
+                    enemyMax++;
+                    // Create 3 enemies at start (if enemyMax is 3)
+                    for (enemiesAtStart = 0; enemiesAtStart <= (enemyMax); enemiesAtStart++) {
+                        if (enemiesAtStart < enemyMax) {
+                            NormalEnemy newNormalEnemy = new NormalEnemy(game, player);
+                            enemyList.add(newNormalEnemy);
+                        }
+                    }
+                    SlowEnemy newSlowEnemy = new SlowEnemy(game, player);
+                    enemyList.add(newSlowEnemy);
+                    FastEnemy newFastEnemy = new FastEnemy(game, player);
+                    enemyList.add(newFastEnemy);
                 }
             }
         }
         if (gameState == GameState.VICTORY && gameController.RKeyPressed) {
-            resetAllValues();
             game.setGameState(GameState.TITLE_SCREEN);
         }
         if (gameState == GameState.WAVE_COMPLETE && gameController.enterKeyPressed) {
@@ -103,11 +117,13 @@ public class UpdateGame {
             // removes FastEnemy (last enemy added)
             enemyList.remove(enemyList.size() - 1);
             game.setGameState(GameState.ACTIVE_GAME);
+
         } else if (modeSelect.equals("tipsy mode")) {
             game.setModeSelect("");
             SlowEnemy newSlowEnemy = new SlowEnemy(game, player);
             enemyList.add(newSlowEnemy);
             game.setGameState(GameState.ACTIVE_GAME);
+
         } else if (modeSelect.equals("drunk mode")) {
             game.setModeSelect("");
             player.setHealthpoints(4);
@@ -161,25 +177,11 @@ public class UpdateGame {
     }
 
     private void waveComplete() {
-        ArrayList<Enemy> enemyList = game.getEnemyList();
         int screenHeight = game.getScreenHeight();
         int screenWidth = game.getScreenWidth();
 
         game.setGameState(GameState.ACTIVE_GAME);
         SoundPlayer.playBeerCanOpen();
-        waveNumber++;
-        enemyMax++;
-        // Create 3 enemies at start (if enemyMax is 3)
-        for (enemiesAtStart = 0; enemiesAtStart <= (enemyMax); enemiesAtStart++) {
-            if (enemiesAtStart < enemyMax) {
-                NormalEnemy newNormalEnemy = new NormalEnemy(game, player);
-                enemyList.add(newNormalEnemy);
-            }
-        }
-        SlowEnemy newSlowEnemy = new SlowEnemy(game, player);
-        enemyList.add(newSlowEnemy);
-        FastEnemy newFastEnemy = new FastEnemy(game, player);
-        enemyList.add(newFastEnemy);
         player.setX(screenWidth / 2);
         player.setY(screenHeight / 2);
 

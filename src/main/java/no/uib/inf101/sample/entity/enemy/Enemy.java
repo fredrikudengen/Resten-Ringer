@@ -3,6 +3,7 @@ package no.uib.inf101.sample.entity.enemy;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
 import java.util.Random;
 
 import no.uib.inf101.sample.Game;
@@ -24,25 +25,11 @@ public abstract class Enemy extends Entity {
     private boolean isStopped = false;
     private long stopStartTime = 0;
     private static final long STOP_DURATION = 500000000; // 0.5 seconds in milliseconds
-
-    private Image normal_enemy_up_1 = Inf101Graphics.loadImageFromResources("Up_normal_enemy_1.png");
-    private Image normal_enemy_up_2 = Inf101Graphics.loadImageFromResources("Up_normal_enemy_2.png");
-    private Image normal_enemy_down_1 = Inf101Graphics.loadImageFromResources("Down_normal_enemy_1.png");
-    private Image normal_enemy_down_2 = Inf101Graphics.loadImageFromResources("Down_normal_enemy_2.png");
-
-    private Image slow_enemy_left_1 = Inf101Graphics.loadImageFromResources("Left_slow_enemy_1.png");
-    private Image slow_enemy_left_2 = Inf101Graphics.loadImageFromResources("Left_slow_enemy_2.png");
-    private Image slow_enemy_right_1 = Inf101Graphics.loadImageFromResources("Right_slow_enemy_1.png");
-    private Image slow_enemy_right_2 = Inf101Graphics.loadImageFromResources("Right_slow_enemy_2.png");
-    private Image slow_enemy_up_1 = Inf101Graphics.loadImageFromResources("Up_slow_enemy_1.png");
-    private Image slow_enemy_up_2 = Inf101Graphics.loadImageFromResources("Up_slow_enemy_2.png");
-
-    private Image fast_enemy_up_1 = Inf101Graphics.loadImageFromResources("Up_police_1.png");
-    private Image fast_enemy_up_2 = Inf101Graphics.loadImageFromResources("Up_police_2.png");
-    private Image fast_enemy_left_1 = Inf101Graphics.loadImageFromResources("Left_police_1.png");
-    private Image fast_enemy_left_2 = Inf101Graphics.loadImageFromResources("Left_police_2.png");
-    private Image fast_enemy_right_1 = Inf101Graphics.loadImageFromResources("Right_police_1.png");
-    private Image fast_enemy_right_2 = Inf101Graphics.loadImageFromResources("Right_police_2.png");
+    protected BufferedImage normal_enemy_up_1, normal_enemy_up_2, normal_enemy_down_1, normal_enemy_down_2;
+    protected BufferedImage slow_enemy_left_1, slow_enemy_left_2, slow_enemy_right_1, slow_enemy_right_2,
+            slow_enemy_up_1, slow_enemy_up_2;
+    protected BufferedImage fast_enemy_up_1, fast_enemy_up_2, fast_enemy_left_1, fast_enemy_left_2, fast_enemy_right_1,
+            fast_enemy_right_2;
 
     public Enemy(Game game, Player player) {
         this.game = game;
@@ -52,6 +39,32 @@ public abstract class Enemy extends Entity {
     }
 
     protected abstract void setDefaultValues();
+
+    protected void getNormalEnemyImage() {
+        normal_enemy_up_1 = Inf101Graphics.loadImageFromResources("Up_normal_enemy_1.png");
+        normal_enemy_up_2 = Inf101Graphics.loadImageFromResources("Up_normal_enemy_2.png");
+        normal_enemy_down_1 = Inf101Graphics.loadImageFromResources("Down_normal_enemy_1.png");
+        normal_enemy_down_2 = Inf101Graphics.loadImageFromResources("Down_normal_enemy_2.png");
+    }
+
+    protected void getSlowEnemyImage() {
+        slow_enemy_left_1 = Inf101Graphics.loadImageFromResources("Left_slow_enemy_1.png");
+        slow_enemy_left_2 = Inf101Graphics.loadImageFromResources("Left_slow_enemy_2.png");
+        slow_enemy_right_1 = Inf101Graphics.loadImageFromResources("Right_slow_enemy_1.png");
+        slow_enemy_right_2 = Inf101Graphics.loadImageFromResources("Right_slow_enemy_2.png");
+        slow_enemy_up_1 = Inf101Graphics.loadImageFromResources("Up_slow_enemy_1.png");
+        slow_enemy_up_2 = Inf101Graphics.loadImageFromResources("Up_slow_enemy_2.png");
+
+    }
+
+    protected void getFastEnemyImage() {
+        fast_enemy_up_1 = Inf101Graphics.loadImageFromResources("Up_police_1.png");
+        fast_enemy_up_2 = Inf101Graphics.loadImageFromResources("Up_police_2.png");
+        fast_enemy_left_1 = Inf101Graphics.loadImageFromResources("Left_police_1.png");
+        fast_enemy_left_2 = Inf101Graphics.loadImageFromResources("Left_police_2.png");
+        fast_enemy_right_1 = Inf101Graphics.loadImageFromResources("Right_police_1.png");
+        fast_enemy_right_2 = Inf101Graphics.loadImageFromResources("Right_police_2.png");
+    }
 
     protected void setXAndY() {
         Random rand = new Random();

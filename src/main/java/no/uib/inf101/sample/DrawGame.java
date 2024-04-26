@@ -72,7 +72,7 @@ public class DrawGame {
         g2.setColor(Color.RED);
         g2.setFont(new Font("Arial", Font.BOLD, 26));
         int x = xCenterText("Wave 1 completed", g2);
-        g2.drawString("Wave " + game.getWaveNumber() + " completed,", x, screenHeight / 2 - 40);
+        g2.drawString("Wave " + game.getWaveNum() + " completed,", x, screenHeight / 2 - 40);
         String text = "press enter to have another drink.";
         x = xCenterText(text, g2);
         g2.drawString(text, x, screenHeight / 2);

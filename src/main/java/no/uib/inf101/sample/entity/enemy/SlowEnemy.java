@@ -14,6 +14,7 @@ public class SlowEnemy extends Enemy {
         this.player = player;
         this.movementDirection = "right";
         setDefaultValues();
+        getSlowEnemyImage();
     }
 
     protected void setDefaultValues() {

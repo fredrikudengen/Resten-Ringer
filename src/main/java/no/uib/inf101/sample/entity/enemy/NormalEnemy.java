@@ -14,6 +14,7 @@ public class NormalEnemy extends Enemy {
         this.player = player;
         this.movementDirection = "right";
         setDefaultValues();
+        getNormalEnemyImage();
     }
 
     protected void setDefaultValues() {
