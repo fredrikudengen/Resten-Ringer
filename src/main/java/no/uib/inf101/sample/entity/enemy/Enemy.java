@@ -67,6 +67,9 @@ public abstract class Enemy extends Entity {
         fast_enemy_right_2 = Inf101Graphics.loadImageFromResources("Right_police_2.png");
     }
 
+    /**
+     * Sets the x and y coordinate of an Enemy in on of the four corners of the map.
+     */
     protected void setXAndY() {
         Random rand = new Random();
 
@@ -90,14 +93,19 @@ public abstract class Enemy extends Entity {
         }
     }
 
+    /**
+     * Updates the x and y of Enemy so it moves towards the Player.
+     */
     protected void simulateEnemyMoves() {
         xNeededToMove = player.getX() - x;
         yNeededToMove = player.getY() - y;
+        // If number of x pixels needed to move is larger than y, move to left or right
+        // first
         if (Math.abs(xNeededToMove) > Math.abs(yNeededToMove)) {
-            // Check tile collision
             collisionOn = false;
             game.collisionDetection.checkTile(this);
             if (collisionOn == true) {
+                // Move around collision tile based on direction
                 if (movementDirection == "left") {
                     y += speed;
                 } else if (movementDirection == "right") {
@@ -127,8 +135,9 @@ public abstract class Enemy extends Entity {
                 }
             }
         }
+        // If number of y pixels needed to move is larger than x, move up or down
+        // first
         if (Math.abs(xNeededToMove) <= Math.abs(yNeededToMove)) {
-            // Check tile collision
             collisionOn = false;
             game.collisionDetection.checkTile(this);
             if (collisionOn == true) {
@@ -175,12 +184,17 @@ public abstract class Enemy extends Entity {
         }
     }
 
+    /**
+     * Checks whether Enemy collides with Player. Subtracts 9 because Player sprite
+     * is slightly smaller than tileSize.
+     * 
+     * @return boolean whether Enemy collides with Player or not.
+     */
     protected boolean enemyCollidesWithPlayer() {
         return rectanglesOverlap(x + 9, y, x + game.getTileSize() - 9,
                 y + game.getTileSize(), player.getX() + 9,
                 player.getY(),
                 player.getX() + game.getTileSize() - 9, player.getY() + game.getTileSize());
-
     }
 
     /**
@@ -271,7 +285,7 @@ public abstract class Enemy extends Entity {
                 }
             } else if (movementDirection == "down") {
                 if (!(y + 50 < game.getScreenHeight() - 60)) {
-                    x -= 50;
+                    y -= 50;
                 }
             }
         }
