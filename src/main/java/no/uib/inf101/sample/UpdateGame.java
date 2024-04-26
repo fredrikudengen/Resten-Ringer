@@ -13,19 +13,18 @@ import no.uib.inf101.sample.sound.SoundPlayer;
 
 public class UpdateGame {
 
-    Game game;
-    Player player;
-    GameSong gameSong;
-    GameController gameController;
+    private Game game;
+    private Player player;
+    private GameSong gameSong;
+    private GameController gameController;
 
-    private boolean gameOverSoundPlay = false;
-    private int enemyMax = 2;
-
-    private int enemiesAtStart = 0;
     private boolean bulletTimerCheck = false;
     private boolean addEnemies = true; // Add enemies by default
+    private boolean gameOverSoundPlay = false;
+
+    private int enemyMax = 2;
+    private int enemiesAtStart = 0;
     private int bulletTimer = 40;
-    private int waveNumber = 1;
 
     public UpdateGame(Game game, Player player, GameController gameController) {
         this.game = game;
@@ -35,7 +34,7 @@ public class UpdateGame {
 
     }
 
-    public void resetAllValues() {
+    private void resetAllValues() {
         int screenHeight = game.getScreenHeight();
         int screenWidth = game.getScreenWidth();
         ArrayList<Enemy> enemyList = game.getEnemyList();

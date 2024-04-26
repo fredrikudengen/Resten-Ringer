@@ -154,7 +154,7 @@ public class DrawGame {
 
     }
 
-    public void drawLevelSelect(Graphics2D g2) {
+    private void drawLevelSelect(Graphics2D g2) {
         int screenHeight = game.getScreenHeight();
         int screenWidth = game.getScreenWidth();
         int tileSize = game.getTileSize();

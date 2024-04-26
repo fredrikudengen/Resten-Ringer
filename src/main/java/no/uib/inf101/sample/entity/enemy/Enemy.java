@@ -13,18 +13,18 @@ import no.uib.inf101.sample.entity.Player;
 
 public abstract class Enemy extends Entity {
 
-    Game game;
-    Player player;
+    protected Game game;
+    protected Player player;
 
     private int imageNum = 1;
     private int imageCounter = 0;
-
     private int xNeededToMove;
     private int yNeededToMove;
 
     private boolean isStopped = false;
     private long stopStartTime = 0;
     private static final long STOP_DURATION = 500000000; // 0.5 seconds in milliseconds
+    
     protected BufferedImage normal_enemy_up_1, normal_enemy_up_2, normal_enemy_down_1, normal_enemy_down_2;
     protected BufferedImage slow_enemy_left_1, slow_enemy_left_2, slow_enemy_right_1, slow_enemy_right_2,
             slow_enemy_up_1, slow_enemy_up_2;

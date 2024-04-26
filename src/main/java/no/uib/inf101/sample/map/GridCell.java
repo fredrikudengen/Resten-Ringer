@@ -1,9 +1,6 @@
 package no.uib.inf101.sample.map;
 
-import java.awt.Image;
-
-public class Tile {
-    public Image image;
+public class GridCell {
     public boolean collision = false;
 
 }

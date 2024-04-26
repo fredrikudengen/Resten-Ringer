@@ -10,13 +10,12 @@ import no.uib.inf101.sample.Inf101Graphics;
 
 public class Projectile extends Entity {
 
-    Game game;
-    Player player;
-    GameController gameController;
-    BufferedImage up1, up2, down1, down2, left1, left2, right1, right2;
-
+    private Game game;
+    private Player player;
+    private GameController gameController;
+    private BufferedImage up1, up2, down1, down2, left1, left2, right1, right2;
     private String shotDirection;
-    final int originalBulletSize = 4; // 8x8 bullet size
+    private final int originalBulletSize = 4; // 8x8 bullet size
     private final int bulletSize = originalBulletSize * 3; // 12x12 tile size
 
     public Projectile(Game game, Player player, GameController gameController, String shotDirection) {
@@ -30,23 +29,20 @@ public class Projectile extends Entity {
 
     protected void setDefaultValues() {
         x = player.x;
-
         y = player.y;
-
         speed = 8;
-
         isAlive = true;
     }
 
     private void getProjectileImage() {
-up1 = Inf101Graphics.loadImageFromResources("Up_bullet_1.png");
-up2 = Inf101Graphics.loadImageFromResources("Up_bullet_2.png");
-down1 = Inf101Graphics.loadImageFromResources("Down_bullet_1.png");
-down2 = Inf101Graphics.loadImageFromResources("Down_bullet_2.png");
-left1 = Inf101Graphics.loadImageFromResources("Left_bullet_1.png");
-left2 = Inf101Graphics.loadImageFromResources("Left_bullet_2.png");
-right1 = Inf101Graphics.loadImageFromResources("Right_bullet_1.png");
-right2 = Inf101Graphics.loadImageFromResources("Right_bullet_2.png");
+        up1 = Inf101Graphics.loadImageFromResources("Up_bullet_1.png");
+        up2 = Inf101Graphics.loadImageFromResources("Up_bullet_2.png");
+        down1 = Inf101Graphics.loadImageFromResources("Down_bullet_1.png");
+        down2 = Inf101Graphics.loadImageFromResources("Down_bullet_2.png");
+        left1 = Inf101Graphics.loadImageFromResources("Left_bullet_1.png");
+        left2 = Inf101Graphics.loadImageFromResources("Left_bullet_2.png");
+        right1 = Inf101Graphics.loadImageFromResources("Right_bullet_1.png");
+        right2 = Inf101Graphics.loadImageFromResources("Right_bullet_2.png");
     }
 
     private boolean ProjectileCollidesWithEnemy(int i) {

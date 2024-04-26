@@ -5,9 +5,6 @@ import no.uib.inf101.sample.entity.Player;
 
 public class SlowEnemy extends Enemy {
 
-    Game game;
-    Player player;
-
     public SlowEnemy(Game game, Player player) {
         super(game, player);
         this.game = game;

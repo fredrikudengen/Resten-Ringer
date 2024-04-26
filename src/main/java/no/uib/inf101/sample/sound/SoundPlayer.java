@@ -1,57 +1,50 @@
+// Made with help from chatGPT 22.04.24, but edited to fit game function
+
 package no.uib.inf101.sample.sound;
 
 import javax.sound.sampled.*;
 
 public class SoundPlayer {
-    
+
     public static void playBeerCanOpen() {
         try {
-            // Open an audio input stream for sound clip 1.
-            AudioInputStream audioIn = AudioSystem.getAudioInputStream(SoundPlayer.class.getResource("soundeffects/beer-can-open.wav"));
-            
-            // Get a sound clip resource.
+            AudioInputStream audioIn = AudioSystem
+                    .getAudioInputStream(SoundPlayer.class.getResource("soundeffects/beer-can-open.wav"));
+
             Clip clip = AudioSystem.getClip();
-            
-            // Open audio clip and load samples from the audio input stream.
+
             clip.open(audioIn);
-            
-            // Play the sound clip.
+
             clip.start();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-    
+
     public static void gunShot() {
         try {
-            // Open an audio input stream for sound clip 2.
-            AudioInputStream audioIn = AudioSystem.getAudioInputStream(SoundPlayer.class.getResource("soundeffects/gun-shot.wav"));
-            
-            // Get a sound clip resource.
+            AudioInputStream audioIn = AudioSystem
+                    .getAudioInputStream(SoundPlayer.class.getResource("soundeffects/gun-shot.wav"));
+
             Clip clip = AudioSystem.getClip();
-            
-            // Open audio clip and load samples from the audio input stream.
+
             clip.open(audioIn);
-            
-            // Play the sound clip.
+
             clip.start();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-    
+
     public static void gameOver() {
         try {
-            // Open an audio input stream for sound clip 3.
-            AudioInputStream audioIn = AudioSystem.getAudioInputStream(SoundPlayer.class.getResource("soundeffects/game-over.wav"));
-            
-            // Get a sound clip resource.
+            AudioInputStream audioIn = AudioSystem
+                    .getAudioInputStream(SoundPlayer.class.getResource("soundeffects/game-over.wav"));
+
             Clip clip = AudioSystem.getClip();
-            
-            // Open audio clip and load samples from the audio input stream.
+
             clip.open(audioIn);
-            
-            // Play the sound clip.
+
             clip.start();
         } catch (Exception e) {
             e.printStackTrace();
@@ -60,50 +53,43 @@ public class SoundPlayer {
 
     public static void manDie1() {
         try {
-            // Open an audio input stream for sound clip 3.
-            AudioInputStream audioIn = AudioSystem.getAudioInputStream(SoundPlayer.class.getResource("soundeffects/man-die.wav"));
-            
-            // Get a sound clip resource.
+            AudioInputStream audioIn = AudioSystem
+                    .getAudioInputStream(SoundPlayer.class.getResource("soundeffects/man-die.wav"));
+
             Clip clip = AudioSystem.getClip();
-            
-            // Open audio clip and load samples from the audio input stream.
+
             clip.open(audioIn);
-            
-            // Play the sound clip.
+
             clip.start();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
     public static void mandDie2() {
         try {
-            // Open an audio input stream for sound clip 3.
-            AudioInputStream audioIn = AudioSystem.getAudioInputStream(SoundPlayer.class.getResource("soundeffects/man-die2.wav"));
-            
-            // Get a sound clip resource.
+            AudioInputStream audioIn = AudioSystem
+                    .getAudioInputStream(SoundPlayer.class.getResource("soundeffects/man-die2.wav"));
+
             Clip clip = AudioSystem.getClip();
-            
-            // Open audio clip and load samples from the audio input stream.
+
             clip.open(audioIn);
-            
-            // Play the sound clip.
+
             clip.start();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
     public static void manDie3() {
         try {
-            // Open an audio input stream for sound clip 3.
-            AudioInputStream audioIn = AudioSystem.getAudioInputStream(SoundPlayer.class.getResource("soundeffects/man-die3.wav"));
-            
-            // Get a sound clip resource.
+            AudioInputStream audioIn = AudioSystem
+                    .getAudioInputStream(SoundPlayer.class.getResource("soundeffects/man-die3.wav"));
+
             Clip clip = AudioSystem.getClip();
-            
-            // Open audio clip and load samples from the audio input stream.
+
             clip.open(audioIn);
-            
-            // Play the sound clip.
+
             clip.start();
         } catch (Exception e) {
             e.printStackTrace();

@@ -3,27 +3,19 @@ package no.uib.inf101.sample.entity;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
-import no.uib.inf101.sample.Game;
-import no.uib.inf101.sample.entity.enemy.NormalEnemy;
-import no.uib.inf101.sample.entity.enemy.SlowEnemy;
-
 public abstract class Entity {
 
-    Projectile projectile;
-    Player player;
-    NormalEnemy normalEnemy;
-    SlowEnemy slowEnemy;
-    Game game;
-    BufferedImage up1, up2, left1, left2, right1, right2, down1, down2, downHit1, downHit2, leftHit1, leftHit2, rightHit1, rightHit2, beer;
-
+    protected BufferedImage up1, up2, left1, left2, right1, right2, down1, down2, downHit1, downHit2, leftHit1, leftHit2, rightHit1, rightHit2, beer;
+    
     protected int x;
     protected int y;
     protected int speed;
     protected int healthPoints;
-    protected boolean isAlive;
-    protected String movementDirection = "right";
     protected int imageNum = 1;
     protected int imageCounter = 0;
+
+    protected boolean isAlive;
+    protected String movementDirection = "right";
 
     protected Rectangle hitBox;
     protected boolean collisionOn = false;

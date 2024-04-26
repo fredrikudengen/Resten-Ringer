@@ -6,36 +6,35 @@ import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-public class TileFactory {
-    Game game;
-    private Tile[] tile;
+public class GridFactory {
+    private Game game;
+    private GridCell[] gridCell;
 
     // Stores map data
-    private int mapTileNum[][];
+    private int gridCellNum[][];
 
-    public TileFactory(Game game) {
+    public GridFactory(Game game) {
 
         this.game = game;
 
-        tile = new Tile[2];
+        gridCell = new GridCell[2];
 
-        mapTileNum = new int[game.getCols()][game.getRows()];
+        gridCellNum = new int[game.getCols()][game.getRows()];
 
         setTiles();
-        loadMap("gameMap1.txt");
-
+        loadGrid("gameMap1.txt");
     }
 
     private void setTiles() {
-        tile[0] = new Tile();
-        tile[1] = new Tile();
-        tile[1].collision = true;
+        gridCell[0] = new GridCell();
+        gridCell[1] = new GridCell();
+        gridCell[1].collision = true;
     }
 
-    private void loadMap(String mapFile) {
+    private void loadGrid(String gridFile) {
         try {
             // Imports textfile
-            InputStream is = getClass().getResourceAsStream(mapFile);
+            InputStream is = getClass().getResourceAsStream(gridFile);
             // Reads textfile
             BufferedReader br = new BufferedReader(new InputStreamReader(is));
 
@@ -52,7 +51,7 @@ public class TileFactory {
                     String numbers[] = line.split(" ");
                     // Stores extracted number
                     int num = Integer.parseInt(numbers[col]);
-                    mapTileNum[col][row] = num;
+                    gridCellNum[col][row] = num;
                     col++;
 
                 }
@@ -66,10 +65,10 @@ public class TileFactory {
         }
     }
 
-    public int[][] getMapTileNum() {
-        return mapTileNum;
+    public int[][] getGridCellNUm() {
+        return gridCellNum;
     }
-    public Tile[] getTile() {
-        return tile;
+    public GridCell[] getGridCell() {
+        return gridCell;
     }
 }

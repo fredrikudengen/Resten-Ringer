@@ -1,3 +1,6 @@
+// Fetched from https://git.app.uib.no/ii/inf101/24v/assignments/fredrik.udengen_sem1-tetris 
+// Originator: Torstein Strømme. Retrieved 18.04.2024.
+
 package no.uib.inf101.sample.sound;
 
 import java.io.InputStream;
@@ -6,9 +9,9 @@ import javax.sound.midi.MidiSystem;
 import javax.sound.midi.Sequencer;
 
 public class GameSong implements Runnable {
+
     private String songName; // New field to hold the name of the song
     private Sequencer sequencer;
-
 
     public GameSong() {
         // Default song name
@@ -74,13 +77,13 @@ public class GameSong implements Runnable {
         System.err.println("Midi error: " + msg);
         this.sequencer = null;
     }
-    
+
     // Setter method to change the name of the song
     public void setSongName(String songName) {
         this.songName = songName;
     }
+
     public String getSongName() {
         return songName;
     }
 }
-

@@ -2,10 +2,8 @@ package no.uib.inf101.sample;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Image;
 import java.util.ArrayList;
 
 import javax.swing.JPanel;
@@ -13,26 +11,18 @@ import javax.swing.JPanel;
 import no.uib.inf101.sample.entity.Player;
 import no.uib.inf101.sample.entity.Projectile;
 import no.uib.inf101.sample.entity.enemy.Enemy;
-import no.uib.inf101.sample.entity.enemy.FastEnemy;
-import no.uib.inf101.sample.entity.enemy.NormalEnemy;
-import no.uib.inf101.sample.entity.enemy.SlowEnemy;
-import no.uib.inf101.sample.map.TileFactory;
-import no.uib.inf101.sample.sound.GameSong;
-import no.uib.inf101.sample.sound.SoundPlayer;
+import no.uib.inf101.sample.map.GridFactory;
 
 public class Game extends JPanel implements Runnable {
 
     // SCREEN SETTINGS
-    final int originalTileSize = 16; // 16x16 tile size
-    final int scale = 3; // upscale by 3 to make it larger on screen
-
+    private final int originalTileSize = 16; // 16x16 tile size
+    private final int scale = 3; // upscale by 3 to make it larger on screen
     private final int tileSize = originalTileSize * scale; // 48x48 tile size
     private final int cols = 16;
     private final int rows = 12;
     private final int screenWidth = tileSize * cols; // 768 pixels
     private final int screenHeight = tileSize * rows; // 576 pixels
-
-    Projectile projectile;
 
     private ArrayList<Projectile> projectileList = new ArrayList<>();
     private ArrayList<Enemy> enemyList = new ArrayList<>();
@@ -42,23 +32,20 @@ public class Game extends JPanel implements Runnable {
     private String modeSelect = "";
 
     private int commandNum = 0;
-    private int waveNumber = 0;
+    private int waveNum = 0;
 
-    Game game;
-    Thread gameThread;
-    GameState gameState;
-    TileFactory tileFactory = new TileFactory(this);
-    public CollisionDetection collisionDetection = new CollisionDetection(this);
-    SoundPlayer soundPlayer = new SoundPlayer();
-    GameController gameController = new GameController(this);
-    Player player = new Player(this, gameController);
+    private Game game;
+    private Thread gameThread;
+    private GameState gameState;
     private DrawGame drawGame;
     private UpdateGame updateGame;
+    protected GridFactory tileFactory = new GridFactory(this);
+    public CollisionDetection collisionDetection = new CollisionDetection(this);
+    private GameController gameController = new GameController(this);
+    private Player player = new Player(this, gameController);
 
     public Game() {
         this.game = this;
-        drawGame = new DrawGame(this, player);
-        updateGame = new UpdateGame(game, player, gameController);
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
         this.setBackground(Color.BLACK);
         this.setDoubleBuffered(true); // improves rendering, doesn't display the render before the whole screen is
@@ -66,6 +53,8 @@ public class Game extends JPanel implements Runnable {
         this.addKeyListener(gameController);
         this.setFocusable(true);
         this.requestFocusInWindow();
+        drawGame = new DrawGame(this, player);
+        updateGame = new UpdateGame(game, player, gameController);
         gameState = GameState.TITLE_SCREEN;
     }
 
@@ -124,8 +113,7 @@ public class Game extends JPanel implements Runnable {
 
         drawGame.drawGame(g2);
 
-    }
-        
+    }  
 
     public int getCommandNum() {
         return this.commandNum;
@@ -178,9 +166,9 @@ public class Game extends JPanel implements Runnable {
         return this.projectileList;
     }
     public int getWaveNum(){
-        return this.waveNumber;
+        return this.waveNum;
     }
     public void setWaveNum(int waveNum){
-        this.waveNumber = waveNum;
+        this.waveNum = waveNum;
     }
 }

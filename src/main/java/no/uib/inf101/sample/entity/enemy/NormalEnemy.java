@@ -5,9 +5,6 @@ import no.uib.inf101.sample.entity.Player;
 
 public class NormalEnemy extends Enemy {
 
-    Game game;
-    Player player;
-
     public NormalEnemy(Game game, Player player) {
         super(game, player);
         this.game = game;

@@ -12,24 +12,14 @@ public class Main {
     JFrame frame = new JFrame();
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     frame.setResizable(false);
-    frame.setTitle("Sem2 Spill");
+    frame.setTitle("Resten Ringer");
 
-    // Create an instance of Game
-    Game gamePanel = new Game();    
+    Game game = new Game();    
 
-    //"hestkuk"
-    //- Caroline 2010
-
-    // Add the GamePanel to the JFrame
-    frame.add(gamePanel);
-
-    // Call these methods to actually display the window
+    frame.add(game);
     frame.pack();
     frame.setVisible(true);
-
-    // Sets window in the middle of the screen
     frame.setLocationRelativeTo(null);
-
-    gamePanel.startGameThread();
+    game.startGameThread();
   }
 }

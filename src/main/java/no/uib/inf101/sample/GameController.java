@@ -9,7 +9,7 @@ public class GameController implements java.awt.event.KeyListener {
     public boolean shotKeyPressed;
     public boolean enterKeyPressed;
     public boolean RKeyPressed, WKeyPressed, SKeyPressed;
-    Game game;
+    private Game game;
 
     public GameController(Game game) {
         this.game = game;
