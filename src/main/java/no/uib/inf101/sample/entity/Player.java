@@ -8,7 +8,7 @@ import no.uib.inf101.sample.Game;
 import no.uib.inf101.sample.GameController;
 import no.uib.inf101.sample.Inf101Graphics;
 
-public class Player extends Entity {
+public class Player extends Entity implements DrawAndUpdate {
 
     private GameController gameController;
     private Game game;
@@ -50,9 +50,10 @@ public class Player extends Entity {
         loadHealthIcon();
     }
 
+    @Override
     protected void setDefaultValues() {
         x = game.getScreenWidth() / 2;
-        y = game.getScreenWidth() / 2;
+        y = game.getScreenHeight() / 2;
         healthPoints = 6;
         speed = 4;
         direction = "right";
@@ -60,30 +61,26 @@ public class Player extends Entity {
         isShocked = false;
     }
 
+    @Override
     public void update() {
-        // Check tile collision
         collisionOn = false;
         game.collisionDetection.checkTile(this);
-        // Handle movement based on collision detection
         if (collisionOn) {
-            // Reset player position based on the direction of movement
             switch (movementDirection) {
                 case "up":
-                    y += speed; // Move the player back down
+                    y += speed; 
                     break;
                 case "down":
-                    y -= speed; // Move the player back up
+                    y -= speed; 
                     break;
                 case "left":
-                    x += speed; // Move the player back to the right
+                    x += speed; 
                     break;
                 case "right":
-                    x -= speed; // Move the player back to the left
+                    x -= speed; 
                     break;
             }
         }
-
-        // If collision is false, player can move
         if (collisionOn == false) {
             if (gameController.downPressed || gameController.leftPressed || gameController.rightPressed
                     || gameController.upPressed) {
@@ -139,44 +136,25 @@ public class Player extends Entity {
         }
     }
 
+    @Override
     public void draw(Graphics2D g2) {
         if (isShocked) {
             Image hitImage = null;
             switch (direction) {
                 case "up":
-                    if (imageNum == 1) {
-                        hitImage = downHit1;
-                    }
-                    if (imageNum == 2) {
-                        hitImage = downHit2;
-                    }
+                    hitImage = (imageNum == 1) ? downHit1 : downHit2;
                     break;
                 case "down":
-                    if (imageNum == 1) {
-                        hitImage = downHit1;
-                    }
-                    if (imageNum == 2) {
-                        hitImage = downHit2;
-                    }
+                    hitImage = (imageNum == 1) ? downHit1 : downHit2;
                     break;
                 case "left":
-                    if (imageNum == 1) {
-                        hitImage = leftHit1;
-                    }
-                    if (imageNum == 2) {
-                        hitImage = leftHit2;
-                    }
+                    hitImage = (imageNum == 1) ? leftHit1 : leftHit2;
                     break;
                 case "right":
-                    if (imageNum == 1) {
-                        hitImage = rightHit1;
-                    }
-                    if (imageNum == 2) {
-                        hitImage = rightHit2;
-                    }
+                    hitImage = (imageNum == 1) ? rightHit1 : rightHit2;
                     break;
             }
-
+            // Draw player when shocked
             if (direction == "right") {
                 g2.drawImage(hitImage, x, y, game.getTileSize() * 2, game.getTileSize(), null);
             } else if (direction == "left") {
@@ -198,36 +176,16 @@ public class Player extends Entity {
             Image playerImage = null;
             switch (direction) {
                 case "up":
-                    if (imageNum == 1) {
-                        playerImage = up1;
-                    }
-                    if (imageNum == 2) {
-                        playerImage = up2;
-                    }
+                    playerImage = (imageNum == 1) ? up1 : up2;
                     break;
                 case "down":
-                    if (imageNum == 1) {
-                        playerImage = down1;
-                    }
-                    if (imageNum == 2) {
-                        playerImage = down2;
-                    }
+                    playerImage = (imageNum == 1) ? down1 : down2;
                     break;
                 case "left":
-                    if (imageNum == 1) {
-                        playerImage = left1;
-                    }
-                    if (imageNum == 2) {
-                        playerImage = left2;
-                    }
+                    playerImage = (imageNum == 1) ? left1 : left2;
                     break;
                 case "right":
-                    if (imageNum == 1) {
-                        playerImage = right1;
-                    }
-                    if (imageNum == 2) {
-                        playerImage = right2;
-                    }
+                    playerImage = (imageNum == 1) ? right1 : right2;
                     break;
             }
             // Draw player

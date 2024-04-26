@@ -16,14 +16,14 @@ class NormalEnemyTest {
         NormalEnemy enemy = new NormalEnemy(game, player);
 
         // Set player position to be close to enemy
-        player.x = 100;
-        player.y = 100;
+        player.setX(100);
+        player.setY(100);
 
         // Set enemy position to be close to player
-        enemy.x = 110;
-        enemy.y = 110;
+        enemy.setX(100);
+        enemy.setY(100);
 
-        boolean result = enemy.enemyCollidesWithPlayer();
+        boolean result = enemy.getEnemyCollidesWithPlayer();
 
         Assertions.assertTrue(result, "Enemy should collide with player");
     }
@@ -35,23 +35,23 @@ class NormalEnemyTest {
         NormalEnemy enemy = new NormalEnemy(game, player);
 
         // Set player position to be close to enemy
-        player.x = 100;
-        player.y = 100;
+        player.setX(100);
+        player.setY(100);
         // Set enemy position to be close to player
-        enemy.x = 110;
-        enemy.y = 110;
+        enemy.setX(100);
+        enemy.setY(100);
 
         // Set initial health points
-        player.healthPoints = 3;
+        player.setHealthpoints(3);
 
         // Call update method to simulate enemy movement and collision
         enemy.update();
 
         // Check if health points are reduced after collision
-        Assertions.assertEquals(2, player.healthPoints, "Player's health points should be reduced after collision");
+        Assertions.assertEquals(2, player.getHealthpoints(), "Player's health points should be reduced after collision");
 
         // Check if enemy is alive
-        Assertions.assertTrue(enemy.isAlive, "Enemy should be alive after update");        
+        Assertions.assertTrue(enemy.getIsAlive(), "Enemy should be alive after update");        
     }
 
 }

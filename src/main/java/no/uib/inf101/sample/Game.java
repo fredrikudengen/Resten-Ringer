@@ -15,7 +15,6 @@ import no.uib.inf101.sample.map.GridFactory;
 
 public class Game extends JPanel implements Runnable {
 
-    // SCREEN SETTINGS
     private final int originalTileSize = 16; // 16x16 tile size
     private final int scale = 3; // upscale by 3 to make it larger on screen
     private final int tileSize = originalTileSize * scale; // 48x48 tile size
@@ -23,12 +22,8 @@ public class Game extends JPanel implements Runnable {
     private final int rows = 12;
     private final int screenWidth = tileSize * cols; // 768 pixels
     private final int screenHeight = tileSize * rows; // 576 pixels
+    private final int FPS = 60;
 
-    private ArrayList<Projectile> projectileList = new ArrayList<>();
-    private ArrayList<Enemy> enemyList = new ArrayList<>();
-
-    // FPS
-    private int fps = 60;
     private String modeSelect = "";
 
     private int commandNum = 0;
@@ -39,17 +34,19 @@ public class Game extends JPanel implements Runnable {
     private GameState gameState;
     private DrawGame drawGame;
     private UpdateGame updateGame;
-    protected GridFactory tileFactory = new GridFactory(this);
+    protected GridFactory gridFactory = new GridFactory(this);
     public CollisionDetection collisionDetection = new CollisionDetection(this);
     private GameController gameController = new GameController(this);
     private Player player = new Player(this, gameController);
+
+    private ArrayList<Projectile> projectileList = new ArrayList<>();
+    private ArrayList<Enemy> enemyList = new ArrayList<>();
 
     public Game() {
         this.game = this;
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
         this.setBackground(Color.BLACK);
-        this.setDoubleBuffered(true); // improves rendering, doesn't display the render before the whole screen is
-                                      // ready
+        this.setDoubleBuffered(true); 
         this.addKeyListener(gameController);
         this.setFocusable(true);
         this.requestFocusInWindow();
@@ -58,26 +55,27 @@ public class Game extends JPanel implements Runnable {
         gameState = GameState.TITLE_SCREEN;
     }
 
+    /**
+     * Starts a new Thread used to update and draw the game 60 times a second.
+     */
     public void startGameThread() {
 
-        gameThread = new Thread(this); // Passing gamepanel to Thread to instatiate it
+        gameThread = new Thread(this); 
         gameThread.start();
     }
 
     @Override
     public void run() {
 
-        double drawInterval = 1000000000 / fps; // One second in nanoseconds divided by number of fps we want (draws a
+        double drawInterval = 1000000000 / FPS; // One second in nanoseconds divided by number of fps we want (draws a
                                                 // frame every 0.01666 seconds)
 
         double nextDrawTime = System.nanoTime() + drawInterval;
 
         while (gameThread != null) {
 
-            // 1 UPDATE: update information such as character positions
             updateGame.updateGame();
 
-            // 2 DRAW: draw the screen with the updated information
             repaint();
 
             try {
@@ -112,9 +110,9 @@ public class Game extends JPanel implements Runnable {
         Graphics2D g2 = (Graphics2D) g;
 
         drawGame.drawGame(g2);
-
     }  
 
+    // Getters and setters
     public int getCommandNum() {
         return this.commandNum;
     }
@@ -155,9 +153,14 @@ public class Game extends JPanel implements Runnable {
         return this.enemyList;
     }
 
+    public void addToEnemyList(Enemy enemy){
+        enemyList.add(enemy);
+    }
+
     public GameState getGameState() {
         return this.gameState;
     }
+
     public void setGameState(GameState gameState) {
         this.gameState = gameState;
     }
@@ -165,9 +168,11 @@ public class Game extends JPanel implements Runnable {
     public ArrayList<Projectile> getProjectileList() {
         return this.projectileList;
     }
+
     public int getWaveNum(){
         return this.waveNum;
     }
+
     public void setWaveNum(int waveNum){
         this.waveNum = waveNum;
     }

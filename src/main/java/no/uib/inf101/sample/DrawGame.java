@@ -38,11 +38,17 @@ public class DrawGame {
         this.player = player;
     }
 
+    /**
+     * Encapsulates all draw methods used in other classes, along with different
+     * game screens. Called upon in Game.
+     * 
+     * @param g2 Graphics2D object used to draw.
+     */
     public void drawGame(Graphics2D g2) {
         GameState gameState = game.getGameState();
         int screenHeight = game.getScreenHeight();
         int screenWidth = game.getScreenWidth();
-        
+
         if (gameState == GameState.TITLE_SCREEN) {
             drawTitleScreen(g2);
         }

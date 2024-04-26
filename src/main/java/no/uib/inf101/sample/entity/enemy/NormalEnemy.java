@@ -14,6 +14,7 @@ public class NormalEnemy extends Enemy {
         getNormalEnemyImage();
     }
 
+    @Override
     protected void setDefaultValues() {
         setXAndY();
         healthPoints = 3;

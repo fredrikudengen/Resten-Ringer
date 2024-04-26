@@ -24,7 +24,7 @@ public abstract class Enemy extends Entity {
     private boolean isStopped = false;
     private long stopStartTime = 0;
     private static final long STOP_DURATION = 500000000; // 0.5 seconds in milliseconds
-    
+
     protected BufferedImage normal_enemy_up_1, normal_enemy_up_2, normal_enemy_down_1, normal_enemy_down_2;
     protected BufferedImage slow_enemy_left_1, slow_enemy_left_2, slow_enemy_right_1, slow_enemy_right_2,
             slow_enemy_up_1, slow_enemy_up_2;
@@ -38,6 +38,7 @@ public abstract class Enemy extends Entity {
         setXAndY();
     }
 
+    @Override
     protected abstract void setDefaultValues();
 
     protected void getNormalEnemyImage() {
@@ -98,32 +99,15 @@ public abstract class Enemy extends Entity {
             game.collisionDetection.checkTile(this);
             if (collisionOn == true) {
                 if (movementDirection == "left") {
-                    if (yNeededToMove < 0) {
-                        y -= speed;
-                    } else if (yNeededToMove > 0) {
-                        y += speed;
-                    }
+                    y += speed;
                 } else if (movementDirection == "right") {
-                    if (yNeededToMove < 0) {
-                        y -= speed;
-                    } else if (yNeededToMove > 0) {
-                        y += speed;
-                    }
+                    y += speed;
                 } else if (movementDirection == "up") {
-                    if (xNeededToMove < 0) {
-                        x -= speed;
-                    } else {
-                        x += speed;
-                    }
+                    x += speed;
                 } else if (movementDirection == "down") {
-                    if (xNeededToMove < 0) {
-                        x -= speed;
-                    } else {
-                        x += speed;
-                    }
+                    x += speed;
                 }
-            }
-            if (collisionOn == false) {
+            } else {
                 if (xNeededToMove < 0) {
                     x -= speed;
                     xNeededToMove += speed;
@@ -148,34 +132,16 @@ public abstract class Enemy extends Entity {
             collisionOn = false;
             game.collisionDetection.checkTile(this);
             if (collisionOn == true) {
-                if (movementDirection == "up") {
-                    if (xNeededToMove < 0) {
-                        x -= speed;
-                    } else {
-                        x += speed;
-                    }
-                } else if (movementDirection == "down") {
-                    if (xNeededToMove < 0) {
-                        x -= speed;
-                    } else {
-                        x += speed;
-                    }
-                } else if (movementDirection == "left") {
-                    if (yNeededToMove < 0) {
-                        y -= speed;
-                    } else if (yNeededToMove > 0) {
-                        y += speed;
-                    }
+                if (movementDirection == "left") {
+                    y += speed;
                 } else if (movementDirection == "right") {
-                    if (yNeededToMove < 0) {
-                        y -= speed;
-                    } else if (yNeededToMove > 0) {
-                        y += speed;
-                    }
+                    y += speed;
+                } else if (movementDirection == "up") {
+                    x += speed;
+                } else if (movementDirection == "down") {
+                    x += speed;
                 }
-            }
-
-            if (collisionOn == false) {
+            } else {
                 if (yNeededToMove < 0) {
                     y -= speed;
                     yNeededToMove += speed;
@@ -217,6 +183,13 @@ public abstract class Enemy extends Entity {
 
     }
 
+    /**
+     * Draws an image based on the instance of the Enemy argument. This method is
+     * called in DrawGame.
+     * 
+     * @param enemy object used to differentiate between different Enemy sprites.
+     * @param g2    Graphics2D object used to draw.
+     */
     public void draw(Enemy enemy, Graphics2D g2) {
         Image image = null;
 
@@ -277,6 +250,10 @@ public abstract class Enemy extends Entity {
 
     }
 
+    /**
+     * Knocks back the enemy if it collides with the player in the opposite
+     * direction of it's movement direction
+     */
     protected void knockBackEnemy() {
         if (enemyCollidesWithPlayer() == true) {
             player.setShocked();
@@ -300,6 +277,9 @@ public abstract class Enemy extends Entity {
         }
     }
 
+    /**
+     * Updates Enemy coordinates, knockback, player healthpoints if hit and isAlive.
+     */
     public void update() {
         if (isStopped) {
             long currentTime = System.nanoTime();
@@ -308,7 +288,7 @@ public abstract class Enemy extends Entity {
                 // Perform actions when collision occurs
                 // For example, reduce player's health
                 player.setHealthpoints(player.getHealthpoints() - 1);
-                ;
+
                 knockBackEnemy();
 
                 // Start the stop timer
@@ -329,7 +309,7 @@ public abstract class Enemy extends Entity {
             // Perform actions when collision occurs
             // For example, reduce player's health
             player.setHealthpoints(player.getHealthpoints() - 1);
-            ;
+
             knockBackEnemy();
 
             // Start the stop timer
@@ -351,5 +331,9 @@ public abstract class Enemy extends Entity {
             }
             imageCounter = 0;
         }
+    }
+
+    public boolean getEnemyCollidesWithPlayer() {
+        return enemyCollidesWithPlayer();
     }
 }

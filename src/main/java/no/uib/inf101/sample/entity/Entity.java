@@ -5,8 +5,9 @@ import java.awt.image.BufferedImage;
 
 public abstract class Entity {
 
-    protected BufferedImage up1, up2, left1, left2, right1, right2, down1, down2, downHit1, downHit2, leftHit1, leftHit2, rightHit1, rightHit2, beer;
-    
+    protected BufferedImage up1, up2, left1, left2, right1, right2, down1, down2, downHit1, downHit2, leftHit1,
+            leftHit2, rightHit1, rightHit2, beer;
+
     protected int x;
     protected int y;
     protected int speed;
@@ -20,7 +21,19 @@ public abstract class Entity {
     protected Rectangle hitBox;
     protected boolean collisionOn = false;
 
-
+    /**
+     * Checks whether two rectangles (hitboxes of two entities) overlap eachother 
+     * 
+     * @param x1 first x coordinate of first rectangle 
+     * @param y1 first y coordinate of first rectangle 
+     * @param x2 second x coordinate of first rectangle 
+     * @param y2 second y coordinate of first rectangle 
+     * @param x3 first x coordinate of second rectangle 
+     * @param y3 first y coordinate of second rectangle 
+     * @param x4 second x coordinate of second rectangle 
+     * @param y4 second y coordinate of second rectangle 
+     * @return if the two rectangles overlap
+     */
     protected static boolean rectanglesOverlap(int x1, int y1, int x2, int y2,
             int x3, int y3, int x4, int y4) {
         int xLeft = Math.min(x1, x2);
@@ -39,45 +52,65 @@ public abstract class Entity {
             return true;
         }
     }
-
+    /**
+     * Sets default values of object after the contructor is made
+     */
     protected abstract void setDefaultValues();
 
     // Getters and setters
     public int getX() {
         return x;
     }
+
     public int getY() {
         return y;
     }
+
     public int getSpeed() {
         return speed;
     }
+
     public boolean getIsAlive() {
         return isAlive;
     }
+
     public void setX(int x) {
         this.x = x;
     }
+
     public void setY(int y) {
         this.y = y;
     }
+
     public String getDirection() {
         return movementDirection;
     }
+
     public void setHealthpoints(int healthPoints) {
         this.healthPoints = healthPoints;
     }
+
     public int getHealthpoints() {
         return this.healthPoints;
     }
+
     public Rectangle getHitBox() {
         return this.hitBox;
     }
+
     public boolean getCollisionOn() {
         return this.collisionOn;
     }
+
     public void setCollisionOn(boolean statement) {
         this.collisionOn = statement;
     }
 
+    public void setDirection(String direction) {
+        this.movementDirection = direction;
+    }
+
+    public void setSpeed(int speed) {
+        this.speed = speed;
+    }
 }

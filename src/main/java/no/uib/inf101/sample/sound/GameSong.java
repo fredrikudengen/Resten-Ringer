@@ -37,8 +37,8 @@ public class GameSong implements Runnable {
             this.midiError("" + e);
         }
     }
-
-    public void doStopMidiSounds() {
+    
+    private void doStopMidiSounds() {
         try {
             if (this.sequencer == null || !this.sequencer.isRunning()) {
                 return;
@@ -51,23 +51,15 @@ public class GameSong implements Runnable {
         this.sequencer = null;
     }
 
+    /**
+     * Pauses the current midi song playing.
+     */
     public void doPauseMidiSounds() {
         try {
             if (this.sequencer == null || !this.sequencer.isRunning()) {
                 return;
             }
             this.sequencer.stop();
-        } catch (Exception e) {
-            this.midiError("" + e);
-        }
-    }
-
-    public void doUnpauseMidiSounds() {
-        try {
-            if (this.sequencer == null) {
-                return;
-            }
-            this.sequencer.start();
         } catch (Exception e) {
             this.midiError("" + e);
         }

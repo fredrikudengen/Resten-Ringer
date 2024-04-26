@@ -13,7 +13,8 @@ public class SlowEnemy extends Enemy {
         setDefaultValues();
         getSlowEnemyImage();
     }
-
+    
+    @Override
     protected void setDefaultValues() {
         setXAndY();
         healthPoints = 4;

@@ -14,6 +14,7 @@ public class FastEnemy extends Enemy {
         getFastEnemyImage();
     }
 
+    @Override
     protected void setDefaultValues() {
         setXAndY();
         healthPoints = 2;

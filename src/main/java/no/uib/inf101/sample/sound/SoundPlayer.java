@@ -6,6 +6,9 @@ import javax.sound.sampled.*;
 
 public class SoundPlayer {
 
+    /**
+     * Plays sound effect of beer can opening.
+     */
     public static void playBeerCanOpen() {
         try {
             AudioInputStream audioIn = AudioSystem
@@ -21,6 +24,9 @@ public class SoundPlayer {
         }
     }
 
+    /**
+     * Plays sound effect of gunshot.
+     */
     public static void gunShot() {
         try {
             AudioInputStream audioIn = AudioSystem
@@ -36,6 +42,9 @@ public class SoundPlayer {
         }
     }
 
+    /**
+     * Plays game over tune.
+     */
     public static void gameOver() {
         try {
             AudioInputStream audioIn = AudioSystem
@@ -51,6 +60,9 @@ public class SoundPlayer {
         }
     }
 
+    /**
+     * Plays sound effect of man dying.
+     */
     public static void manDie1() {
         try {
             AudioInputStream audioIn = AudioSystem
@@ -66,6 +78,9 @@ public class SoundPlayer {
         }
     }
 
+    /**
+     * Plays sound effect of man dying.
+     */
     public static void mandDie2() {
         try {
             AudioInputStream audioIn = AudioSystem
@@ -81,6 +96,9 @@ public class SoundPlayer {
         }
     }
 
+    /**
+     * Plays sound effect of man dying.
+     */
     public static void manDie3() {
         try {
             AudioInputStream audioIn = AudioSystem

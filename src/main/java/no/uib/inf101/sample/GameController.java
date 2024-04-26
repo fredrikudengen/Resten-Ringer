@@ -6,14 +6,13 @@ public class GameController implements java.awt.event.KeyListener {
 
     public boolean upPressed, downPressed, leftPressed, rightPressed;
     public boolean shootUp, shootDown, shootLeft, shootRight;
-    public boolean shotKeyPressed;
-    public boolean enterKeyPressed;
-    public boolean RKeyPressed, WKeyPressed, SKeyPressed;
+    protected boolean shotKeyPressed;
+    protected boolean enterKeyPressed;
     private Game game;
+    protected boolean rKeyPressed;
 
     public GameController(Game game) {
         this.game = game;
-
     }
 
     @Override
@@ -24,12 +23,9 @@ public class GameController implements java.awt.event.KeyListener {
     public void keyPressed(KeyEvent e) {
         GameState gameState = game.getGameState();
 
-        if (gameState == GameState.WAVE_COMPLETE) {
-            if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-                game.setGameState(GameState.ACTIVE_GAME);
-            }
-        }
         if (gameState == GameState.TITLE_SCREEN) {
+            // Changes commandNum (which option to press) based on up (W key) or down (S
+            // key)
             if (e.getKeyCode() == KeyEvent.VK_W) {
                 game.setCommandNum(game.getCommandNum() - 1);
                 if (game.getCommandNum() < 0) {
@@ -41,6 +37,7 @@ public class GameController implements java.awt.event.KeyListener {
                     game.setCommandNum(0);
                 }
             }
+            // Changes gameState according to which option you chose
             if (game.getCommandNum() == 0 && e.getKeyCode() == KeyEvent.VK_ENTER) {
                 game.setGameState(GameState.ACTIVE_GAME);
             } else if (game.getCommandNum() == 1 && e.getKeyCode() == KeyEvent.VK_ENTER) {
@@ -51,9 +48,10 @@ public class GameController implements java.awt.event.KeyListener {
         }
         if (gameState == GameState.LEVEL_SELECT) {
             if (e.getKeyCode() == KeyEvent.VK_D) {
-                game.setCommandNum(game.getCommandNum() + 1);;
+                game.setCommandNum(game.getCommandNum() + 1);
+                ;
                 if (game.getCommandNum() > 2) {
-                    game.setCommandNum(0); 
+                    game.setCommandNum(0);
                 }
             }
             if (e.getKeyCode() == KeyEvent.VK_A) {
@@ -67,36 +65,33 @@ public class GameController implements java.awt.event.KeyListener {
             }
             if (e.getKeyCode() == KeyEvent.VK_ENTER) {
                 if (game.getCommandNum() == 0) {
-                    game.setModeSelect("sober mode"); 
+                    game.setModeSelect("sober mode");
                     game.setGameState(GameState.ACTIVE_GAME);
                 }
                 if (game.getCommandNum() == 1) {
-                    game.setModeSelect("tipsy mode"); 
+                    game.setModeSelect("tipsy mode");
                     game.setGameState(GameState.ACTIVE_GAME);
                 }
                 if (game.getCommandNum() == 2) {
-                    game.setModeSelect("drunk mode"); 
+                    game.setModeSelect("drunk mode");
                     game.setGameState(GameState.ACTIVE_GAME);
                 }
             }
         }
-        if (gameState == GameState.GAME_OVER) {
-            if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
-                game.setGameState(GameState.TITLE_SCREEN);
-            }
+
+        if (e.getKeyCode() == KeyEvent.VK_R) {
+            rKeyPressed = true;
         }
-        if (e.getKeyCode() == KeyEvent.VK_W) {
+        else if (e.getKeyCode() == KeyEvent.VK_W) {
             upPressed = true;
-            WKeyPressed = true;
         }
-        if (e.getKeyCode() == KeyEvent.VK_A) {
+        else if (e.getKeyCode() == KeyEvent.VK_A) {
             leftPressed = true;
         }
-        if (e.getKeyCode() == KeyEvent.VK_S) {
+        else if (e.getKeyCode() == KeyEvent.VK_S) {
             downPressed = true;
-            SKeyPressed = true;
         }
-        if (e.getKeyCode() == KeyEvent.VK_D) {
+        else if (e.getKeyCode() == KeyEvent.VK_D) {
             rightPressed = true;
         }
         if (e.getKeyCode() == KeyEvent.VK_UP) {
@@ -115,35 +110,18 @@ public class GameController implements java.awt.event.KeyListener {
         if (e.getKeyCode() == KeyEvent.VK_ENTER) {
             enterKeyPressed = true;
         }
-        if (e.getKeyCode() == KeyEvent.VK_R) {
-            RKeyPressed = true;
-        }
-    }
-
-    public String getShotDirection() {
-        if (shootDown) {
-            return "down";
-        } else if (shootLeft) {
-            return "left";
-        } else if (shootRight) {
-            return "right";
-        } else {
-            return "up";
-        }
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_W) {
             upPressed = false;
-            WKeyPressed = false;
         }
         if (e.getKeyCode() == KeyEvent.VK_A) {
             leftPressed = false;
         }
         if (e.getKeyCode() == KeyEvent.VK_S) {
             downPressed = false;
-            SKeyPressed = false;
         }
         if (e.getKeyCode() == KeyEvent.VK_D) {
             rightPressed = false;
@@ -161,13 +139,23 @@ public class GameController implements java.awt.event.KeyListener {
             shootRight = false;
             shotKeyPressed = false;
         }
-
+        if (e.getKeyCode() == KeyEvent.VK_R) {
+            rKeyPressed = false;
+        }
         if (e.getKeyCode() == KeyEvent.VK_ENTER) {
             enterKeyPressed = false;
         }
-        if (e.getKeyCode() == KeyEvent.VK_R) {
-            RKeyPressed = false;
-        }
+    }
 
+    public String getShotDirection() {
+        if (shootDown) {
+            return "down";
+        } else if (shootLeft) {
+            return "left";
+        } else if (shootRight) {
+            return "right";
+        } else {
+            return "up";
+        }
     }
 }

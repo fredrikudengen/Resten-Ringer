@@ -8,7 +8,7 @@ import no.uib.inf101.sample.Game;
 import no.uib.inf101.sample.GameController;
 import no.uib.inf101.sample.Inf101Graphics;
 
-public class Projectile extends Entity {
+public class Projectile extends Entity implements DrawAndUpdate {
 
     private Game game;
     private Player player;
@@ -27,6 +27,7 @@ public class Projectile extends Entity {
         getProjectileImage();
     }
 
+    @Override
     protected void setDefaultValues() {
         x = player.x;
         y = player.y;
@@ -45,7 +46,13 @@ public class Projectile extends Entity {
         right2 = Inf101Graphics.loadImageFromResources("Right_bullet_2.png");
     }
 
-    private boolean ProjectileCollidesWithEnemy(int i) {
+    /**
+     * Uses rectanglesOverlap to check if Projectile collides with Enemy.
+     * 
+     * @param i index in enemyList.
+     * @return boolean whether Projectile hit enemy or not.
+     */
+    public boolean projectileCollidesWithEnemy(int i) {
         if (rectanglesOverlap(game.getEnemyList().get(i).x,
                 game.getEnemyList().get(i).y,
                 game.getEnemyList().get(i).x + game.getTileSize(),
@@ -63,15 +70,7 @@ public class Projectile extends Entity {
         }
     }
 
-    public boolean projectTileHitEnemy(int i) {
-        if (ProjectileCollidesWithEnemy(i) == true) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    // Called upon once every frame in Game
+    @Override
     public void update() {
         if (shotDirection == "up") {
             y -= speed;
@@ -105,6 +104,7 @@ public class Projectile extends Entity {
         }
     }
 
+    @Override
     public void draw(Graphics2D g2) {
         if (isAlive) {
             Image image = null;
