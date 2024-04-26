@@ -77,34 +77,6 @@ public class CollisionDetection {
 
         int tileNum1, tileNum2;
 
-        // In case of an ArrayIndexOutOfBoundsException: Index 12 out of bounds for
-        // length 12
-
-        // if (entityBottomRow > 11) {
-        //     entityBottomRow = 11;
-        // }
-        // if (entityBottomRow < 0) {
-        //     entityBottomRow = 0;
-        // }
-        // if (entityLeftCol > 11) {
-        //     entityLeftCol = 11;
-        // }
-        // if (entityLeftCol < 0) {
-        //     entityLeftCol = 0;
-        // }
-        // if (entityRightCol > 11) {
-        //     entityRightCol = 11;
-        // }
-        // if (entityRightCol < 0) {
-        //     entityRightCol = 0;
-        // }
-        // if (entityTopRow > 11) {
-        //     entityTopRow = 11;
-        // }
-        // if (entityTopRow < 0) {
-        //     entityTopRow = 0;
-        // }
-
         if (enemy.getDirection() == "up") {
             entityTopRow = (entityTopY - enemy.getSpeed()) / game.getTileSize();
             tileNum1 = game.tileFactory.getMapTileNum()[entityLeftCol][entityTopRow];
