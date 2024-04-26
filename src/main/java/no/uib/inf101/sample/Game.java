@@ -56,7 +56,6 @@ public class Game extends JPanel implements Runnable {
     private UpdateGame updateGame;
 
     public Game() {
-        System.out.println(screenWidth);
         this.game = this;
         drawGame = new DrawGame(this, player);
         updateGame = new UpdateGame(game, player, gameController);
