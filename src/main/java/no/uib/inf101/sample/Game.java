@@ -24,44 +24,42 @@ public class Game extends JPanel implements Runnable {
 
     // SCREEN SETTINGS
     final int originalTileSize = 16; // 16x16 tile size
-    final int originalBulletSize = 8; // 8x8 bullet size
     final int scale = 3; // upscale by 3 to make it larger on screen
 
-    public final int tileSize = originalTileSize * scale; // 48x48 tile size
-    public final int bulletSize = originalBulletSize * scale; // 24x24 tile size
-    public final int cols = 16;
-    public final int rows = 12;
-    public final int screenWidth = tileSize * cols; // 768 pixels
-    public final int screenHeight = tileSize * rows; // 576 pixels
+    private final int tileSize = originalTileSize * scale; // 48x48 tile size
+    private final int cols = 16;
+    private final int rows = 12;
+    private final int screenWidth = tileSize * cols; // 768 pixels
+    private final int screenHeight = tileSize * rows; // 576 pixels
 
     Projectile projectile;
-    boolean bulletTimerCheck = false;
-    int bulletTimer = 40;
+    private boolean bulletTimerCheck = false;
+    private int bulletTimer = 40;
 
-    public ArrayList<Projectile> projectileList = new ArrayList<>();
-    public ArrayList<Enemy> enemyList = new ArrayList<>();
+    private ArrayList<Projectile> projectileList = new ArrayList<>();
+    private ArrayList<Enemy> enemyList = new ArrayList<>();
 
     // FPS
-    int fps = 60;
+    private int fps = 60;
 
-    int enemyMax = 2;
+    private int enemyMax = 2;
 
-    int enemiesAtStart = 0;
-    int waveNumber = 1;
+    private int enemiesAtStart = 0;
+    private int waveNumber = 1;
 
-    String modeSelect = "";
+    private String modeSelect = "";
 
-    public int commandNum = 0;
+    private int commandNum = 0;
 
     private int yTitle = 100; // Move yTitle to class level
     private int numTitle = 1; // Move num to class level
     private int counterTitle = 1;
 
-    boolean gameOverSoundPlay = false;
+    private boolean gameOverSoundPlay = false;
 
     Game game;
     Thread gameThread;
-    public GameState gameState;
+    GameState gameState;
     TileFactory tileFactory = new TileFactory(this);
     public CollisionDetection collisionDetection = new CollisionDetection(this);
     SoundPlayer soundPlayer = new SoundPlayer();
@@ -85,6 +83,7 @@ public class Game extends JPanel implements Runnable {
     private Image levelSelect = Inf101Graphics.loadImageFromResources("level_select.png");
 
     public Game() {
+        System.out.println(screenWidth);
         this.game = this;
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
         this.setBackground(Color.BLACK);
@@ -93,9 +92,8 @@ public class Game extends JPanel implements Runnable {
         this.addKeyListener(gameController);
         this.setFocusable(true);
         this.requestFocusInWindow();
-        gameState = GameState.TITLE_SCREEN;
         this.gameSong = new GameSong();
-
+        gameState = GameState.TITLE_SCREEN;
         resetAllValues();
 
     }
@@ -144,9 +142,11 @@ public class Game extends JPanel implements Runnable {
         }
     }
 
-    public void resetAllValues() {
+    private void resetAllValues() {
         player.setHealthpoints(7);
         commandNum = 0;
+        player.setX(screenWidth / 2);
+        player.setY(screenHeight / 2);
         // Create 3 enemies at start (if enemyMax is 3)
         for (enemiesAtStart = 0; enemiesAtStart <= (enemyMax / 2); enemiesAtStart++) {
             if (enemiesAtStart < enemyMax) {
@@ -180,6 +180,7 @@ public class Game extends JPanel implements Runnable {
         }
         if (player.getHealthpoints() <= 0) {
             gameState = GameState.GAME_OVER;
+            enemyList.clear();
             resetAllValues();
         }
         if (gameState == GameState.GAME_OVER) {
@@ -213,9 +214,9 @@ public class Game extends JPanel implements Runnable {
             enemyList.add(newSlowEnemy);
             gameState = GameState.ACTIVE_GAME;
         }
-        if (gameState == GameState.ACTIVE_GAME && player.getGameState() != GameState.GAME_OVER) {
+        if (gameState == GameState.ACTIVE_GAME) {
 
-            if (player.isAlive == true) {
+            if (player.getIsAlive() == true) {
                 player.update();
             }
 
@@ -242,8 +243,8 @@ public class Game extends JPanel implements Runnable {
                     projectile.update(); // Update the projectile
 
                     // Check conditions for removing the projectile
-                    if (screenWidth < projectile.getProjectileX() || projectile.getProjectileX() < 0
-                            || screenHeight < projectile.getProjectileY() || projectile.getProjectileY() < 0
+                    if (screenWidth < projectile.getX() || projectile.getX() < 0
+                            || screenHeight < projectile.getX() || projectile.getX() < 0
                             || projectile.projectTileHitEnemy(i)) {
                         projectileList.remove(j); // Remove the projectile if necessary
                     }
@@ -251,7 +252,7 @@ public class Game extends JPanel implements Runnable {
             }
             for (int i = enemyList.size() - 1; i >= 0; i--) {
                 enemyList.get(i).update(); // Update the enemy
-                if (enemyList.get(i).isAlive == false) {
+                if (enemyList.get(i).getIsAlive() == false) {
                     if (enemyList.get(i) instanceof NormalEnemy) {
                         SoundPlayer.manDie1();
                     } else if (enemyList.get(i) instanceof SlowEnemy) {
@@ -288,8 +289,8 @@ public class Game extends JPanel implements Runnable {
                 enemyList.add(newSlowEnemy);
                 FastEnemy newFastEnemy = new FastEnemy(game, player);
                 enemyList.add(newFastEnemy);
-                player.x = getWidth() / 2;
-                player.y = getHeight() / 2;
+                player.setX(screenWidth / 2);
+                player.setY(screenHeight / 2);
             }
         }
 
@@ -317,44 +318,52 @@ public class Game extends JPanel implements Runnable {
             drawLevelSelect(g2);
         }
 
-        if (gameState == GameState.ACTIVE_GAME && player.getGameState() != GameState.GAME_OVER) {
-            g2.drawImage(map, 0, 0, screenWidth, screenHeight, null);
-
-            player.draw(g2);
-
-            int enemiesLeft = game.enemyList.size();
-            g2.setColor(Color.WHITE);
-            g2.setFont(new Font("Symbol Bold", Font.BOLD, 20));
-            g2.drawString("ENEMIES LEFT: " + enemiesLeft, 10, 70);
-
-            for (int i = 0; i < enemyList.size(); i++) {
-                if (enemyList.get(i) != null) {
-                    enemyList.get(i).draw(enemyList.get(i), g2);
-                }
-            }
-            for (int i = 0; i < projectileList.size(); i++) {
-                if (projectileList.get(i) != null) {
-                    projectileList.get(i).draw(g2);
-                }
-            }
+        if (gameState == GameState.ACTIVE_GAME) {
+            drawActiveGame(g2);
         }
 
         if (gameState == GameState.GAME_OVER) {
-            g2.drawImage(gameOver, 0, 0, getWidth(), getHeight(), null);
+            g2.drawImage(gameOver, 0, 0, screenWidth, screenHeight, null);
         }
         if (gameState == GameState.VICTORY) {
-            g2.drawImage(victoryScreen, 0, 0, getWidth(), getHeight(), null);
+            g2.drawImage(victoryScreen, 0, 0, screenWidth, screenHeight, null);
         }
         if (gameState == GameState.WAVE_COMPLETE) {
-            g2.setColor(Color.RED);
-            g2.setFont(new Font("Arial", Font.BOLD, 26));
-            int x = xCenterText("Wave 1 completed", g2);
-            g2.drawString("Wave " + waveNumber + " completed,", x, getHeight() / 2 - 40);
-            String text = "press enter to have another drink.";
-            x = xCenterText(text, g2);
-            g2.drawString(text, x, getHeight() / 2);
-            g2.drawImage(emptyBeer, getWidth() / 2 - (tileSize * 2 + 20), getHeight() / 2 + 20, tileSize * 4,
-                    tileSize * 4, null);
+            drawWaveComplete(g2);
+        }
+    }
+
+    private void drawWaveComplete(Graphics2D g2) {
+        g2.setColor(Color.RED);
+        g2.setFont(new Font("Arial", Font.BOLD, 26));
+        int x = xCenterText("Wave 1 completed", g2);
+        g2.drawString("Wave " + waveNumber + " completed,", x, screenHeight / 2 - 40);
+        String text = "press enter to have another drink.";
+        x = xCenterText(text, g2);
+        g2.drawString(text, x, screenHeight / 2);
+        g2.drawImage(emptyBeer, screenWidth / 2 - (tileSize * 2 + 20), screenHeight / 2 + 20, tileSize * 4,
+                tileSize * 4, null);
+    }
+
+    private void drawActiveGame(Graphics2D g2) {
+        g2.drawImage(map, 0, 0, screenWidth, screenHeight, null);
+
+        player.draw(g2);
+
+        int enemiesLeft = game.enemyList.size();
+        g2.setColor(Color.WHITE);
+        g2.setFont(new Font("Symbol Bold", Font.BOLD, 20));
+        g2.drawString("ENEMIES LEFT: " + enemiesLeft, 10, 70);
+
+        for (int i = 0; i < enemyList.size(); i++) {
+            if (enemyList.get(i) != null) {
+                enemyList.get(i).draw(enemyList.get(i), g2);
+            }
+        }
+        for (int i = 0; i < projectileList.size(); i++) {
+            if (projectileList.get(i) != null) {
+                projectileList.get(i).draw(g2);
+            }
         }
     }
 
@@ -403,7 +412,7 @@ public class Game extends JPanel implements Runnable {
     }
 
     public void drawLevelSelect(Graphics2D g2) {
-        g2.drawImage(levelSelect, 0, 0, getWidth(), getHeight(), null);
+        g2.drawImage(levelSelect, 0, 0, screenWidth, screenHeight, null);
         int x = 70;
         if (commandNum == 0) {
             g2.drawImage(waterCooler, 35, 170, tileSize * 6, tileSize * 6, null);
@@ -424,4 +433,45 @@ public class Game extends JPanel implements Runnable {
         int x = screenWidth / 2 - lenght / 2;
         return x;
     }
+
+    public int getCommandNum() {
+        return this.commandNum;
+    }
+
+    public void setCommandNum(int num) {
+        this.commandNum = num;
+    }
+
+    public String getModeSelect() {
+        return this.modeSelect;
+    }
+
+    public void setModeSelect(String modeSelect) {
+        this.modeSelect = modeSelect;
+    }
+
+    public int getTileSize() {
+        return this.tileSize;
+    }
+
+    public int getCols() {
+        return this.cols;
+    }
+
+    public int getRows() {
+        return this.rows;
+    }
+
+    public int getScreenWidth() {
+        return this.screenWidth;
+    }
+
+    public int getScreenHeight() {
+        return this.screenHeight;
+    }
+
+    public ArrayList<Enemy> getEnemyList() {
+        return this.enemyList;
+    }
+
 }

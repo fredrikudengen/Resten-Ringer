@@ -13,120 +13,132 @@ public class CollisionDetection {
 
     public void checkTile(Player player) {
 
-        int entityLeftX = player.x + player.hitBox.x;
-        int entityRightX = player.x + player.hitBox.x + player.hitBox.width;
-        int entityTopY = player.y + player.hitBox.y;
-        int entityBottomY = player.y + player.hitBox.y + player.hitBox.height;
+        int entityLeftX = player.getX() + player.getHitBox().x;
+        int entityRightX = player.getX() + player.getHitBox().x + player.getHitBox().width;
+        int entityTopY = player.getY() + player.getHitBox().y;
+        int entityBottomY = player.getY() + player.getHitBox().y + player.getHitBox().height;
 
-        int entityLeftCol = entityLeftX / game.tileSize;
-        int entityRightCol = entityRightX / game.tileSize;
-        int entityTopRow = entityTopY / game.tileSize;
-        int entityBottomRow = entityBottomY / game.tileSize;
+        int entityLeftCol = entityLeftX / game.getTileSize();
+        int entityRightCol = entityRightX / game.getTileSize();
+        int entityTopRow = entityTopY / game.getTileSize();
+        int entityBottomRow = entityBottomY / game.getTileSize();
 
         int tileNum1, tileNum2;
 
-        if (player.movementDirection == "up") {
-            entityTopRow = (entityTopY - player.speed) / game.tileSize;
-            tileNum1 = game.tileFactory.mapTileNum[entityLeftCol][entityTopRow];
-            tileNum2 = game.tileFactory.mapTileNum[entityRightCol][entityTopRow];
-            if (game.tileFactory.tile[tileNum1].collision == true
-                    || game.tileFactory.tile[tileNum2].collision == true) {
-                player.collisionOn = true;
+        if (player.getDirection() == "up") {
+            entityTopRow = (entityTopY - player.getSpeed()) / game.getTileSize();
+            tileNum1 = game.tileFactory.getMapTileNum()[entityLeftCol][entityTopRow];
+            tileNum2 = game.tileFactory.getMapTileNum()[entityRightCol][entityTopRow];
+            if (game.tileFactory.getTile()[tileNum1].collision == true
+                    || game.tileFactory.getTile()[tileNum2].collision == true) {
+                player.setCollisionOn(true);
             }
         }
-        if (player.movementDirection == "down") {
-            entityBottomRow = (entityBottomY + player.speed) / game.tileSize;
-            tileNum1 = game.tileFactory.mapTileNum[entityLeftCol][entityBottomRow];
-            tileNum2 = game.tileFactory.mapTileNum[entityRightCol][entityBottomRow];
-            if (game.tileFactory.tile[tileNum1].collision == true
-                    || game.tileFactory.tile[tileNum2].collision == true) {
-                player.collisionOn = true;
+        if (player.getDirection() == "down") {
+            entityBottomRow = (entityBottomY + player.getSpeed()) / game.getTileSize();
+            tileNum1 = game.tileFactory.getMapTileNum()[entityLeftCol][entityBottomRow];
+            tileNum2 = game.tileFactory.getMapTileNum()[entityRightCol][entityBottomRow];
+            if (game.tileFactory.getTile()[tileNum1].collision == true
+                    || game.tileFactory.getTile()[tileNum2].collision == true) {
+                player.setCollisionOn(true); 
             }
         }
-        if (player.movementDirection == "left") {
-            entityLeftCol = (entityLeftX - player.speed) / game.tileSize;
-            tileNum1 = game.tileFactory.mapTileNum[entityLeftCol][entityTopRow];
-            tileNum2 = game.tileFactory.mapTileNum[entityLeftCol][entityBottomRow];
-            if (game.tileFactory.tile[tileNum1].collision == true
-                    || game.tileFactory.tile[tileNum2].collision == true) {
-                player.collisionOn = true;
+        if (player.getDirection() == "left") {
+            entityLeftCol = (entityLeftX - player.getSpeed()) / game.getTileSize();
+            tileNum1 = game.tileFactory.getMapTileNum()[entityLeftCol][entityTopRow];
+            tileNum2 = game.tileFactory.getMapTileNum()[entityLeftCol][entityBottomRow];
+            if (game.tileFactory.getTile()[tileNum1].collision == true
+                    || game.tileFactory.getTile()[tileNum2].collision == true) {
+                player.setCollisionOn(true);
             }
         }
-        if (player.movementDirection == "right") {
-            entityRightCol = (entityRightX + player.speed) / game.tileSize;
-            tileNum1 = game.tileFactory.mapTileNum[entityRightCol][entityTopRow];
-            tileNum2 = game.tileFactory.mapTileNum[entityRightCol][entityBottomRow];
-            if (game.tileFactory.tile[tileNum1].collision == true
-                    || game.tileFactory.tile[tileNum2].collision == true) {
-                player.collisionOn = true;
+        if (player.getDirection() == "right") {
+            entityRightCol = (entityRightX + player.getSpeed()) / game.getTileSize();
+            tileNum1 = game.tileFactory.getMapTileNum()[entityRightCol][entityTopRow];
+            tileNum2 = game.tileFactory.getMapTileNum()[entityRightCol][entityBottomRow];
+            if (game.tileFactory.getTile()[tileNum1].collision == true
+                    || game.tileFactory.getTile()[tileNum2].collision == true) {
+                player.setCollisionOn(true); 
             }
         }
     }
 
     public void checkTile(Enemy enemy) {
 
-        int entityLeftX = enemy.x + enemy.hitBox.x;
-        int entityRightX = enemy.x + enemy.hitBox.x + enemy.hitBox.width;
-        int entityTopY = enemy.y + enemy.hitBox.y;
-        int entityBottomY = enemy.y + enemy.hitBox.y + enemy.hitBox.height;
+        int entityLeftX = enemy.getX() + enemy.getHitBox().x;
+        int entityRightX = enemy.getX() + enemy.getHitBox().x + enemy.getHitBox().width;
+        int entityTopY = enemy.getY() + enemy.getHitBox().y;
+        int entityBottomY = enemy.getY() + enemy.getHitBox().y + enemy.getHitBox().height;
 
-        int entityLeftCol = entityLeftX / game.tileSize;
-        int entityRightCol = entityRightX / game.tileSize;
-        int entityTopRow = entityTopY / game.tileSize;
-        int entityBottomRow = entityBottomY / game.tileSize;
+        int entityLeftCol = entityLeftX / game.getTileSize();
+        int entityRightCol = entityRightX / game.getTileSize();
+        int entityTopRow = entityTopY / game.getTileSize();
+        int entityBottomRow = entityBottomY / game.getTileSize();
 
         int tileNum1, tileNum2;
 
         // In case of an ArrayIndexOutOfBoundsException: Index 12 out of bounds for
         // length 12
 
-        if (entityBottomRow > 11) {
-            entityBottomRow = 11;
-        }
-        if (entityLeftCol > 11) {
-            entityLeftCol = 11;
-        }
-        if (entityRightCol > 11) {
-            entityRightCol = 11;
-        }
-        if (entityTopRow > 11) {
-            entityTopRow = 11;
-        }
+        // if (entityBottomRow > 11) {
+        //     entityBottomRow = 11;
+        // }
+        // if (entityBottomRow < 0) {
+        //     entityBottomRow = 0;
+        // }
+        // if (entityLeftCol > 11) {
+        //     entityLeftCol = 11;
+        // }
+        // if (entityLeftCol < 0) {
+        //     entityLeftCol = 0;
+        // }
+        // if (entityRightCol > 11) {
+        //     entityRightCol = 11;
+        // }
+        // if (entityRightCol < 0) {
+        //     entityRightCol = 0;
+        // }
+        // if (entityTopRow > 11) {
+        //     entityTopRow = 11;
+        // }
+        // if (entityTopRow < 0) {
+        //     entityTopRow = 0;
+        // }
 
-        if (enemy.movementDirection == "up") {
-            entityTopRow = (entityTopY - enemy.speed) / game.tileSize;
-            tileNum1 = game.tileFactory.mapTileNum[entityLeftCol][entityTopRow];
-            tileNum2 = game.tileFactory.mapTileNum[entityRightCol][entityTopRow];
-            if (game.tileFactory.tile[tileNum1].collision == true
-                    || game.tileFactory.tile[tileNum2].collision == true) {
-                enemy.collisionOn = true;
+        if (enemy.getDirection() == "up") {
+            entityTopRow = (entityTopY - enemy.getSpeed()) / game.getTileSize();
+            tileNum1 = game.tileFactory.getMapTileNum()[entityLeftCol][entityTopRow];
+            tileNum2 = game.tileFactory.getMapTileNum()[entityRightCol][entityTopRow];
+            if (game.tileFactory.getTile()[tileNum1].collision == true
+                    || game.tileFactory.getTile()[tileNum2].collision == true) {
+                enemy.setCollisionOn(true); 
             }
         }
-        if (enemy.movementDirection == "down") {
-            entityBottomRow = (entityBottomY + enemy.speed) / game.tileSize;
-            tileNum1 = game.tileFactory.mapTileNum[entityLeftCol][entityBottomRow];
-            tileNum2 = game.tileFactory.mapTileNum[entityRightCol][entityBottomRow];
-            if (game.tileFactory.tile[tileNum1].collision == true
-                    || game.tileFactory.tile[tileNum2].collision == true) {
-                enemy.collisionOn = true;
+        if (enemy.getDirection() == "down") {
+            entityBottomRow = (entityBottomY + enemy.getSpeed()) / game.getTileSize();
+            tileNum1 = game.tileFactory.getMapTileNum()[entityLeftCol][entityBottomRow];
+            tileNum2 = game.tileFactory.getMapTileNum()[entityRightCol][entityBottomRow];
+            if (game.tileFactory.getTile()[tileNum1].collision == true
+                    || game.tileFactory.getTile()[tileNum2].collision == true) {
+                enemy.setCollisionOn(true); 
             }
         }
-        if (enemy.movementDirection == "left") {
-            entityLeftCol = (entityLeftX - enemy.speed) / game.tileSize;
-            tileNum1 = game.tileFactory.mapTileNum[entityLeftCol][entityTopRow];
-            tileNum2 = game.tileFactory.mapTileNum[entityLeftCol][entityBottomRow];
-            if (game.tileFactory.tile[tileNum1].collision == true
-                    || game.tileFactory.tile[tileNum2].collision == true) {
-                enemy.collisionOn = true;
+        if (enemy.getDirection() == "left") {
+            entityLeftCol = (entityLeftX - enemy.getSpeed()) / game.getTileSize();
+            tileNum1 = game.tileFactory.getMapTileNum()[entityLeftCol][entityTopRow];
+            tileNum2 = game.tileFactory.getMapTileNum()[entityLeftCol][entityBottomRow];
+            if (game.tileFactory.getTile()[tileNum1].collision == true
+                    || game.tileFactory.getTile()[tileNum2].collision == true) {
+                enemy.setCollisionOn(true); 
             }
         }
-        if (enemy.movementDirection == "right") {
-            entityRightCol = (entityRightX + enemy.speed) / game.tileSize;
-            tileNum1 = game.tileFactory.mapTileNum[entityRightCol][entityTopRow];
-            tileNum2 = game.tileFactory.mapTileNum[entityRightCol][entityBottomRow];
-            if (game.tileFactory.tile[tileNum1].collision == true
-                    || game.tileFactory.tile[tileNum2].collision == true) {
-                enemy.collisionOn = true;
+        if (enemy.getDirection() == "right") {
+            entityRightCol = (entityRightX + enemy.getSpeed()) / game.getTileSize();
+            tileNum1 = game.tileFactory.getMapTileNum()[entityRightCol][entityTopRow];
+            tileNum2 = game.tileFactory.getMapTileNum()[entityRightCol][entityBottomRow];
+            if (game.tileFactory.getTile()[tileNum1].collision == true
+                    || game.tileFactory.getTile()[tileNum2].collision == true) {
+                enemy.setCollisionOn(true); 
             }
         }
     }

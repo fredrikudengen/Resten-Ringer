@@ -14,9 +14,11 @@ public class Projectile extends Entity {
     Player player;
     GameController gameController;
 
-    String shotDirection;
-    int imageNum = 1;
-    int imageCounter = 0;
+    private String shotDirection;
+    final int originalBulletSize = 4; // 8x8 bullet size
+    private final int bulletSize = originalBulletSize * 3; // 12x12 tile size
+
+
 
     private Image up1 = Inf101Graphics.loadImageFromResources("Up_bullet_1.png");
     private Image up2 = Inf101Graphics.loadImageFromResources("Up_bullet_2.png");
@@ -38,7 +40,7 @@ public class Projectile extends Entity {
         setDefaultValues();
     }
 
-    public void setDefaultValues() {
+    protected void setDefaultValues() {
         x = player.x;
 
         y = player.y;
@@ -48,17 +50,17 @@ public class Projectile extends Entity {
         isAlive = true;
     }
 
-    public boolean ProjectileCollidesWithEnemy(int i) {
-        if (rectanglesOverlap(game.enemyList.get(i).x,
-                game.enemyList.get(i).y,
-                game.enemyList.get(i).x + game.tileSize,
-                game.enemyList.get(i).y + game.tileSize, x,
+    private boolean ProjectileCollidesWithEnemy(int i) {
+        if (rectanglesOverlap(game.getEnemyList().get(i).x,
+                game.getEnemyList().get(i).y,
+                game.getEnemyList().get(i).x + game.getTileSize(),
+                game.getEnemyList().get(i).y + game.getTileSize(), x,
                 y,
-                x + game.bulletSize,
-                y + game.bulletSize)) {
-            game.enemyList.get(i).healthPoints--;
-            if (game.enemyList.get(i).healthPoints <= 0) {
-                game.enemyList.get(i).isAlive = false;
+                x + bulletSize,
+                y + bulletSize)) {
+            game.getEnemyList().get(i).healthPoints--;
+            if (game.getEnemyList().get(i).healthPoints <= 0) {
+                game.getEnemyList().get(i).isAlive = false;
             }
             return true;
         } else {
@@ -83,7 +85,7 @@ public class Projectile extends Entity {
             }
         } else if (shotDirection == "down") {
             y += speed;
-            if (y > game.screenHeight) {
+            if (y > game.getScreenHeight()) {
                 gameController.shootDown = false;
             }
         } else if (shotDirection == "left") {
@@ -93,7 +95,7 @@ public class Projectile extends Entity {
             }
         } else if (shotDirection == "right") {
             x += speed;
-            if (x > game.screenWidth) {
+            if (x > game.getWidth()) {
                 gameController.shootRight = false;
             }
         }
@@ -147,27 +149,14 @@ public class Projectile extends Entity {
             }
             // Draw Projectile
             if (shotDirection == "right") {
-                g2.drawImage(image, x + 40, y + 20, game.bulletSize * 2, game.bulletSize, null);
+                g2.drawImage(image, x + 40, y + 20, bulletSize * 2, bulletSize, null);
             } else if (shotDirection == "left") {
-                g2.drawImage(image, x - 40, y + 20, game.bulletSize * 2, game.bulletSize, null);
+                g2.drawImage(image, x - 40, y + 20, bulletSize * 2, bulletSize, null);
             } else if (shotDirection == "up") {
-                g2.drawImage(image, x + 25, y - 20, game.bulletSize, game.bulletSize * 2, null);
+                g2.drawImage(image, x + 25, y - 20, bulletSize, bulletSize * 2, null);
             } else if (shotDirection == "down") {
-                g2.drawImage(image, x, y + 30, game.bulletSize, game.bulletSize * 2, null);
+                g2.drawImage(image, x, y + 30, bulletSize, bulletSize * 2, null);
             }
         }
-    }
-
-    // Getters and setters
-    public int getProjectileX() {
-        return x;
-    }
-
-    public int getProjectileY() {
-        return y;
-    }
-
-    public double getProjectileSpeed() {
-        return speed;
     }
 }

@@ -1,9 +1,6 @@
 package no.uib.inf101.sample.entity.enemy;
 
-import java.awt.Image;
-
 import no.uib.inf101.sample.Game;
-import no.uib.inf101.sample.Inf101Graphics;
 import no.uib.inf101.sample.entity.Player;
 
 public class NormalEnemy extends Enemy {
@@ -19,7 +16,7 @@ public class NormalEnemy extends Enemy {
         setDefaultValues();
     }
 
-    public void setDefaultValues() {
+    protected void setDefaultValues() {
         setXAndY();
         healthPoints = 3;
         speed = 2;

@@ -109,22 +109,4 @@ public class SoundPlayer {
             e.printStackTrace();
         }
     }
-    public static void glassShatter() {
-        try {
-            // Open an audio input stream for sound clip 3.
-            AudioInputStream audioIn = AudioSystem.getAudioInputStream(SoundPlayer.class.getResource("glass-shatter.wav"));
-            
-            // Get a sound clip resource.
-            Clip clip = AudioSystem.getClip();
-            
-            // Open audio clip and load samples from the audio input stream.
-            clip.open(audioIn);
-            
-            // Play the sound clip.
-            clip.start();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 }
-

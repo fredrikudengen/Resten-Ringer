@@ -16,7 +16,7 @@ public class SlowEnemy extends Enemy {
         setDefaultValues();
     }
 
-    public void setDefaultValues() {
+    protected void setDefaultValues() {
         setXAndY();
         healthPoints = 4;
         speed = 1;

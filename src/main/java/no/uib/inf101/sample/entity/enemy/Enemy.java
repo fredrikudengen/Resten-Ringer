@@ -15,12 +15,11 @@ public abstract class Enemy extends Entity {
     Game game;
     Player player;
 
-    int imageNum = 1;
-    int imageCounter = 0;
-    boolean isMoving = false;
+    private int imageNum = 1;
+    private int imageCounter = 0;
 
-    int xNeededToMove;
-    int yNeededToMove;
+    private int xNeededToMove;
+    private int yNeededToMove;
 
     private boolean isStopped = false;
     private long stopStartTime = 0;
@@ -52,9 +51,9 @@ public abstract class Enemy extends Entity {
         setXAndY();
     }
 
-    public abstract void setDefaultValues();
+    protected abstract void setDefaultValues();
 
-    public void setXAndY() {
+    protected void setXAndY() {
         Random rand = new Random();
 
         int spawnNumber = rand.nextInt(4);
@@ -64,22 +63,22 @@ public abstract class Enemy extends Entity {
                 y = 50;
                 break;
             case 1:
-                x = game.screenWidth - 100;
-                y = game.screenHeight - 100;
+                x = game.getScreenWidth() - 100;
+                y = game.getScreenHeight() - 100;
                 break;
             case 2:
-                x = game.screenWidth - 100;
+                x = game.getScreenWidth() - 100;
                 y = 50;
                 break;
             case 3:
                 x = 50;
-                y = game.screenHeight - 50;
+                y = game.getScreenHeight() - 50;
         }
     }
 
-    public void simulateEnemyMoves() {
-        xNeededToMove = player.getPlayerX() - x;
-        yNeededToMove = player.getPlayerY() - y;
+    protected void simulateEnemyMoves() {
+        xNeededToMove = player.getX() - x;
+        yNeededToMove = player.getY() - y;
         if (Math.abs(xNeededToMove) > Math.abs(yNeededToMove)) {
             // Check tile collision
             collisionOn = false;
@@ -183,13 +182,25 @@ public abstract class Enemy extends Entity {
                 }
             }
         }
+        if (y <= 20) {
+            y = 20;
+        }
+        if (y >= game.getScreenHeight() - 60) {
+            y = game.getScreenHeight() - 60;
+        }
+        if (x <= 20) {
+            x = 20;
+        }
+        if (x >= game.getScreenWidth() - game.getTileSize() - 5) {
+            x = game.getScreenWidth() - game.getTileSize() - 5;
+        }
     }
 
-    public boolean enemyCollidesWithPlayer() {
-        return rectanglesOverlap(x + 9, y, x + game.tileSize - 9,
-                y + game.tileSize, player.getPlayerX() + 9,
-                player.getPlayerY(),
-                player.getPlayerX() + game.tileSize - 9, player.getPlayerY() + game.tileSize);
+    protected boolean enemyCollidesWithPlayer() {
+        return rectanglesOverlap(x + 9, y, x + game.getTileSize() - 9,
+                y + game.getTileSize(), player.getX() + 9,
+                player.getY(),
+                player.getX() + game.getTileSize() - 9, player.getY() + game.getTileSize());
 
     }
 
@@ -248,37 +259,30 @@ public abstract class Enemy extends Entity {
         }
 
         if (image != null) {
-            g2.drawImage(image, x, y, game.tileSize, game.tileSize, null);
+            g2.drawImage(image, x, y, game.getTileSize(), game.getTileSize(), null);
         }
 
     }
 
-    public void knockBackPlayer() {
+    protected void knockBackEnemy() {
         if (enemyCollidesWithPlayer() == true) {
             player.setShocked();
             if (movementDirection == "up") {
-                if (y - 50 < 0) {
-                    x -= 50;
-                } else {
+                if (!(y - 50 < 20)) {
                     y -= 50;
                 }
             } else if (movementDirection == "left") {
-                if (x + 50 < game.screenWidth) {
-                    y += 50;
-                } else {
+                if (!(x + 50 > game.getScreenWidth() - game.getTileSize() - 5)) {
                     x += 50;
                 }
             } else if (movementDirection == "right") {
-                if (x - 50 < 0) {
-                    y += 50;
-                } else {
+                if (!(x - 50 < 20)) {
                     x -= 50;
                 }
             } else if (movementDirection == "down") {
-                if (y + 50 < game.screenHeight) {
-                    y += 50;
+                if (!(y + 50 < game.getScreenHeight() - 60)) {
+                    x -= 50;
                 }
-                x -= 50;
             }
         }
     }
@@ -287,11 +291,12 @@ public abstract class Enemy extends Entity {
         if (isStopped) {
             long currentTime = System.nanoTime();
             // Check if the enemy collides with the player
-            if (enemyCollidesWithPlayer() && !(player.isShocked)) {
+            if (enemyCollidesWithPlayer() && !(player.getIsShocked())) {
                 // Perform actions when collision occurs
                 // For example, reduce player's health
-                player.healthPoints--;
-                knockBackPlayer();
+                player.setHealthpoints(player.getHealthpoints() - 1);
+                ;
+                knockBackEnemy();
 
                 // Start the stop timer
                 isStopped = true;
@@ -307,11 +312,12 @@ public abstract class Enemy extends Entity {
         }
 
         // Check if the enemy collides with the player
-        if (enemyCollidesWithPlayer() && !(player.isShocked)) {
+        if (enemyCollidesWithPlayer() && !(player.getIsShocked())) {
             // Perform actions when collision occurs
             // For example, reduce player's health
-            player.healthPoints--;
-            knockBackPlayer();
+            player.setHealthpoints(player.getHealthpoints() - 1);
+            ;
+            knockBackEnemy();
 
             // Start the stop timer
             isStopped = true;

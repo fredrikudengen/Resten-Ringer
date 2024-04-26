@@ -6,25 +6,27 @@ import no.uib.inf101.sample.Game;
 import no.uib.inf101.sample.entity.enemy.NormalEnemy;
 import no.uib.inf101.sample.entity.enemy.SlowEnemy;
 
-public class Entity {
+public abstract class Entity {
 
-    public Projectile projectile;
-    public Player player;
-    public NormalEnemy normalEnemy;
-    public SlowEnemy slowEnemy;
-    public Game game;
+    Projectile projectile;
+    Player player;
+    NormalEnemy normalEnemy;
+    SlowEnemy slowEnemy;
+    Game game;
 
-    public int x;
-    public int y;
-    public int speed;
-    public int healthPoints;
-    public boolean isAlive;
-    public String movementDirection = "right";
+    protected int x;
+    protected int y;
+    protected int speed;
+    protected int healthPoints;
+    protected boolean isAlive;
+    protected String movementDirection = "right";
+    protected int imageNum = 1;
+    protected int imageCounter = 0;
 
-    public Rectangle hitBox;
-    public boolean collisionOn = false;
+    protected Rectangle hitBox;
+    protected boolean collisionOn = false;
 
-    public static boolean rectanglesOverlap(int x1, int y1, int x2, int y2,
+    protected static boolean rectanglesOverlap(int x1, int y1, int x2, int y2,
             int x3, int y3, int x4, int y4) {
         int xLeft = Math.min(x1, x2);
         int xRight = Math.max(x1, x2);
@@ -43,20 +45,44 @@ public class Entity {
         }
     }
 
+    protected abstract void setDefaultValues();
+
     // Getters and setters
     public int getX() {
         return x;
     }
-
     public int getY() {
         return y;
     }
-
-    public double getSpeed() {
+    public int getSpeed() {
         return speed;
     }
-
-    public boolean isAlive() {
+    public boolean getIsAlive() {
         return isAlive;
     }
+    public void setX(int x) {
+        this.x = x;
+    }
+    public void setY(int y) {
+        this.y = y;
+    }
+    public String getDirection() {
+        return movementDirection;
+    }
+    public void setHealthpoints(int healthPoints) {
+        this.healthPoints = healthPoints;
+    }
+    public int getHealthpoints() {
+        return this.healthPoints;
+    }
+    public Rectangle getHitBox() {
+        return this.hitBox;
+    }
+    public boolean getCollisionOn() {
+        return this.collisionOn;
+    }
+    public void setCollisionOn(boolean statement) {
+        this.collisionOn = statement;
+    }
+
 }

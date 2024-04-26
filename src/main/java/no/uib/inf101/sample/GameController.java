@@ -29,31 +29,31 @@ public class GameController implements java.awt.event.KeyListener {
         }
         if (game.gameState == GameState.LEVEL_SELECT) {
             if (e.getKeyCode() == KeyEvent.VK_D) {
-                game.commandNum++;
-                if (game.commandNum > 2) {
-                    game.commandNum = 0;
+                game.setCommandNum(game.getCommandNum() + 1);;
+                if (game.getCommandNum() > 2) {
+                    game.setCommandNum(0); 
                 }
             }
             if (e.getKeyCode() == KeyEvent.VK_A) {
-                game.commandNum--;
-                if (game.commandNum < 0) {
-                    game.commandNum = 2;
+                game.setCommandNum(game.getCommandNum() - 1);
+                if (game.getCommandNum() < 0) {
+                    game.setCommandNum(2);
                 }
             }
             if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
                 game.gameState = GameState.TITLE_SCREEN;
             }
             if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-                if (game.commandNum == 0) {
-                    game.modeSelect = "sober mode";
+                if (game.getCommandNum() == 0) {
+                    game.setModeSelect("sober mode"); 
                     game.gameState = GameState.ACTIVE_GAME;
                 }
-                if (game.commandNum == 1) {
-                    game.modeSelect = "tipsy mode";
+                if (game.getCommandNum() == 1) {
+                    game.setModeSelect("tipsy mode"); 
                     game.gameState = GameState.ACTIVE_GAME;
                 }
-                if (game.commandNum == 2) {
-                    game.modeSelect = "drunk mode";
+                if (game.getCommandNum() == 2) {
+                    game.setModeSelect("drunk mode"); 
                     game.gameState = GameState.ACTIVE_GAME;
                 }
             }
@@ -66,25 +66,25 @@ public class GameController implements java.awt.event.KeyListener {
         if (game.gameState == GameState.TITLE_SCREEN) {
             if (e.getKeyCode() == KeyEvent.VK_W) {
 
-                game.commandNum--;
-                if (game.commandNum < 0) {
-                    game.commandNum = 2;
+                game.setCommandNum(game.getCommandNum() - 1);
+                if (game.getCommandNum() < 0) {
+                    game.setCommandNum(2); 
                 }
             }
             if (e.getKeyCode() == KeyEvent.VK_S) {
-                game.commandNum++;
-                if (game.commandNum > 2) {
-                    game.commandNum = 0;
+                game.setCommandNum(game.getCommandNum() + 1);
+                if (game.getCommandNum() > 2) {
+                    game.setCommandNum(0);
                 }
             }
             if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-                if (game.commandNum == 0) {
+                if (game.getCommandNum() == 0) {
                     game.gameState = GameState.ACTIVE_GAME;
                 }
-                if (game.commandNum == 1) {
+                if (game.getCommandNum() == 1) {
                     game.gameState = GameState.LEVEL_SELECT;
                 }
-                if (game.commandNum == 2) {
+                if (game.getCommandNum() == 2) {
                     System.exit(0);
                 }
             }

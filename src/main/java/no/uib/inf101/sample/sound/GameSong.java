@@ -74,11 +74,6 @@ public class GameSong implements Runnable {
         System.err.println("Midi error: " + msg);
         this.sequencer = null;
     }
-
-    // Method to stop the MIDI song externally
-    public void stopMidiSong() {
-        doStopMidiSounds();
-    }
     
     // Setter method to change the name of the song
     public void setSongName(String songName) {

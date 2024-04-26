@@ -1,10 +1,6 @@
 package no.uib.inf101.sample.map;
 
-import java.awt.Graphics2D;
-import java.awt.Toolkit;
-
 import no.uib.inf101.sample.Game;
-import no.uib.inf101.sample.Inf101Graphics;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -12,37 +8,31 @@ import java.io.InputStreamReader;
 
 public class TileFactory {
     Game game;
-    public Tile[] tile;
+    private Tile[] tile;
 
     // Stores map data
-    public int mapTileNum[][];
+    private int mapTileNum[][];
 
     public TileFactory(Game game) {
 
         this.game = game;
 
-        tile = new Tile[10];
+        tile = new Tile[2];
 
-        mapTileNum = new int[game.cols][game.rows];
+        mapTileNum = new int[game.getCols()][game.getRows()];
 
-        getTileImage();
+        setTiles();
         loadMap("gameMap1.txt");
 
     }
 
-    public void getTileImage() {
+    private void setTiles() {
         tile[0] = new Tile();
-        tile[0].image = Inf101Graphics.loadImageFromResources("grass.png");
-
         tile[1] = new Tile();
-        tile[1].image = Inf101Graphics.loadImageFromResources("wall.png");
         tile[1].collision = true;
-
-        tile[2] = new Tile();
-        tile[2].image = Inf101Graphics.loadImageFromResources("water.png");
     }
 
-    public void loadMap(String mapFile) {
+    private void loadMap(String mapFile) {
         try {
             // Imports textfile
             InputStream is = getClass().getResourceAsStream(mapFile);
@@ -53,11 +43,11 @@ public class TileFactory {
             int row = 0;
 
             // Map text file is the same size as our board
-            while (col < game.cols && row < game.rows) {
+            while (col < game.getCols() && row < game.getRows()) {
                 // Reads a single line in the map file
                 String line = br.readLine();
                 // Puts read string in an array
-                while (col < game.cols && row < game.rows) {
+                while (col < game.getCols() && row < game.getRows()) {
                     // Changes string in line to integer
                     String numbers[] = line.split(" ");
                     // Stores extracted number
@@ -66,7 +56,7 @@ public class TileFactory {
                     col++;
 
                 }
-                if (col == game.cols) {
+                if (col == game.getCols()) {
                     col = 0;
                     row++;
                 }
@@ -76,30 +66,10 @@ public class TileFactory {
         }
     }
 
-    public void draw(Graphics2D g2) {
-
-        int col = 0;
-        int row = 0;
-        int x = 0;
-        int y = 0;
-
-        while (col < game.cols && row < game.rows) {
-
-            int tileNum = mapTileNum[col][row]; // Extracts number for a tile // Works as an index
-            g2.drawImage(tile[tileNum].image, x, y, game.tileSize, game.tileSize, null);
-            // Draws next tile
-            col++;
-            x += game.tileSize;
-
-            // Resets cols and x pos when max is hit
-            if (col == game.cols) {
-                col = 0;
-                x = 0;
-                // Increases rows and y pos
-                row++;
-                y += game.tileSize;
-            }
-
-        }
+    public int[][] getMapTileNum() {
+        return mapTileNum;
+    }
+    public Tile[] getTile() {
+        return tile;
     }
 }

@@ -15,17 +15,12 @@ public class Player extends Entity {
     Game game;
     GameState gameState;
 
-    String direction;
-    public String movementDirection;
-    String knockBackDirection;
+    private String direction;
+    private String movementDirection;
 
-    int imageNum = 1;
-    int imageCounter = 0;
-
-    boolean isMoving = false;
-    public boolean isShocked;
-    static final long SHOCK_DURATION = 1000000000;
-    long shockStartTime = 0;
+    private boolean isShocked;
+    private static final long SHOCK_DURATION = 1000000000;
+    private long shockStartTime = 0;
 
     private Image up1 = Inf101Graphics.loadImageFromResources("Up_shotgun_walking_1.png");
     private Image up2 = Inf101Graphics.loadImageFromResources("Up_shotgun_walking_2.png");
@@ -51,9 +46,9 @@ public class Player extends Entity {
         setDefaultValues();
     }
 
-    public void setDefaultValues() {
-        x = game.screenWidth / 2 - game.tileSize / 2;
-        y = game.screenHeight / 2 - game.tileSize / 2;
+    protected void setDefaultValues() {
+        x = game.getScreenWidth() / 2;
+        y = game.getScreenWidth() / 2;
         healthPoints = 6;
         speed = 4;
         direction = "right";
@@ -61,111 +56,29 @@ public class Player extends Entity {
         isShocked = false;
     }
 
-    public void setShocked() {
-        isShocked = true;
-        shockStartTime = System.nanoTime();
-    }
-
     public void update() {
         // Check tile collision
         collisionOn = false;
         game.collisionDetection.checkTile(this);
-        if (collisionOn == true) {
-            if (movementDirection == "up") {
-                if (gameController.downPressed == true) {
-                    direction = "down";
-                    movementDirection = "down";
-                    game.collisionDetection.checkTile(this);
-                    if (!collisionOn) {
-                        y += speed;
-                    }
-                } else if (gameController.leftPressed == true) {
-                    direction = "left";
-                    movementDirection = "left";
-                    game.collisionDetection.checkTile(this);
-                    if (!collisionOn) {
-                        x -= speed;
-                    }
-
-                } else if (gameController.rightPressed == true) {
-                    direction = "right";
-                    movementDirection = "right";
-                    game.collisionDetection.checkTile(this);
-                    if (!collisionOn) {
-                        x += speed;
-                    }
-                }
-            } else if (movementDirection == "down") {
-                if (gameController.upPressed == true) {
-                    direction = "up";
-                    movementDirection = "up";
-                    game.collisionDetection.checkTile(this);
-                    if (!collisionOn) {
-                        y -= speed;
-                    }
-                } else if (gameController.leftPressed == true) {
-                    direction = "left";
-                    movementDirection = "left";
-                    game.collisionDetection.checkTile(this);
-                    if (!collisionOn) {
-                        x -= speed;
-                    }
-                } else if (gameController.rightPressed == true) {
-                    direction = "right";
-                    movementDirection = "right";
-                    game.collisionDetection.checkTile(this);
-                    if (!collisionOn) {
-                        x += speed;
-                    }
-                }
-            } else if (movementDirection == "right") {
-                if (gameController.upPressed == true) {
-                    direction = "up";
-                    movementDirection = "up";
-                    game.collisionDetection.checkTile(this);
-                    if (!collisionOn) {
-                        y -= speed;
-                    }
-                } else if (gameController.downPressed == true) {
-                    direction = "down";
-                    movementDirection = "down";
-                    game.collisionDetection.checkTile(this);
-                    if (!collisionOn) {
-                        y += speed;
-                    }
-                } else if (gameController.leftPressed == true) {
-                    direction = "left";
-                    movementDirection = "left";
-                    game.collisionDetection.checkTile(this);
-                    if (!collisionOn) {
-                        x -= speed;
-                    }
-                }
-            } else if (movementDirection == "left") {
-                if (gameController.upPressed == true) {
-                    direction = "up";
-                    movementDirection = "up";
-                    game.collisionDetection.checkTile(this);
-                    if (!collisionOn) {
-                        y -= speed;
-                    }
-                } else if (gameController.downPressed == true) {
-                    direction = "down";
-                    movementDirection = "down";
-                    game.collisionDetection.checkTile(this);
-                    if (!collisionOn) {
-                        y += speed;
-                    }
-                } else if (gameController.rightPressed == true) {
-                    direction = "right";
-                    movementDirection = "right";
-                    game.collisionDetection.checkTile(this);
-                    if (!collisionOn) {
-                        x += speed;
-                    }
-                }
+        // Handle movement based on collision detection
+        if (collisionOn) {
+            // Reset player position based on the direction of movement
+            switch (movementDirection) {
+                case "up":
+                    y += speed; // Move the player back down
+                    break;
+                case "down":
+                    y -= speed; // Move the player back up
+                    break;
+                case "left":
+                    x += speed; // Move the player back to the right
+                    break;
+                case "right":
+                    x -= speed; // Move the player back to the left
+                    break;
             }
         }
+
         // If collision is false, player can move
         if (collisionOn == false) {
             if (gameController.downPressed || gameController.leftPressed || gameController.rightPressed
@@ -208,17 +121,17 @@ public class Player extends Entity {
             direction = "right";
         }
 
-        if (y <= 10) {
-            y = 10;
+        if (y <= 20) {
+            y = 20;
         }
-        if (y >= game.screenHeight - game.tileSize - 10) {
-            y = game.screenHeight - game.tileSize - 10;
+        if (y >= game.getScreenHeight() - 60) {
+            y = game.getScreenHeight() - 60;
         }
         if (x <= 5) {
             x = 5;
         }
-        if (x >= game.screenWidth - game.tileSize - 5) {
-            x = game.screenWidth - game.tileSize - 5;
+        if (x >= game.getScreenWidth() - game.getTileSize() - 5) {
+            x = game.getScreenWidth() - game.getTileSize() - 5;
         }
     }
 
@@ -261,13 +174,13 @@ public class Player extends Entity {
             }
 
             if (direction == "right") {
-                g2.drawImage(hitImage, x, y, game.tileSize * 2, game.tileSize, null);
+                g2.drawImage(hitImage, x, y, game.getTileSize() * 2, game.getTileSize(), null);
             } else if (direction == "left") {
-                g2.drawImage(hitImage, x - game.tileSize, y, game.tileSize * 2, game.tileSize, null);
+                g2.drawImage(hitImage, x - game.getTileSize(), y, game.getTileSize() * 2, game.getTileSize(), null);
             } else if (direction == "up") {
-                g2.drawImage(hitImage, x, y, game.tileSize, game.tileSize * 2, null);
+                g2.drawImage(hitImage, x, y, game.getTileSize(), game.getTileSize() * 2, null);
             } else if (direction == "down") {
-                g2.drawImage(hitImage, x, y, game.tileSize, game.tileSize * 2, null);
+                g2.drawImage(hitImage, x, y, game.getTileSize(), game.getTileSize() * 2, null);
             }
 
             if (isShocked) {
@@ -315,46 +228,30 @@ public class Player extends Entity {
             }
             // Draw player
             if (direction == "right") {
-                g2.drawImage(playerImage, x, y, game.tileSize * 2, game.tileSize, null);
+                g2.drawImage(playerImage, x, y, game.getTileSize() * 2, game.getTileSize(), null);
             } else if (direction == "left") {
-                g2.drawImage(playerImage, x - game.tileSize, y, game.tileSize * 2, game.tileSize, null);
+                g2.drawImage(playerImage, x - game.getTileSize(), y, game.getTileSize() * 2, game.getTileSize(), null);
             } else if (direction == "up") {
-                g2.drawImage(playerImage, x, y - game.tileSize, game.tileSize, game.tileSize * 2, null);
+                g2.drawImage(playerImage, x, y - game.getTileSize(), game.getTileSize(), game.getTileSize() * 2, null);
             } else if (direction == "down") {
-                g2.drawImage(playerImage, x, y, game.tileSize, game.tileSize * 2, null);
+                g2.drawImage(playerImage, x, y, game.getTileSize(), game.getTileSize() * 2, null);
             }
         }
 
         // Draw hearts
         for (int i = 0; i < healthPoints; i++) {
-            g2.drawImage(beer, 10 + (i * (game.tileSize / 2 + 5)), 20, game.tileSize / 2, game.tileSize / 2, null);
+            g2.drawImage(beer, 10 + (i * (game.getTileSize() / 2 + 5)), 20, game.getTileSize() / 2,
+                    game.getTileSize() / 2, null);
         }
     }
 
-    public String getDirection() {
-        return direction;
+    public boolean getIsShocked() {
+        return this.isShocked;
     }
 
-    public GameState getGameState() {
-        return gameState;
+    public void setShocked() {
+        isShocked = true;
+        shockStartTime = System.nanoTime();
     }
 
-    public int getPlayerX() {
-        return x;
-    }
-
-    public int getPlayerY() {
-        return y;
-    }
-
-    public void setHealthpoints(int healthPoints) {
-        this.healthPoints = healthPoints;
-    }
-
-    public int getHealthpoints() {
-        return this.healthPoints;
-    }
-
-
-    
 }
