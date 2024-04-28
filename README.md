@@ -19,3 +19,6 @@ Resten Ringer er et spill hvor Johanne og Fredrik har alle rettigheter. Du kan d
 
 Dette spillet er utviklet av Johanne Martine Solheim-Midtsveen og Fredrik Åsheim Udengen (c) 2024. 
 
+## Youtube walkthrough
+https://www.youtube.com/watch?v=-m3TrA11zJQ&ab_channel=JohanneSolheim
+
