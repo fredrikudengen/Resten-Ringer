@@ -8,7 +8,6 @@ import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
-import no.uib.inf101.sample.entity.Entity;
 import no.uib.inf101.sample.entity.Player;
 import no.uib.inf101.sample.entity.Projectile;
 import no.uib.inf101.sample.entity.enemy.Enemy;
@@ -97,7 +96,6 @@ public class Game extends JPanel implements Runnable {
                 nextDrawTime += drawInterval;
 
             } catch (InterruptedException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
         }

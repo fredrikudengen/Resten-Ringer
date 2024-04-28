@@ -2,6 +2,7 @@ package no.uib.inf101.sample.entity.enemy;
 
 import no.uib.inf101.sample.Game;
 import no.uib.inf101.sample.GameController;
+import no.uib.inf101.sample.GameState;
 import no.uib.inf101.sample.entity.Player;
 
 import org.junit.jupiter.api.Assertions;
@@ -34,6 +35,7 @@ class NormalEnemyTest {
         GameController gameController = new GameController(game);
         Player player = new Player(game, gameController);
         NormalEnemy enemy = new NormalEnemy(game, player);
+        game.setGameState(GameState.ACTIVE_GAME);
 
         // Set player position to be close to enemy
         player.setX(100);

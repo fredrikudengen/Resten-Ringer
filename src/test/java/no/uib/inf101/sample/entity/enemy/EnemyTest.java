@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import no.uib.inf101.sample.Game;
 import no.uib.inf101.sample.GameController;
+import no.uib.inf101.sample.GameState;
 import no.uib.inf101.sample.entity.Player;
 
 public class EnemyTest {
@@ -77,14 +78,18 @@ public class EnemyTest {
         // Create a FastEnemy instance
         FastEnemy fastEnemy = new FastEnemy(game, player);
 
-        // Save the initial X position
-        fastEnemy.setX(100);
+        game.setGameState(GameState.ACTIVE_GAME);
 
-        // Move the enemy
+
+        // Save the initial X position
+        fastEnemy.setX(200);
+        fastEnemy.setY(200);
+        fastEnemy.setDirection("right");
+        
         fastEnemy.update();
 
         // Check that the enemy has moved to the right
-        assertEquals(100 + fastEnemy.getSpeed(), fastEnemy.getX());
+        assertEquals(200 + fastEnemy.getSpeed(), fastEnemy.getX());
     }
 
     @Test
@@ -175,6 +180,8 @@ public class EnemyTest {
 
         // Create a Player instance
         Player player = new Player(game, gameController);
+
+        game.setGameState(GameState.ACTIVE_GAME);
 
         // Set player coordinates
         player.setX(100); // Sample X coordinate

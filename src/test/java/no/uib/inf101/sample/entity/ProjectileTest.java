@@ -8,8 +8,6 @@ import org.junit.jupiter.api.Test;
 
 import no.uib.inf101.sample.Game;
 import no.uib.inf101.sample.GameController;
-import no.uib.inf101.sample.entity.Player;
-import no.uib.inf101.sample.entity.Projectile;
 import no.uib.inf101.sample.entity.enemy.NormalEnemy;
 
 public class ProjectileTest {

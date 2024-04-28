@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test;
 
 import no.uib.inf101.sample.Game;
 import no.uib.inf101.sample.GameController;
-import no.uib.inf101.sample.entity.Player;
 
 public class PlayerTest {
     
