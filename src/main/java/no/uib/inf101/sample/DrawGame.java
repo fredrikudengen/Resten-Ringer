@@ -3,7 +3,7 @@ package no.uib.inf101.sample;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
-import java.awt.Image;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 import no.uib.inf101.sample.entity.Player;
@@ -15,11 +15,11 @@ public class DrawGame {
     Game game;
     Player player;
 
-    private int yTitle = 100; // Move yTitle to class level
-    private int numTitle = 1; // Move num to class level
+    private int yTitle = 100; 
+    private int numTitle = 1; 
     private int counterTitle = 1;
 
-    private Image background, title, beer, beer2, beer3, keepCalm, map, emptyBeer, gameOver, victoryScreen, waterCooler,
+    private BufferedImage background, title, beer, beer2, beer3, keepCalm, map, emptyBeer, gameOver, victoryScreen, waterCooler,
             bottleOfAlcohol, levelSelect;
 
     public DrawGame(Game game, Player player) {
@@ -79,6 +79,7 @@ public class DrawGame {
         int screenWidth = game.getScreenWidth();
         ArrayList<Enemy> enemyList = game.getEnemyList();
         ArrayList<Projectile> projectileList = game.getProjectileList();
+
         g2.drawImage(map, 0, 0, screenWidth, screenHeight, null);
 
         player.draw(g2);
@@ -106,6 +107,8 @@ public class DrawGame {
         int tileSize = game.getTileSize();
         int commandNum = game.getCommandNum();
         g2.drawImage(background, 0, 0, screenWidth, screenHeight, null);
+
+        // Moves title up and down
         if (yTitle <= 105 && 95 <= yTitle) {
             counterTitle++;
             if (counterTitle > 5) {
@@ -124,6 +127,7 @@ public class DrawGame {
         g2.setFont(new Font("IMPACT", Font.BOLD, 50));
         g2.setColor(Color.BLACK);
 
+        
         String text = "NEW GAME";
         int x = xCenterText(text, g2);
         int y = tileSize * 7;

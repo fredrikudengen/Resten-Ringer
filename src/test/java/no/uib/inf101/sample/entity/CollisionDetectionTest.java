@@ -6,8 +6,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import no.uib.inf101.sample.Game;
-import no.uib.inf101.sample.entity.CollisionDetection;
-import no.uib.inf101.sample.entity.Player;
 import no.uib.inf101.sample.entity.enemy.NormalEnemy;
 
 public class CollisionDetectionTest {
@@ -24,7 +22,7 @@ public class CollisionDetectionTest {
     @Test
     public void testCheckTile_PlayerUp_NoCollision() {
         Player player = new Player(game, null);
-        player.setDirection("up");
+        player.setMovementDirection("up");
         player.setX(100);
         player.setY(100);
         player.setSpeed(5);
@@ -36,7 +34,7 @@ public class CollisionDetectionTest {
     @Test
     public void testCheckTile_EnemyLeft_NoCollision() {
         NormalEnemy enemy = new NormalEnemy(game, null);
-        enemy.setDirection("left");
+        enemy.setMovementDirection("left");
         enemy.setX(100);
         enemy.setY(100);
         enemy.setSpeed(5);
@@ -48,7 +46,7 @@ public class CollisionDetectionTest {
     @Test
     public void testCheckTile_EnemyRight_Collision() {
         NormalEnemy enemy = new NormalEnemy(game, null);
-        enemy.setDirection("right");
+        enemy.setMovementDirection("right");
         enemy.setX(game.getTileSize() * 5);
         enemy.setY(50);
         enemy.setSpeed(5);

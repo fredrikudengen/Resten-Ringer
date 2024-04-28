@@ -11,6 +11,7 @@ import no.uib.inf101.sample.GameState;
 import no.uib.inf101.sample.entity.Player;
 
 public class EnemyTest {
+    
     @Test
     public void testFastEnemyDefaultValues() {
         // Create a Game instance and a GameController instance
@@ -26,7 +27,7 @@ public class EnemyTest {
         // Test default values
         assertEquals(2, fastEnemy.getHealthpoints());
         assertEquals(3, fastEnemy.getSpeed());
-        assertEquals("right", fastEnemy.getDirection());
+        assertEquals("right", fastEnemy.getMovementDirection());
         assertTrue(fastEnemy.getIsAlive());
     }
 
@@ -44,7 +45,7 @@ public class EnemyTest {
 
         assertEquals(3, normalEnemy.getHealthpoints());
         assertEquals(2, normalEnemy.getSpeed());
-        assertEquals("right", normalEnemy.getDirection());
+        assertEquals("right", normalEnemy.getMovementDirection());
         assertTrue(normalEnemy.getIsAlive());
     }
 
@@ -62,7 +63,7 @@ public class EnemyTest {
 
         assertEquals(4, slowEnemy.getHealthpoints());
         assertEquals(1, slowEnemy.getSpeed());
-        assertEquals("right", slowEnemy.getDirection());
+        assertEquals("right", slowEnemy.getMovementDirection());
         assertTrue(slowEnemy.getIsAlive());
     }
 
@@ -84,7 +85,7 @@ public class EnemyTest {
         // Save the initial X position
         fastEnemy.setX(200);
         fastEnemy.setY(200);
-        fastEnemy.setDirection("right");
+        fastEnemy.setMovementDirection("right");
         
         fastEnemy.update();
 
@@ -195,7 +196,7 @@ public class EnemyTest {
         normalEnemy.setY(100); // Sample initial Y coordinate
 
         // Set movement direction of the enemy towards the player
-        normalEnemy.setDirection("down");
+        normalEnemy.setMovementDirection("down");
 
         // Call the update method
         normalEnemy.update();

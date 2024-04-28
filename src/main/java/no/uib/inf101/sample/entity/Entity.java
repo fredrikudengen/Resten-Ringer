@@ -48,6 +48,7 @@ public abstract class Entity {
             return true;
         }
     }
+
     /**
      * Sets default values of object after the contructor is made.
      */
@@ -87,12 +88,12 @@ public abstract class Entity {
         this.y = y;
     }
 
-    public String getDirection() {
+    public String getMovementDirection() {
         return movementDirection;
     }
 
-    public void setDirection(String direction) {
-        this.movementDirection = direction;
+    public void setMovementDirection(String movementDirection) {
+        this.movementDirection = movementDirection;
     }
 
     public void setHealthpoints(int healthPoints) {

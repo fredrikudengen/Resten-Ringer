@@ -24,7 +24,7 @@ public class PlayerTest {
         assertEquals(game.getScreenHeight() / 2, player.getY());
         assertEquals(6, player.getHealthpoints());
         assertEquals(4, player.getSpeed());
-        assertEquals("right", player.getDirection());
+        assertEquals("right", player.getMovementDirection());
         assertTrue(player.getIsAlive());
     }
 
