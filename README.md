@@ -14,11 +14,12 @@ Lykke til!
 ## Hvordan spille Resten Ringer:
 Spillet spilles ved at man bruker WASD-tastene for å bevege spilleren rundt i baren. Piltastene bestemmer hvilken retning man skyter.
 
+## Youtube walkthrough
+https://www.youtube.com/watch?v=-m3TrA11zJQ&ab_channel=JohanneSolheim
+
 ## Copyright
 Resten Ringer er et spill hvor Johanne og Fredrik har alle rettigheter. Du kan derfor ikke publisere din egen versjon av Resten Ringer offentlig, skulle du ønske å lage et. Dette er kun for deg selv og dine aller nærmeste, og dere får kun gjenskape det med 	~~promille~~ ønske om å lære.
 
 Dette spillet er utviklet av Johanne Martine Solheim-Midtsveen og Fredrik Åsheim Udengen (c) 2024. 
 
-## Youtube walkthrough
-https://www.youtube.com/watch?v=-m3TrA11zJQ&ab_channel=JohanneSolheim
 
