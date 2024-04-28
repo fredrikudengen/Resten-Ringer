@@ -21,6 +21,7 @@ public class UpdateGame {
     private boolean bulletTimerCheck = false;
     private boolean addEnemies = true; // Add enemies by default
     private boolean gameOverSoundPlay = false;
+    private boolean gameStart = false;
 
     private int enemyMax = 2;
     private int enemiesAtStart = 0;
@@ -47,6 +48,11 @@ public class UpdateGame {
         }
         if (gameState == GameState.TITLE_SCREEN) {
             addEnemies = true;
+            enemyList.clear();
+            resetAllValues();
+        }
+        // Makes sure enemy positions get initialized only when new game is pressed
+        if (gameState == GameState.TITLE_SCREEN && game.getCommandNum() == 0 && gameController.enterKeyPressed) {
             enemyList.clear();
             resetAllValues();
         }

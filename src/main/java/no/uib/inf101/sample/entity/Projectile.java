@@ -24,7 +24,7 @@ public class Projectile extends Entity implements DrawAndUpdate {
         this.gameController = gameController;
         this.shotDirection = shotDirection;
         setDefaultValues();
-        getProjectileImage();
+        getImage();
     }
 
     @Override
@@ -35,7 +35,8 @@ public class Projectile extends Entity implements DrawAndUpdate {
         isAlive = true;
     }
 
-    private void getProjectileImage() {
+    @Override
+    protected void getImage() {
         up1 = Inf101Graphics.loadImageFromResources("Up_bullet_1.png");
         up2 = Inf101Graphics.loadImageFromResources("Up_bullet_2.png");
         down1 = Inf101Graphics.loadImageFromResources("Down_bullet_1.png");

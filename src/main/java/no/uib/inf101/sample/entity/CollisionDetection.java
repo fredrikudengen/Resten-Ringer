@@ -1,6 +1,6 @@
-package no.uib.inf101.sample;
+package no.uib.inf101.sample.entity;
 
-import no.uib.inf101.sample.entity.Player;
+import no.uib.inf101.sample.Game;
 import no.uib.inf101.sample.entity.enemy.Enemy;
 
 public class CollisionDetection {
@@ -11,7 +11,13 @@ public class CollisionDetection {
         this.game = game;
     }
 
-    public void checkTile(Player player) {
+    /**
+     * Checks for collision between the player and tiles on the game map based on
+     * the player's position and direction.
+     * 
+     * @param player The player object for which collision detection is performed.
+     */
+    protected void checkTile(Player player) {
         int entityLeftX, entityRightX, entityTopY, entityBottomY;
 
         if ("left".equals(player.getDirection())) {
@@ -79,6 +85,13 @@ public class CollisionDetection {
         }
     }
 
+    /**
+     * Checks for collision between the enemy and tiles on the game map based on
+     * the player's position and direction. This method is different from the player
+     * checkTile because the player sprite is different.
+     * 
+     * @param enemy The enemy object for which collision detection is performed.
+     */
     public void checkTile(Enemy enemy) {
         int entityLeftX = enemy.getX();
         int entityRightX = enemy.getX() + enemy.getHitBox().x + enemy.getHitBox().width;
@@ -119,11 +132,11 @@ public class CollisionDetection {
         }
     }
 
-    private int getGridCellNumber(int col, int row) {
+    public int getGridCellNumber(int col, int row) {
         return game.gridFactory.getGridCellNUm()[col][row];
     }
 
-    private boolean checkCollision(int cellNumber) {
+    public boolean checkCollision(int cellNumber) {
         return game.gridFactory.getGridCell()[cellNumber].collision;
     }
 }

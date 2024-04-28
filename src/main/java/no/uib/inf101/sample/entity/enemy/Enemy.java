@@ -41,32 +41,6 @@ public abstract class Enemy extends Entity {
     @Override
     public abstract void setDefaultValues();
 
-    protected void getNormalEnemyImage() {
-        normal_enemy_up_1 = Inf101Graphics.loadImageFromResources("Up_normal_enemy_1.png");
-        normal_enemy_up_2 = Inf101Graphics.loadImageFromResources("Up_normal_enemy_2.png");
-        normal_enemy_down_1 = Inf101Graphics.loadImageFromResources("Down_normal_enemy_1.png");
-        normal_enemy_down_2 = Inf101Graphics.loadImageFromResources("Down_normal_enemy_2.png");
-    }
-
-    protected void getSlowEnemyImage() {
-        slow_enemy_left_1 = Inf101Graphics.loadImageFromResources("Left_slow_enemy_1.png");
-        slow_enemy_left_2 = Inf101Graphics.loadImageFromResources("Left_slow_enemy_2.png");
-        slow_enemy_right_1 = Inf101Graphics.loadImageFromResources("Right_slow_enemy_1.png");
-        slow_enemy_right_2 = Inf101Graphics.loadImageFromResources("Right_slow_enemy_2.png");
-        slow_enemy_up_1 = Inf101Graphics.loadImageFromResources("Up_slow_enemy_1.png");
-        slow_enemy_up_2 = Inf101Graphics.loadImageFromResources("Up_slow_enemy_2.png");
-
-    }
-
-    protected void getFastEnemyImage() {
-        fast_enemy_up_1 = Inf101Graphics.loadImageFromResources("Up_police_1.png");
-        fast_enemy_up_2 = Inf101Graphics.loadImageFromResources("Up_police_2.png");
-        fast_enemy_left_1 = Inf101Graphics.loadImageFromResources("Left_police_1.png");
-        fast_enemy_left_2 = Inf101Graphics.loadImageFromResources("Left_police_2.png");
-        fast_enemy_right_1 = Inf101Graphics.loadImageFromResources("Right_police_1.png");
-        fast_enemy_right_2 = Inf101Graphics.loadImageFromResources("Right_police_2.png");
-    }
-
     /**
      * Sets the x and y coordinate of an Enemy in on of the four corners of the map.
      */

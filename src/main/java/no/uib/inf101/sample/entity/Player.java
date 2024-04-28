@@ -20,7 +20,27 @@ public class Player extends Entity implements DrawAndUpdate {
     private static final long SHOCK_DURATION = 1000000000;
     private long shockStartTime = 0;
 
-    private void getPlayerImage() {
+    public Player(Game game, GameController gameController) {
+        this.game = game;
+        this.gameController = gameController;
+        hitBox = new Rectangle(2, 0, 12, 16);
+        setDefaultValues();
+        getImage();
+    }
+
+    @Override
+    public void setDefaultValues() {
+        x = game.getScreenWidth() / 2;
+        y = game.getScreenHeight() / 2;
+        healthPoints = 6;
+        speed = 4;
+        direction = "right";
+        isAlive = true;
+        isShocked = false;
+    }
+
+    @Override
+    protected void getImage() {
         up1 = Inf101Graphics.loadImageFromResources("Up_shotgun_walking_1.png");
         up2 = Inf101Graphics.loadImageFromResources("Up_shotgun_walking_2.png");
         down1 = Inf101Graphics.loadImageFromResources("Down_shotgun_walking_1.png");
@@ -35,30 +55,7 @@ public class Player extends Entity implements DrawAndUpdate {
         leftHit2 = Inf101Graphics.loadImageFromResources("Left_hit_2.png");
         rightHit1 = Inf101Graphics.loadImageFromResources("Right_hit_1.png");
         rightHit2 = Inf101Graphics.loadImageFromResources("Right_hit_2.png");
-    }
-
-    private void loadHealthIcon() {
         beer = Inf101Graphics.loadImageFromResources("beer.png");
-    }
-
-    public Player(Game game, GameController gameController) {
-        this.game = game;
-        this.gameController = gameController;
-        hitBox = new Rectangle(2, 0, 12, 16);
-        setDefaultValues();
-        getPlayerImage();
-        loadHealthIcon();
-    }
-
-    @Override
-    public void setDefaultValues() {
-        x = game.getScreenWidth() / 2;
-        y = game.getScreenHeight() / 2;
-        healthPoints = 6;
-        speed = 4;
-        direction = "right";
-        isAlive = true;
-        isShocked = false;
     }
 
     @Override

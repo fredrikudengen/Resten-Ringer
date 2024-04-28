@@ -19,25 +19,15 @@ public class DrawGame {
     private int numTitle = 1; // Move num to class level
     private int counterTitle = 1;
 
-    private Image background = Inf101Graphics.loadImageFromResources("title_background.png");
-    private Image title = Inf101Graphics.loadImageFromResources("Resten_ringer.png");
-    private Image beer = Inf101Graphics.loadImageFromResources("beer.png");
-    private Image beer2 = Inf101Graphics.loadImageFromResources("random_beer_1.jpg");
-    private Image beer3 = Inf101Graphics.loadImageFromResources("random_beer_2.jpg");
-    private Image keepCalm = Inf101Graphics.loadImageFromResources("keep_calm.jpg");
-    private Image map = Inf101Graphics.loadImageFromResources("mapreal.png");
-    private Image emptyBeer = Inf101Graphics.loadImageFromResources("beer_empty.png");
-    private Image gameOver = Inf101Graphics.loadImageFromResources("GAMEOVER.png");
-    private Image victoryScreen = Inf101Graphics.loadImageFromResources("victoryScreen.png");
-    private Image waterCooler = Inf101Graphics.loadImageFromResources("water_cooler.png");
-    private Image bottleOfAlcohol = Inf101Graphics.loadImageFromResources("bottle_of_alcohol.png");
-    private Image levelSelect = Inf101Graphics.loadImageFromResources("level_select.png");
+    private Image background, title, beer, beer2, beer3, keepCalm, map, emptyBeer, gameOver, victoryScreen, waterCooler,
+            bottleOfAlcohol, levelSelect;
 
     public DrawGame(Game game, Player player) {
         this.game = game;
         this.player = player;
+        getImage();
     }
-
+    
     /**
      * Encapsulates all draw methods used in other classes, along with different
      * game screens. Called upon in Game.
@@ -184,5 +174,21 @@ public class DrawGame {
         int lenght = (int) g2.getFontMetrics().getStringBounds(text, g2).getWidth();
         int x = screenWidth / 2 - lenght / 2;
         return x;
+    }
+
+    private void getImage() {
+        background = Inf101Graphics.loadImageFromResources("title_background.png");
+        title = Inf101Graphics.loadImageFromResources("Resten_ringer.png");
+        beer = Inf101Graphics.loadImageFromResources("beer.png");
+        beer2 = Inf101Graphics.loadImageFromResources("random_beer_1.jpg");
+        beer3 = Inf101Graphics.loadImageFromResources("random_beer_2.jpg");
+        keepCalm = Inf101Graphics.loadImageFromResources("keep_calm.jpg");
+        map = Inf101Graphics.loadImageFromResources("mapreal.png");
+        emptyBeer = Inf101Graphics.loadImageFromResources("beer_empty.png");
+        gameOver = Inf101Graphics.loadImageFromResources("GAMEOVER.png");
+        victoryScreen = Inf101Graphics.loadImageFromResources("victoryScreen.png");
+        waterCooler = Inf101Graphics.loadImageFromResources("water_cooler.png");
+        bottleOfAlcohol = Inf101Graphics.loadImageFromResources("bottle_of_alcohol.png");
+        levelSelect = Inf101Graphics.loadImageFromResources("level_select.png");
     }
 }

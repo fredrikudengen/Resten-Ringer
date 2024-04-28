@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
+import no.uib.inf101.sample.entity.CollisionDetection;
 import no.uib.inf101.sample.entity.Player;
 import no.uib.inf101.sample.entity.Projectile;
 import no.uib.inf101.sample.entity.enemy.Enemy;
@@ -15,7 +16,8 @@ import no.uib.inf101.sample.map.GridFactory;
 
 public class Game extends JPanel implements Runnable {
 
-    // Private final field variables retrieved from https://www.youtube.com/watch?v=VpH33Uw-_0E&t=1281s&ab_channel=RyiSnow 06.04
+    // Private final field variables retrieved from
+    // https://www.youtube.com/watch?v=VpH33Uw-_0E&t=1281s&ab_channel=RyiSnow 06.04
     private final int originalTileSize = 16; // 16x16 tile size
     private final int scale = 3; // upscale by 3 to make it larger on screen
     private final int tileSize = originalTileSize * scale; // 48x48 tile size
@@ -35,7 +37,7 @@ public class Game extends JPanel implements Runnable {
     private GameState gameState;
     private DrawGame drawGame;
     private UpdateGame updateGame;
-    protected GridFactory gridFactory = new GridFactory(this);
+    public GridFactory gridFactory = new GridFactory(this);
     public CollisionDetection collisionDetection = new CollisionDetection(this);
     private GameController gameController = new GameController(this);
     private Player player = new Player(this, gameController);
@@ -47,7 +49,7 @@ public class Game extends JPanel implements Runnable {
         this.game = this;
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
         this.setBackground(Color.BLACK);
-        this.setDoubleBuffered(true); 
+        this.setDoubleBuffered(true);
         this.addKeyListener(gameController);
         this.setFocusable(true);
         this.requestFocusInWindow();
@@ -61,11 +63,12 @@ public class Game extends JPanel implements Runnable {
      */
     public void startGameThread() {
 
-        gameThread = new Thread(this); 
+        gameThread = new Thread(this);
         gameThread.start();
     }
 
-    // Retrieved from https://www.youtube.com/watch?v=VpH33Uw-_0E&t=1281s&ab_channel=RyiSnow 08.04
+    // Retrieved from
+    // https://www.youtube.com/watch?v=VpH33Uw-_0E&t=1281s&ab_channel=RyiSnow 08.04
     @Override
     public void run() {
 
@@ -111,7 +114,7 @@ public class Game extends JPanel implements Runnable {
         Graphics2D g2 = (Graphics2D) g;
 
         drawGame.drawGame(g2);
-    }  
+    }
 
     // Getters and setters
     public int getCommandNum() {
@@ -154,7 +157,7 @@ public class Game extends JPanel implements Runnable {
         return this.enemyList;
     }
 
-    public void addToEnemyList(Enemy enemy){
+    public void addToEnemyList(Enemy enemy) {
         enemyList.add(enemy);
     }
 
@@ -170,11 +173,11 @@ public class Game extends JPanel implements Runnable {
         return this.projectileList;
     }
 
-    public int getWaveNum(){
+    public int getWaveNum() {
         return this.waveNum;
     }
 
-    public void setWaveNum(int waveNum){
+    public void setWaveNum(int waveNum) {
         this.waveNum = waveNum;
     }
 }

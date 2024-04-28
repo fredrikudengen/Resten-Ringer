@@ -1,6 +1,7 @@
 package no.uib.inf101.sample.entity.enemy;
 
 import no.uib.inf101.sample.Game;
+import no.uib.inf101.sample.Inf101Graphics;
 import no.uib.inf101.sample.entity.Player;
 
 public class SlowEnemy extends Enemy {
@@ -11,7 +12,7 @@ public class SlowEnemy extends Enemy {
         this.player = player;
         this.movementDirection = "right";
         setDefaultValues();
-        getSlowEnemyImage();
+        getImage();
     }
     
     @Override
@@ -20,5 +21,15 @@ public class SlowEnemy extends Enemy {
         healthPoints = 4;
         speed = 1;
         isAlive = true;
+    }
+
+    @Override
+    protected void getImage() {
+        slow_enemy_left_1 = Inf101Graphics.loadImageFromResources("Left_slow_enemy_1.png");
+        slow_enemy_left_2 = Inf101Graphics.loadImageFromResources("Left_slow_enemy_2.png");
+        slow_enemy_right_1 = Inf101Graphics.loadImageFromResources("Right_slow_enemy_1.png");
+        slow_enemy_right_2 = Inf101Graphics.loadImageFromResources("Right_slow_enemy_2.png");
+        slow_enemy_up_1 = Inf101Graphics.loadImageFromResources("Up_slow_enemy_1.png");
+        slow_enemy_up_2 = Inf101Graphics.loadImageFromResources("Up_slow_enemy_2.png");
     }
 }

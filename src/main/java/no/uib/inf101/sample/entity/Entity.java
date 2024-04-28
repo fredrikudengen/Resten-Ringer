@@ -53,9 +53,14 @@ public abstract class Entity {
         }
     }
     /**
-     * Sets default values of object after the contructor is made
+     * Sets default values of object after the contructor is made.
      */
     public abstract void setDefaultValues();
+
+    /**
+     * Sets the image variables as image files.
+     */
+    protected abstract void getImage();
 
     // Getters and setters
     public int getX() {
@@ -68,6 +73,10 @@ public abstract class Entity {
 
     public int getSpeed() {
         return speed;
+    }
+
+    public void setSpeed(int speed) {
+        this.speed = speed;
     }
 
     public boolean getIsAlive() {
@@ -84,6 +93,10 @@ public abstract class Entity {
 
     public String getDirection() {
         return movementDirection;
+    }
+
+    public void setDirection(String direction) {
+        this.movementDirection = direction;
     }
 
     public void setHealthpoints(int healthPoints) {
@@ -104,13 +117,5 @@ public abstract class Entity {
 
     public void setCollisionOn(boolean statement) {
         this.collisionOn = statement;
-    }
-
-    public void setDirection(String direction) {
-        this.movementDirection = direction;
-    }
-
-    public void setSpeed(int speed) {
-        this.speed = speed;
     }
 }

@@ -1,9 +1,12 @@
-package no.uib.inf101.sample;
+package no.uib.inf101.sample.entity;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import no.uib.inf101.sample.Game;
+import no.uib.inf101.sample.entity.CollisionDetection;
 import no.uib.inf101.sample.entity.Player;
 import no.uib.inf101.sample.entity.enemy.NormalEnemy;
 
