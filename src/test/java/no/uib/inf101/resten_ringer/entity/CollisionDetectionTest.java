@@ -28,6 +28,7 @@ public class CollisionDetectionTest {
         player.setSpeed(5);
         player.setCollisionOn(false);
         collisionDetection.checkTile(player);
+        
         assertFalse(player.getCollisionOn());
     }
 
@@ -40,6 +41,7 @@ public class CollisionDetectionTest {
         enemy.setSpeed(5);
         enemy.setCollisionOn(false);
         collisionDetection.checkTile(enemy);
+
         assertFalse(enemy.getCollisionOn());
     }
 
@@ -52,6 +54,7 @@ public class CollisionDetectionTest {
         enemy.setSpeed(5);
         enemy.setCollisionOn(false);
         collisionDetection.checkTile(enemy);
+        
         assertTrue(enemy.getCollisionOn());
     }
 }
