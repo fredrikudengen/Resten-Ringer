@@ -10,17 +10,18 @@ public class SlowEnemy extends Enemy {
         super(game, player);
         this.game = game;
         this.player = player;
-        this.movementDirection = "right";
         setDefaultValues();
         getImage();
     }
     
     @Override
-    public void setDefaultValues() {
+    protected void setDefaultValues() {
         setSpawn();
         healthPoints = 4;
         speed = 1;
         isAlive = true;
+        movementDirection = "right";
+
     }
 
     @Override

@@ -10,17 +10,18 @@ public class FastEnemy extends Enemy {
         super(game, player);
         this.game = game;
         this.player = player;
-        this.movementDirection = "right";
         setDefaultValues();
         getImage();
     }
 
     @Override
-    public void setDefaultValues() {
+    protected void setDefaultValues() {
         setSpawn();
         healthPoints = 2;
         speed = 3;
         isAlive = true;
+        movementDirection = "right";
+
     }
 
     @Override

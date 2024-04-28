@@ -168,15 +168,12 @@ public class Game extends JPanel implements Runnable {
     public void setGameState(GameState gameState) {
         this.gameState = gameState;
     }
-
     public ArrayList<Projectile> getProjectileList() {
         return this.projectileList;
     }
-
     public int getWaveNum() {
         return this.waveNum;
     }
-
     public void setWaveNum(int waveNum) {
         this.waveNum = waveNum;
     }

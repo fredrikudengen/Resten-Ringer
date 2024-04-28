@@ -33,9 +33,7 @@ public class GridFactory {
 
     private void loadGrid(String gridFile) {
         try {
-            // Imports textfile
             InputStream is = getClass().getResourceAsStream(gridFile);
-            // Reads textfile
             BufferedReader br = new BufferedReader(new InputStreamReader(is));
 
             int col = 0;

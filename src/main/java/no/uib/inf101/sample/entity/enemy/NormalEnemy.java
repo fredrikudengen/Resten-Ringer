@@ -10,17 +10,18 @@ public class NormalEnemy extends Enemy {
         super(game, player);
         this.game = game;
         this.player = player;
-        this.movementDirection = "right";
         setDefaultValues();
         getImage();
     }
 
     @Override
-    public void setDefaultValues() {
+    protected void setDefaultValues() {
         setSpawn();
         healthPoints = 3;
         speed = 2;
         isAlive = true;
+        movementDirection = "right";
+
     }
 
     @Override

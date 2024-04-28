@@ -10,7 +10,7 @@ import javax.sound.midi.Sequencer;
 
 public class GameSong implements Runnable {
 
-    private String songName; // New field to hold the name of the song
+    private String songName;
     private Sequencer sequencer;
 
     public GameSong() {

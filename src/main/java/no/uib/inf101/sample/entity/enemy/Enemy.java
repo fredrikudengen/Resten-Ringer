@@ -8,7 +8,6 @@ import java.util.Random;
 
 import no.uib.inf101.sample.Game;
 import no.uib.inf101.sample.GameState;
-import no.uib.inf101.sample.Inf101Graphics;
 import no.uib.inf101.sample.entity.Entity;
 import no.uib.inf101.sample.entity.Player;
 
@@ -39,7 +38,7 @@ public abstract class Enemy extends Entity {
     }
 
     @Override
-    public abstract void setDefaultValues();
+    protected abstract void setDefaultValues();
 
     /**
      * Sets the x and y coordinate of an Enemy in on of the four corners of the map.
@@ -144,18 +143,18 @@ public abstract class Enemy extends Entity {
                 }
             }
         }
-        if (y <= 20) {
-            y = 20;
-        }
-        if (y >= game.getScreenHeight() - 60) {
-            y = game.getScreenHeight() - 60;
-        }
-        if (x <= 20) {
-            x = 20;
-        }
-        if (x >= game.getScreenWidth() - game.getTileSize() - 5) {
-            x = game.getScreenWidth() - game.getTileSize() - 5;
-        }
+        // if (y <= 20) {
+        //     y = 20;
+        // }
+        // if (y >= game.getScreenHeight() - 60) {
+        //     y = game.getScreenHeight() - 60;
+        // }
+        // if (x <= 20) {
+        //     x = 20;
+        // }
+        // if (x >= game.getScreenWidth() - game.getTileSize() - 5) {
+        //     x = game.getScreenWidth() - game.getTileSize() - 5;
+        // }
     }
 
     /**
@@ -165,10 +164,10 @@ public abstract class Enemy extends Entity {
      * @return boolean whether Enemy collides with Player or not.
      */
     protected boolean enemyCollidesWithPlayer() {
-        return rectanglesOverlap(x + 9, y, x + game.getTileSize() - 9,
-                y + game.getTileSize(), player.getX() + 9,
+        return rectanglesOverlap(x + 2 , y, x + game.getTileSize() - 2,
+                y + game.getTileSize(), player.getX() + 2,
                 player.getY(),
-                player.getX() + game.getTileSize() - 9, player.getY() + game.getTileSize());
+                player.getX() + game.getTileSize() - 2, player.getY() + game.getTileSize());
     }
 
     /**
@@ -270,29 +269,6 @@ public abstract class Enemy extends Entity {
      */
     public void update() {
         if (game.getGameState() == GameState.ACTIVE_GAME) {
-            if (isStopped) {
-                long currentTime = System.nanoTime();
-                // Check if the enemy collides with the player
-                if (enemyCollidesWithPlayer() && !(player.getIsShocked())) {
-                    // Perform actions when collision occurs
-                    // For example, reduce player's health
-                    player.setHealthpoints(player.getHealthpoints() - 1);
-
-                    knockBackEnemy();
-
-                    // Start the stop timer
-                    isStopped = true;
-                    stopStartTime = System.nanoTime();
-                }
-                if (currentTime - stopStartTime >= STOP_DURATION) {
-                    // If the stop duration has passed, resume movement
-                    isStopped = false;
-                } else {
-                    // Enemy remains stopped
-                    return;
-                }
-            }
-
             // Check if the enemy collides with the player
             if (enemyCollidesWithPlayer() && !(player.getIsShocked())) {
                 // Perform actions when collision occurs
@@ -304,6 +280,27 @@ public abstract class Enemy extends Entity {
                 // Start the stop timer
                 isStopped = true;
                 stopStartTime = System.nanoTime();
+            }
+            if (isStopped) {
+                long currentTime = System.nanoTime();
+                // Check if the enemy collides with the player
+                if (enemyCollidesWithPlayer() && !(player.getIsShocked())) {
+                    // Perform actions when collision occurs
+                    // For example, reduce player's health
+                    player.setHealthpoints(player.getHealthpoints() - 1);
+
+                    knockBackEnemy();
+
+                    // Start the stop timer
+                    stopStartTime = System.nanoTime();
+                }
+                if (currentTime - stopStartTime >= STOP_DURATION) {
+                    // If the stop duration has passed, resume movement
+                    isStopped = false;
+                } else {
+                    // Enemy remains stopped
+                    return;
+                }
             }
 
             simulateEnemyMoves();

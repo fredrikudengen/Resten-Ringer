@@ -1,12 +1,8 @@
 package no.uib.inf101.sample.entity;
 
 import java.awt.Rectangle;
-import java.awt.image.BufferedImage;
 
 public abstract class Entity {
-
-    protected BufferedImage up1, up2, left1, left2, right1, right2, down1, down2, downHit1, downHit2, leftHit1,
-            leftHit2, rightHit1, rightHit2, beer;
 
     protected int x;
     protected int y;
@@ -55,7 +51,7 @@ public abstract class Entity {
     /**
      * Sets default values of object after the contructor is made.
      */
-    public abstract void setDefaultValues();
+    protected abstract void setDefaultValues();
 
     /**
      * Sets the image variables as image files.

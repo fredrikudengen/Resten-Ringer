@@ -3,6 +3,7 @@ package no.uib.inf101.sample.entity;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
 
 import no.uib.inf101.sample.Game;
 import no.uib.inf101.sample.GameController;
@@ -19,6 +20,9 @@ public class Player extends Entity implements DrawAndUpdate {
     private boolean isShocked;
     private static final long SHOCK_DURATION = 1000000000;
     private long shockStartTime = 0;
+
+    private BufferedImage up1, up2, left1, left2, right1, right2, down1, down2, downHit1, downHit2, leftHit1,
+            leftHit2, rightHit1, rightHit2, beer;
 
     public Player(Game game, GameController gameController) {
         this.game = game;
