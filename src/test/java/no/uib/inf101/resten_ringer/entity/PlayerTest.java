@@ -12,11 +12,8 @@ public class PlayerTest {
     
     @Test
     public void testPlayerDefaultValues() {
-        // Create a Game instance and a GameController instance
         Game game = new Game();
         GameController gameController = new GameController(game);
-
-        // Create a Player instance
         Player player = new Player(game, gameController);
 
         // Test default values
@@ -35,12 +32,10 @@ public class PlayerTest {
         GameController gameController = new GameController(game);
         Player player = new Player(game, gameController);
 
-        // Move the player up
         gameController.upPressed = true;
         player.update();
         assertEquals(game.getScreenHeight() / 2 - 4, player.getY()); 
 
-        // Move the player down
         gameController.upPressed = false;
         gameController.downPressed = true;
         player.update();
