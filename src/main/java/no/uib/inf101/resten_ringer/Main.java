@@ -5,7 +5,6 @@ import javax.swing.JFrame;
 public class Main {
 
   public static void main(String[] args) {
-
     // The JFrame is the "root" application window.
     // We here set some properties of the main window,
     // and tell it to display our GamePanel

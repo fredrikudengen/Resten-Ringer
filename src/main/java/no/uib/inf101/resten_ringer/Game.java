@@ -60,7 +60,6 @@ public class Game extends JPanel implements Runnable {
      * Starts a new Thread used to update and draw the game 60 times a second.
      */
     public void startGameThread() {
-
         gameThread = new Thread(this);
         gameThread.start();
     }

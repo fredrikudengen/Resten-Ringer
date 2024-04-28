@@ -97,7 +97,6 @@ public class UpdateGame {
             FastEnemy newFastEnemy = new FastEnemy(game, player);
             enemyList.add(newFastEnemy);
         }
-
     }
 
     private void checkModeSelect() {

@@ -12,8 +12,8 @@ import no.uib.inf101.resten_ringer.entity.enemy.Enemy;
 
 public class DrawGame {
 
-    Game game;
-    Player player;
+    private Game game;
+    private Player player;
 
     private int yTitle = 100; 
     private int numTitle = 1; 
