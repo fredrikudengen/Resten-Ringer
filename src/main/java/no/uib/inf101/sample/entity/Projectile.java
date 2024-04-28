@@ -28,7 +28,7 @@ public class Projectile extends Entity implements DrawAndUpdate {
     }
 
     @Override
-    protected void setDefaultValues() {
+    public void setDefaultValues() {
         x = player.x;
         y = player.y;
         speed = 8;

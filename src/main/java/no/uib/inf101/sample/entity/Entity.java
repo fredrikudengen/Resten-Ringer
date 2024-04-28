@@ -55,7 +55,7 @@ public abstract class Entity {
     /**
      * Sets default values of object after the contructor is made
      */
-    protected abstract void setDefaultValues();
+    public abstract void setDefaultValues();
 
     // Getters and setters
     public int getX() {

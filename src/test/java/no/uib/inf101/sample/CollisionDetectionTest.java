@@ -6,7 +6,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import no.uib.inf101.sample.entity.Player;
 import no.uib.inf101.sample.entity.enemy.NormalEnemy;
-import no.uib.inf101.sample.map.GridFactory;
 
 public class CollisionDetectionTest {
 
@@ -16,7 +15,6 @@ public class CollisionDetectionTest {
     @BeforeEach
     public void setup() {
         game = new Game();
-        GridFactory gridFactory = new GridFactory(game);
         collisionDetection = new CollisionDetection(game);
     }
 

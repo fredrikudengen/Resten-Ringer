@@ -7,6 +7,7 @@ import java.awt.image.BufferedImage;
 import java.util.Random;
 
 import no.uib.inf101.sample.Game;
+import no.uib.inf101.sample.GameState;
 import no.uib.inf101.sample.Inf101Graphics;
 import no.uib.inf101.sample.entity.Entity;
 import no.uib.inf101.sample.entity.Player;
@@ -34,12 +35,11 @@ public abstract class Enemy extends Entity {
     public Enemy(Game game, Player player) {
         this.game = game;
         this.player = player;
-        hitBox = new Rectangle(8, 16, 32, 32);
-        setXAndY();
+        hitBox = new Rectangle(2, 0, 12, 16);
     }
 
     @Override
-    protected abstract void setDefaultValues();
+    public abstract void setDefaultValues();
 
     protected void getNormalEnemyImage() {
         normal_enemy_up_1 = Inf101Graphics.loadImageFromResources("Up_normal_enemy_1.png");
@@ -70,7 +70,7 @@ public abstract class Enemy extends Entity {
     /**
      * Sets the x and y coordinate of an Enemy in on of the four corners of the map.
      */
-    protected void setXAndY() {
+    protected void setSpawn() {
         Random rand = new Random();
 
         int spawnNumber = rand.nextInt(4);
@@ -295,8 +295,30 @@ public abstract class Enemy extends Entity {
      * Updates Enemy coordinates, knockback, player healthpoints if hit and isAlive.
      */
     public void update() {
-        if (isStopped) {
-            long currentTime = System.nanoTime();
+        if (game.getGameState() == GameState.ACTIVE_GAME) {
+            if (isStopped) {
+                long currentTime = System.nanoTime();
+                // Check if the enemy collides with the player
+                if (enemyCollidesWithPlayer() && !(player.getIsShocked())) {
+                    // Perform actions when collision occurs
+                    // For example, reduce player's health
+                    player.setHealthpoints(player.getHealthpoints() - 1);
+
+                    knockBackEnemy();
+
+                    // Start the stop timer
+                    isStopped = true;
+                    stopStartTime = System.nanoTime();
+                }
+                if (currentTime - stopStartTime >= STOP_DURATION) {
+                    // If the stop duration has passed, resume movement
+                    isStopped = false;
+                } else {
+                    // Enemy remains stopped
+                    return;
+                }
+            }
+
             // Check if the enemy collides with the player
             if (enemyCollidesWithPlayer() && !(player.getIsShocked())) {
                 // Perform actions when collision occurs
@@ -309,41 +331,21 @@ public abstract class Enemy extends Entity {
                 isStopped = true;
                 stopStartTime = System.nanoTime();
             }
-            if (currentTime - stopStartTime >= STOP_DURATION) {
-                // If the stop duration has passed, resume movement
-                isStopped = false;
-            } else {
-                // Enemy remains stopped
-                return;
+
+            simulateEnemyMoves();
+
+            if (healthPoints <= 0) {
+                isAlive = false;
             }
-        }
-
-        // Check if the enemy collides with the player
-        if (enemyCollidesWithPlayer() && !(player.getIsShocked())) {
-            // Perform actions when collision occurs
-            // For example, reduce player's health
-            player.setHealthpoints(player.getHealthpoints() - 1);
-
-            knockBackEnemy();
-
-            // Start the stop timer
-            isStopped = true;
-            stopStartTime = System.nanoTime();
-        }
-
-        simulateEnemyMoves();
-
-        if (healthPoints <= 0) {
-            isAlive = false;
-        }
-        imageCounter++;
-        if (imageCounter > 10) {
-            if (imageNum == 1) {
-                imageNum = 2;
-            } else if (imageNum == 2) {
-                imageNum = 1;
+            imageCounter++;
+            if (imageCounter > 10) {
+                if (imageNum == 1) {
+                    imageNum = 2;
+                } else if (imageNum == 2) {
+                    imageNum = 1;
+                }
+                imageCounter = 0;
             }
-            imageCounter = 0;
         }
     }
 

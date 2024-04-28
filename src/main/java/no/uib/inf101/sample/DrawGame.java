@@ -52,11 +52,9 @@ public class DrawGame {
         if (gameState == GameState.TITLE_SCREEN) {
             drawTitleScreen(g2);
         }
-
         if (gameState == GameState.LEVEL_SELECT) {
             drawLevelSelect(g2);
         }
-
         if (gameState == GameState.ACTIVE_GAME) {
             drawActiveGame(g2);
         }

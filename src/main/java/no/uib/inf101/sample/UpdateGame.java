@@ -58,6 +58,7 @@ public class UpdateGame {
         }
         if (gameState == GameState.GAME_OVER && gameController.rKeyPressed) {
             game.setGameState(GameState.TITLE_SCREEN);
+            resetAllValues();
         }
         if (gameState == GameState.WAVE_COMPLETE && gameController.enterKeyPressed) {
             waveComplete();
@@ -226,7 +227,6 @@ public class UpdateGame {
                         gameController.getShotDirection());
                 projectileList.add(newProjectile);
                 SoundPlayer.gunShot();
-                gameController.shotKeyPressed = false;
                 bulletTimerCheck = true;
             } else {
                 gameController.shotKeyPressed = false;

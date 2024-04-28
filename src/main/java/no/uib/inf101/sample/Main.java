@@ -10,12 +10,11 @@ public class Main {
     // We here set some properties of the main window,
     // and tell it to display our GamePanel
     JFrame frame = new JFrame();
+    Game game = new Game();    
+
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     frame.setResizable(false);
     frame.setTitle("Resten Ringer");
-
-    Game game = new Game();    
-
     frame.add(game);
     frame.pack();
     frame.setVisible(true);

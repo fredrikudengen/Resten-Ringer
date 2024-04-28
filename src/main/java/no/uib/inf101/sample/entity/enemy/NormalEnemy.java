@@ -15,8 +15,8 @@ public class NormalEnemy extends Enemy {
     }
 
     @Override
-    protected void setDefaultValues() {
-        setXAndY();
+    public void setDefaultValues() {
+        setSpawn();
         healthPoints = 3;
         speed = 2;
         isAlive = true;

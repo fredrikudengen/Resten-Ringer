@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
+import no.uib.inf101.sample.entity.Entity;
 import no.uib.inf101.sample.entity.Player;
 import no.uib.inf101.sample.entity.Projectile;
 import no.uib.inf101.sample.entity.enemy.Enemy;
@@ -15,6 +16,7 @@ import no.uib.inf101.sample.map.GridFactory;
 
 public class Game extends JPanel implements Runnable {
 
+    // Private final field variables retrieved from https://www.youtube.com/watch?v=VpH33Uw-_0E&t=1281s&ab_channel=RyiSnow 06.04
     private final int originalTileSize = 16; // 16x16 tile size
     private final int scale = 3; // upscale by 3 to make it larger on screen
     private final int tileSize = originalTileSize * scale; // 48x48 tile size
@@ -64,6 +66,7 @@ public class Game extends JPanel implements Runnable {
         gameThread.start();
     }
 
+    // Retrieved from https://www.youtube.com/watch?v=VpH33Uw-_0E&t=1281s&ab_channel=RyiSnow 08.04
     @Override
     public void run() {
 

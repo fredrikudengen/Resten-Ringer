@@ -15,8 +15,8 @@ public class SlowEnemy extends Enemy {
     }
     
     @Override
-    protected void setDefaultValues() {
-        setXAndY();
+    public void setDefaultValues() {
+        setSpawn();
         healthPoints = 4;
         speed = 1;
         isAlive = true;

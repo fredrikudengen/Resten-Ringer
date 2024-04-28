@@ -97,7 +97,7 @@ public class EnemyTest {
         NormalEnemy normalEnemy = new NormalEnemy(game, player);
 
         // Call the method to set x and y coordinates
-        normalEnemy.setXAndY();
+        normalEnemy.setSpawn();
 
         // Get the x and y coordinates of the enemy
         int x = normalEnemy.getX();

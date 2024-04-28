@@ -12,106 +12,118 @@ public class CollisionDetection {
     }
 
     public void checkTile(Player player) {
+        int entityLeftX, entityRightX, entityTopY, entityBottomY;
 
-        int entityLeftX = player.getX() + player.getHitBox().x;
-        int entityRightX = player.getX() + player.getHitBox().x + player.getHitBox().width;
-        int entityTopY = player.getY() + player.getHitBox().y;
-        int entityBottomY = player.getY() + player.getHitBox().y + player.getHitBox().height;
-
-        int entityLeftCol = entityLeftX / game.getTileSize();
-        int entityRightCol = entityRightX / game.getTileSize();
-        int entityTopRow = entityTopY / game.getTileSize();
-        int entityBottomRow = entityBottomY / game.getTileSize();
+        if ("left".equals(player.getDirection())) {
+            // Player is wider when facing left so left x is further to the right
+            entityLeftX = player.getX() + game.getTileSize() + player.getHitBox().x;
+            entityRightX = player.getX() + game.getTileSize() + player.getHitBox().x + player.getHitBox().width;
+            entityTopY = player.getY();
+            entityBottomY = player.getY() + player.getHitBox().height;
+        } else if ("right".equals(player.getDirection())) {
+            // Player is wider when facing left so right x is further to the left
+            entityLeftX = player.getX() + player.getHitBox().x;
+            entityRightX = player.getX() + player.getHitBox().x + player.getHitBox().width;
+            entityTopY = player.getY();
+            entityBottomY = player.getY() + player.getHitBox().height;
+        } else if ("up".equals(player.getDirection())) {
+            // Player is taller when facing up so top y is further down
+            entityLeftX = player.getX() + player.getHitBox().x;
+            entityRightX = player.getX() + player.getHitBox().x + player.getHitBox().width;
+            entityTopY = player.getY() + player.getHitBox().height;
+            entityBottomY = player.getY() + player.getHitBox().y + player.getHitBox().height;
+        } else {
+            // Player is taller when facing up so bottom y is further up
+            entityLeftX = player.getX() + player.getHitBox().x;
+            entityRightX = player.getX() + player.getHitBox().x + player.getHitBox().width;
+            entityTopY = player.getY();
+            entityBottomY = player.getY() + player.getHitBox().height;
+        }
 
         int gridCellNum1, gridCellNum2;
 
-        if (player.getDirection() == "up") {
-            entityTopRow = (entityTopY - player.getSpeed()) / game.getTileSize();
-            gridCellNum1 = game.gridFactory.getGridCellNUm()[entityLeftCol][entityTopRow];
-            gridCellNum2 = game.gridFactory.getGridCellNUm()[entityRightCol][entityTopRow];
-            if (game.gridFactory.getGridCell()[gridCellNum1].collision == true
-                    || game.gridFactory.getGridCell()[gridCellNum2].collision == true) {
+        // Calculates the number of tiles from the edge of the screen
+        // Adding or subtracting speed because we want to check tiles before entity
+        // collides
+        int entityLeftCol = (entityLeftX - player.getSpeed()) / game.getTileSize();
+        int entityRightCol = (entityRightX + player.getSpeed()) / game.getTileSize();
+        int entityTopRow = (entityTopY - player.getSpeed()) / game.getTileSize();
+        int entityBottomRow = (entityBottomY + player.getSpeed()) / game.getTileSize();
+
+        if ("up".equals(player.getDirection())) {
+            gridCellNum1 = getGridCellNumber(entityLeftCol, entityTopRow);
+            gridCellNum2 = getGridCellNumber(entityRightCol, entityTopRow);
+            if (checkCollision(gridCellNum1) || checkCollision(gridCellNum2)) {
                 player.setCollisionOn(true);
             }
-        }
-        if (player.getDirection() == "down") {
-            entityBottomRow = (entityBottomY + player.getSpeed()) / game.getTileSize();
-            gridCellNum1 = game.gridFactory.getGridCellNUm()[entityLeftCol][entityBottomRow];
-            gridCellNum2 = game.gridFactory.getGridCellNUm()[entityRightCol][entityBottomRow];
-            if (game.gridFactory.getGridCell()[gridCellNum1].collision == true
-                    || game.gridFactory.getGridCell()[gridCellNum2].collision == true) {
-                player.setCollisionOn(true); 
+        } else if ("down".equals(player.getDirection())) {
+            gridCellNum1 = getGridCellNumber(entityLeftCol, entityBottomRow);
+            gridCellNum2 = getGridCellNumber(entityRightCol, entityBottomRow);
+            if (checkCollision(gridCellNum1) || checkCollision(gridCellNum2)) {
+                player.setCollisionOn(true);
             }
-        }
-        if (player.getDirection() == "left") {
+        } else if ("left".equals(player.getDirection())) {
             entityLeftCol = (entityLeftX - player.getSpeed()) / game.getTileSize();
-            gridCellNum1 = game.gridFactory.getGridCellNUm()[entityLeftCol][entityTopRow];
-            gridCellNum2 = game.gridFactory.getGridCellNUm()[entityLeftCol][entityBottomRow];
-            if (game.gridFactory.getGridCell()[gridCellNum1].collision == true
-                    || game.gridFactory.getGridCell()[gridCellNum2].collision == true) {
+            gridCellNum1 = getGridCellNumber(entityLeftCol, entityTopRow);
+            gridCellNum2 = getGridCellNumber(entityLeftCol, entityBottomRow);
+            if (checkCollision(gridCellNum1) || checkCollision(gridCellNum2)) {
                 player.setCollisionOn(true);
             }
-        }
-        if (player.getDirection() == "right") {
+        } else {
             entityRightCol = (entityRightX + player.getSpeed()) / game.getTileSize();
-            gridCellNum1 = game.gridFactory.getGridCellNUm()[entityRightCol][entityTopRow];
-            gridCellNum2 = game.gridFactory.getGridCellNUm()[entityRightCol][entityBottomRow];
-            if (game.gridFactory.getGridCell()[gridCellNum1].collision == true
-                    || game.gridFactory.getGridCell()[gridCellNum2].collision == true) {
-                player.setCollisionOn(true); 
+            gridCellNum1 = getGridCellNumber(entityRightCol, entityTopRow);
+            gridCellNum2 = getGridCellNumber(entityRightCol, entityBottomRow);
+            if (checkCollision(gridCellNum1) || checkCollision(gridCellNum2)) {
+                player.setCollisionOn(true);
             }
         }
     }
 
     public void checkTile(Enemy enemy) {
-
-        int entityLeftX = enemy.getX() + enemy.getHitBox().x;
+        int entityLeftX = enemy.getX();
         int entityRightX = enemy.getX() + enemy.getHitBox().x + enemy.getHitBox().width;
-        int entityTopY = enemy.getY() + enemy.getHitBox().y;
-        int entityBottomY = enemy.getY() + enemy.getHitBox().y + enemy.getHitBox().height;
+        int entityTopY = enemy.getY();
+        int entityBottomY = enemy.getY() + enemy.getHitBox().height;
 
-        int entityLeftCol = entityLeftX / game.getTileSize();
-        int entityRightCol = entityRightX / game.getTileSize();
-        int entityTopRow = entityTopY / game.getTileSize();
-        int entityBottomRow = entityBottomY / game.getTileSize();
+        int entityLeftCol = (entityLeftX - enemy.getSpeed()) / game.getTileSize();
+        int entityRightCol = (entityRightX + enemy.getSpeed()) / game.getTileSize();
+        int entityTopRow = (entityTopY - enemy.getSpeed()) / game.getTileSize();
+        int entityBottomRow = (entityBottomY + enemy.getSpeed()) / game.getTileSize();
 
         int gridCellNum1, gridCellNum2;
 
-        if (enemy.getDirection() == "up") {
-            entityTopRow = (entityTopY - enemy.getSpeed()) / game.getTileSize();
-            gridCellNum1 = game.gridFactory.getGridCellNUm()[entityLeftCol][entityTopRow];
-            gridCellNum2 = game.gridFactory.getGridCellNUm()[entityRightCol][entityTopRow];
-            if (game.gridFactory.getGridCell()[gridCellNum1].collision == true
-                    || game.gridFactory.getGridCell()[gridCellNum2].collision == true) {
-                enemy.setCollisionOn(true); 
+        if ("up".equals(enemy.getDirection())) {
+            gridCellNum1 = getGridCellNumber(entityLeftCol, entityTopRow);
+            gridCellNum2 = getGridCellNumber(entityRightCol, entityTopRow);
+            if (checkCollision(gridCellNum1) || checkCollision(gridCellNum2)) {
+                enemy.setCollisionOn(true);
+            }
+        } else if ("down".equals(enemy.getDirection())) {
+            gridCellNum1 = getGridCellNumber(entityLeftCol, entityBottomRow);
+            gridCellNum2 = getGridCellNumber(entityRightCol, entityBottomRow);
+            if (checkCollision(gridCellNum1) || checkCollision(gridCellNum2)) {
+                enemy.setCollisionOn(true);
+            }
+        } else if ("left".equals(enemy.getDirection())) {
+            gridCellNum1 = getGridCellNumber(entityLeftCol, entityTopRow);
+            gridCellNum2 = getGridCellNumber(entityLeftCol, entityBottomRow);
+            if (checkCollision(gridCellNum1) || checkCollision(gridCellNum2)) {
+                enemy.setCollisionOn(true);
+            }
+        } else if ("right".equals(enemy.getDirection())) {
+            gridCellNum1 = getGridCellNumber(entityRightCol, entityTopRow);
+            gridCellNum2 = getGridCellNumber(entityRightCol, entityBottomRow);
+            if (checkCollision(gridCellNum1) || checkCollision(gridCellNum2)) {
+                enemy.setCollisionOn(true);
             }
         }
-        if (enemy.getDirection() == "down") {
-            entityBottomRow = (entityBottomY + enemy.getSpeed()) / game.getTileSize();
-            gridCellNum1 = game.gridFactory.getGridCellNUm()[entityLeftCol][entityBottomRow];
-            gridCellNum2 = game.gridFactory.getGridCellNUm()[entityRightCol][entityBottomRow];
-            if (game.gridFactory.getGridCell()[gridCellNum1].collision == true
-                    || game.gridFactory.getGridCell()[gridCellNum2].collision == true) {
-                enemy.setCollisionOn(true); 
-            }
-        }
-        if (enemy.getDirection() == "left") {
-            entityLeftCol = (entityLeftX - enemy.getSpeed()) / game.getTileSize();
-            gridCellNum1 = game.gridFactory.getGridCellNUm()[entityLeftCol][entityTopRow];
-            gridCellNum2 = game.gridFactory.getGridCellNUm()[entityLeftCol][entityBottomRow];
-            if (game.gridFactory.getGridCell()[gridCellNum1].collision == true
-                    || game.gridFactory.getGridCell()[gridCellNum2].collision == true) {
-                enemy.setCollisionOn(true); 
-            }
-        }
-        if (enemy.getDirection() == "right") {
-            entityRightCol = (entityRightX + enemy.getSpeed()) / game.getTileSize();
-            gridCellNum1 = game.gridFactory.getGridCellNUm()[entityRightCol][entityTopRow];
-            gridCellNum2 = game.gridFactory.getGridCellNUm()[entityRightCol][entityBottomRow];
-            if (game.gridFactory.getGridCell()[gridCellNum1].collision == true
-                    || game.gridFactory.getGridCell()[gridCellNum2].collision == true) {
-                enemy.setCollisionOn(true); 
-            }
-        }
+    }
+
+    private int getGridCellNumber(int col, int row) {
+        return game.gridFactory.getGridCellNUm()[col][row];
+    }
+
+    private boolean checkCollision(int cellNumber) {
+        return game.gridFactory.getGridCell()[cellNumber].collision;
     }
 }

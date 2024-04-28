@@ -44,14 +44,14 @@ public class Player extends Entity implements DrawAndUpdate {
     public Player(Game game, GameController gameController) {
         this.game = game;
         this.gameController = gameController;
-        hitBox = new Rectangle(8, 16, 32, 32);
+        hitBox = new Rectangle(2, 0, 12, 16);
         setDefaultValues();
         getPlayerImage();
         loadHealthIcon();
     }
 
     @Override
-    protected void setDefaultValues() {
+    public void setDefaultValues() {
         x = game.getScreenWidth() / 2;
         y = game.getScreenHeight() / 2;
         healthPoints = 6;

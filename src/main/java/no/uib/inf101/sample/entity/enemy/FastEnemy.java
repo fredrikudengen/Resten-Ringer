@@ -15,8 +15,8 @@ public class FastEnemy extends Enemy {
     }
 
     @Override
-    protected void setDefaultValues() {
-        setXAndY();
+    public void setDefaultValues() {
+        setSpawn();
         healthPoints = 2;
         speed = 3;
         isAlive = true;
