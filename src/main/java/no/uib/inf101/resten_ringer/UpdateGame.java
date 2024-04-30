@@ -83,6 +83,7 @@ public class UpdateGame {
         player.setHealthpoints(7);
         player.setX(screenWidth / 2);
         player.setY(screenHeight / 2);
+        game.setWaveNum(0);
 
         // Creates new enemies for next wave/game over/victory
         if (addEnemies) {

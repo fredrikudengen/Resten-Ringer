@@ -143,18 +143,6 @@ public abstract class Enemy extends Entity {
                 }
             }
         }
-        // if (y <= 20) {
-        //     y = 20;
-        // }
-        // if (y >= game.getScreenHeight() - 60) {
-        //     y = game.getScreenHeight() - 60;
-        // }
-        // if (x <= 20) {
-        //     x = 20;
-        // }
-        // if (x >= game.getScreenWidth() - game.getTileSize() - 5) {
-        //     x = game.getScreenWidth() - game.getTileSize() - 5;
-        // }
     }
 
     /**
