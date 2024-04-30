@@ -84,7 +84,8 @@ public class UpdateGame {
         player.setX(screenWidth / 2);
         player.setY(screenHeight / 2);
         game.setWaveNum(0);
-
+        enemyMax = 2;
+        
         // Creates new enemies for next wave/game over/victory
         if (addEnemies) {
             for (enemiesAtStart = 0; enemiesAtStart <= (enemyMax / 2); enemiesAtStart++) {
