@@ -7,18 +7,28 @@ import javax.sound.midi.Sequencer;
 
 public class GameSong implements Runnable {
 
+    private InputStream song;
     private String songName;
     private Sequencer sequencer;
 
     public GameSong() {
-        this.songName = "metroid-theme.mid";
+        this.setSongName("metroid-theme.mid");
+    }
+
+    public void setSongName(String songName) {
+        this.songName = songName;
+        this.song = GameSong.class.getResourceAsStream("/resources/" + songName);
+    }
+
+    public String getSongName() {
+        return songName;
     }
 
     @Override
     public void run() {
-        InputStream song = GameSong.class.getClassLoader().getResourceAsStream(songName);
         this.doPlayMidi(song, true);
     }
+
 
     private void doPlayMidi(final InputStream is, final boolean loop) {
         try {
@@ -66,11 +76,7 @@ public class GameSong implements Runnable {
         this.sequencer = null;
     }
 
-    public void setSongName(String songName) {
-        this.songName = songName;
-    }
-
-    public String getSongName() {
-        return songName;
+    public void setSongName(InputStream song) {
+        this.song = song;
     }
 }

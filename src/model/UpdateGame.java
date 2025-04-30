@@ -165,20 +165,22 @@ public class UpdateGame {
     private void playMusic() {
         GameState gameState = game.getGameState();
         String currentSong = gameSong.getSongName();
-        if (gameState == GameState.TITLE_SCREEN && !currentSong.equals("megaman.mid")) {
+    
+        if (gameState == GameState.TITLE_SCREEN && !"megaman.mid".equals(currentSong)) {
             gameSong.setSongName("megaman.mid");
             gameSong.run();
-        } else if (gameState == GameState.ACTIVE_GAME && !currentSong.equals("metroid-theme.mid")) {
+        } else if (gameState == GameState.ACTIVE_GAME && !"metroid-theme.mid".equals(currentSong)) {
             gameSong.setSongName("metroid-theme.mid");
             gameSong.run();
         } else if (gameState == GameState.GAME_OVER && (!gameOverSoundPlay)) {
             gameSong.doPauseMidiSounds();
             gameOverSoundPlay = true;
             SoundPlayer.gameOver();
-        } else if (gameState == GameState.VICTORY && !currentSong.equals("Victory.mid")) {
+        } else if (gameState == GameState.VICTORY && !"Victory.mid".equals(currentSong)) {
             gameSong.setSongName("Victory.mid");
             gameSong.run();
         }
+
     }
 
     private void updateActiveGame() throws IOException {

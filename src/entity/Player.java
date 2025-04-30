@@ -4,7 +4,6 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
@@ -49,21 +48,21 @@ public class Player extends Entity implements DrawAndUpdate {
 
     @Override
     protected void getImage() throws IOException {
-        up1 = ImageIO.read(new File("resources/Up_shotgun_walking_1.png"));
-        up2 = ImageIO.read(new File("resources/Up_shotgun_walking_2.png"));
-        down1 = ImageIO.read(new File("resources/Down_shotgun_walking_1.png"));
-        down2 = ImageIO.read(new File("resources/Down_shotgun_walking_2.png"));
-        left1 = ImageIO.read(new File("resources/Left_shotgun_walking_1.png"));
-        left2 = ImageIO.read(new File("resources/Left_shotgun_walking_2.png"));
-        right1 = ImageIO.read(new File("resources/Right_shotgun_walking_1.png"));
-        right2 = ImageIO.read(new File("resources/Right_shotgun_walking_2.png"));
-        downHit1 = ImageIO.read(new File("resources/Down_hit_1.png"));
-        downHit2 = ImageIO.read(new File("resources/Down_hit_2.png"));
-        leftHit1 = ImageIO.read(new File("resources/Left_hit_1.png"));
-        leftHit2 = ImageIO.read(new File("resources/Left_hit_2.png"));
-        rightHit1 = ImageIO.read(new File("resources/Right_hit_1.png"));
-        rightHit2 = ImageIO.read(new File("resources/Right_hit_2.png"));
-        beer = ImageIO.read(new File("resources/beer.png"));
+        up1 = ImageIO.read(getClass().getResourceAsStream("/resources/Up_shotgun_walking_1.png"));
+        up2 = ImageIO.read(getClass().getResourceAsStream("/resources/Up_shotgun_walking_2.png"));
+        down1 = ImageIO.read(getClass().getResourceAsStream("/resources/Down_shotgun_walking_1.png"));
+        down2 = ImageIO.read(getClass().getResourceAsStream("/resources/Down_shotgun_walking_2.png"));
+        left1 = ImageIO.read(getClass().getResourceAsStream("/resources/Left_shotgun_walking_1.png"));
+        left2 = ImageIO.read(getClass().getResourceAsStream("/resources/Left_shotgun_walking_2.png"));
+        right1 = ImageIO.read(getClass().getResourceAsStream("/resources/Right_shotgun_walking_1.png"));
+        right2 = ImageIO.read(getClass().getResourceAsStream("/resources/Right_shotgun_walking_2.png"));
+        downHit1 = ImageIO.read(getClass().getResourceAsStream("/resources/Down_hit_1.png"));
+        downHit2 = ImageIO.read(getClass().getResourceAsStream("/resources/Down_hit_2.png"));
+        leftHit1 = ImageIO.read(getClass().getResourceAsStream("/resources/Left_hit_1.png"));
+        leftHit2 = ImageIO.read(getClass().getResourceAsStream("/resources/Left_hit_2.png"));
+        rightHit1 = ImageIO.read(getClass().getResourceAsStream("/resources/Right_hit_1.png"));
+        rightHit2 = ImageIO.read(getClass().getResourceAsStream("/resources/Right_hit_2.png"));
+        beer = ImageIO.read(getClass().getResourceAsStream("/resources/beer.png"));
     }
 
     @Override
@@ -220,5 +219,4 @@ public class Player extends Entity implements DrawAndUpdate {
         isShocked = true;
         shockStartTime = System.nanoTime();
     }
-
 }

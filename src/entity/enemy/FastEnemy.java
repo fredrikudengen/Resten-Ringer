@@ -1,8 +1,6 @@
 package entity.enemy;
 
-import java.io.File;
 import java.io.IOException;
-
 import javax.imageio.ImageIO;
 
 import model.Game;
@@ -30,11 +28,11 @@ public class FastEnemy extends Enemy {
 
     @Override
     protected void getImage() throws IOException {
-        fast_enemy_up_1 = ImageIO.read(new File("resources/Up_police_1.png"));
-        fast_enemy_up_2 = ImageIO.read(new File("resources/Up_police_2.png"));
-        fast_enemy_left_1 = ImageIO.read(new File("resources/Left_police_1.png"));
-        fast_enemy_left_2 = ImageIO.read(new File("resources/Left_police_2.png"));
-        fast_enemy_right_1 = ImageIO.read(new File("resources/Right_police_1.png"));
-        fast_enemy_right_2 = ImageIO.read(new File("resources/Right_police_2.png"));
+        fast_enemy_up_1 = ImageIO.read(getClass().getResourceAsStream("/resources/Up_police_1.png"));
+        fast_enemy_up_2 = ImageIO.read(getClass().getResourceAsStream("/resources/Up_police_2.png"));
+        fast_enemy_left_1 = ImageIO.read(getClass().getResourceAsStream("/resources/Left_police_1.png"));
+        fast_enemy_left_2 = ImageIO.read(getClass().getResourceAsStream("/resources/Left_police_2.png"));
+        fast_enemy_right_1 = ImageIO.read(getClass().getResourceAsStream("/resources/Right_police_1.png"));
+        fast_enemy_right_2 = ImageIO.read(getClass().getResourceAsStream("/resources/Right_police_2.png"));
     }
 }

@@ -1,13 +1,10 @@
 package entity.enemy;
 
 import model.Game;
-
-import java.io.File;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
-
 import entity.Player;
+
+import java.io.IOException;
+import javax.imageio.ImageIO;
 
 public class NormalEnemy extends Enemy {
 
@@ -31,9 +28,9 @@ public class NormalEnemy extends Enemy {
 
     @Override
     protected void getImage() throws IOException {
-        normal_enemy_up_1 = ImageIO.read(new File("resources/Up_normal_enemy_1.png"));
-        normal_enemy_up_2 = ImageIO.read(new File("resources/Up_normal_enemy_2.png"));
-        normal_enemy_down_1 = ImageIO.read(new File("resources/Down_normal_enemy_1.png"));
-        normal_enemy_down_2 = ImageIO.read(new File("resources/Down_normal_enemy_2.png"));
+        normal_enemy_up_1 = ImageIO.read(getClass().getResourceAsStream("/resources/Up_normal_enemy_1.png"));
+        normal_enemy_up_2 = ImageIO.read(getClass().getResourceAsStream("/resources/Up_normal_enemy_2.png"));
+        normal_enemy_down_1 = ImageIO.read(getClass().getResourceAsStream("/resources/Down_normal_enemy_1.png"));
+        normal_enemy_down_2 = ImageIO.read(getClass().getResourceAsStream("/resources/Down_normal_enemy_2.png"));
     }
 }

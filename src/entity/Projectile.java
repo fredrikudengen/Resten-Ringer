@@ -1,10 +1,8 @@
 package entity;
 
-
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
@@ -41,14 +39,14 @@ public class Projectile extends Entity implements DrawAndUpdate {
 
     @Override
     protected void getImage() throws IOException {
-        up1 = ImageIO.read(new File("resources/Up_bullet_1.png"));
-        up2 = ImageIO.read(new File("resources/Up_bullet_2.png"));
-        down1 = ImageIO.read(new File("resources/Down_bullet_1.png"));
-        down2 = ImageIO.read(new File("resources/Down_bullet_2.png"));
-        left1 = ImageIO.read(new File("resources/Left_bullet_1.png"));
-        left2 = ImageIO.read(new File("resources/Left_bullet_2.png"));
-        right1 = ImageIO.read(new File("resources/Right_bullet_1.png"));
-        right2 = ImageIO.read(new File("resources/Right_bullet_2.png"));
+        up1 = ImageIO.read(getClass().getResourceAsStream("/resources/Up_bullet_1.png"));
+        up2 = ImageIO.read(getClass().getResourceAsStream("/resources/Up_bullet_2.png"));
+        down1 = ImageIO.read(getClass().getResourceAsStream("/resources/Down_bullet_1.png"));
+        down2 = ImageIO.read(getClass().getResourceAsStream("/resources/Down_bullet_2.png"));
+        left1 = ImageIO.read(getClass().getResourceAsStream("/resources/Left_bullet_1.png"));
+        left2 = ImageIO.read(getClass().getResourceAsStream("/resources/Left_bullet_2.png"));
+        right1 = ImageIO.read(getClass().getResourceAsStream("/resources/Right_bullet_1.png"));
+        right2 = ImageIO.read(getClass().getResourceAsStream("/resources/Right_bullet_2.png"));
     }
 
     /**

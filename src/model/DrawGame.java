@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -185,18 +184,18 @@ public class DrawGame {
     }
 
     private void getImage() throws IOException {
-        background = ImageIO.read(new File("resources/title_background.png"));
-        title = ImageIO.read(new File("resources/Resten_ringer.png"));
-        beer = ImageIO.read(new File("resources/beer.png"));
-        beer2 = ImageIO.read(new File("resources/random_beer_1.jpg"));
-        beer3 = ImageIO.read(new File("resources/random_beer_2.jpg"));
-        keepCalm = ImageIO.read(new File("resources/keep_calm.jpg"));
-        map = ImageIO.read(new File("resources/mapreal.png"));
-        emptyBeer = ImageIO.read(new File("resources/beer_empty.png"));
-        gameOver = ImageIO.read(new File("resources/GAMEOVER.png"));
-        victoryScreen = ImageIO.read(new File("resources/victoryScreen.png"));
-        waterCooler = ImageIO.read(new File("resources/water_cooler.png"));
-        bottleOfAlcohol = ImageIO.read(new File("resources/bottle_of_alcohol.png"));
-        levelSelect = ImageIO.read(new File("resources/level_select.png"));
+        background = ImageIO.read(getClass().getResourceAsStream("/resources/title_background.png"));
+        title = ImageIO.read(getClass().getResourceAsStream("/resources/Resten_ringer.png"));
+        beer = ImageIO.read(getClass().getResourceAsStream("/resources/beer.png"));
+        beer2 = ImageIO.read(getClass().getResourceAsStream("/resources/random_beer_1.jpg"));
+        beer3 = ImageIO.read(getClass().getResourceAsStream("/resources/random_beer_2.jpg"));
+        keepCalm = ImageIO.read(getClass().getResourceAsStream("/resources/keep_calm.jpg"));
+        map = ImageIO.read(getClass().getResourceAsStream("/resources/mapreal.png"));
+        emptyBeer = ImageIO.read(getClass().getResourceAsStream("/resources/beer_empty.png"));
+        gameOver = ImageIO.read(getClass().getResourceAsStream("/resources/GAMEOVER.png"));
+        victoryScreen = ImageIO.read(getClass().getResourceAsStream("/resources/victoryScreen.png"));
+        waterCooler = ImageIO.read(getClass().getResourceAsStream("/resources/water_cooler.png"));
+        bottleOfAlcohol = ImageIO.read(getClass().getResourceAsStream("/resources/bottle_of_alcohol.png"));
+        levelSelect = ImageIO.read(getClass().getResourceAsStream("/resources/level_select.png"));
     }
 }

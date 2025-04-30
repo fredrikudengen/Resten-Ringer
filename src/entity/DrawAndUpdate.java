@@ -1,7 +1,5 @@
 package entity;
 
-
-
 import java.awt.Graphics2D;
 
 public interface DrawAndUpdate {
@@ -17,5 +15,4 @@ public interface DrawAndUpdate {
      * @param g2
      */
     public void draw(Graphics2D g2);
-
 }
