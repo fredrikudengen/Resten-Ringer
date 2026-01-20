@@ -5,6 +5,7 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
@@ -182,20 +183,33 @@ public class DrawGame {
         int x = screenWidth / 2 - lenght / 2;
         return x;
     }
+    private BufferedImage loadImage(String path) throws IOException {
+        URL url = getClass().getResource(path);
+        if (url == null) {
+            throw new IOException("Fant ikke resource på classpath: " + path);
+        }   
+        return ImageIO.read(url);
+    }
 
     private void getImage() throws IOException {
-        background = ImageIO.read(getClass().getResourceAsStream("/resources/title_background.png"));
-        title = ImageIO.read(getClass().getResourceAsStream("/resources/Resten_ringer.png"));
-        beer = ImageIO.read(getClass().getResourceAsStream("/resources/beer.png"));
-        beer2 = ImageIO.read(getClass().getResourceAsStream("/resources/random_beer_1.jpg"));
-        beer3 = ImageIO.read(getClass().getResourceAsStream("/resources/random_beer_2.jpg"));
-        keepCalm = ImageIO.read(getClass().getResourceAsStream("/resources/keep_calm.jpg"));
-        map = ImageIO.read(getClass().getResourceAsStream("/resources/mapreal.png"));
-        emptyBeer = ImageIO.read(getClass().getResourceAsStream("/resources/beer_empty.png"));
-        gameOver = ImageIO.read(getClass().getResourceAsStream("/resources/GAMEOVER.png"));
-        victoryScreen = ImageIO.read(getClass().getResourceAsStream("/resources/victoryScreen.png"));
-        waterCooler = ImageIO.read(getClass().getResourceAsStream("/resources/water_cooler.png"));
-        bottleOfAlcohol = ImageIO.read(getClass().getResourceAsStream("/resources/bottle_of_alcohol.png"));
-        levelSelect = ImageIO.read(getClass().getResourceAsStream("/resources/level_select.png"));
+        System.out.println();
+        System.out.println(
+        getClass().getResource("/resources/title_background.png")
+        );
+        System.out.println();
+
+        background = loadImage("/resources/title_background.png");
+        title = loadImage("/resources/Resten_ringer.png");
+        beer = loadImage("/resources/beer.png");
+        beer2 = loadImage("/resources/random_beer_1.jpg");
+        beer3 = loadImage("/resources/random_beer_2.jpg");
+        keepCalm = loadImage("/resources/keep_calm.jpg");
+        map = loadImage("/resources/mapreal.png");
+        emptyBeer = loadImage("/resources/beer_empty.png");
+        gameOver = loadImage("/resources/GAMEOVER.png");
+        victoryScreen = loadImage("/resources/victoryScreen.png");
+        waterCooler = loadImage("/resources/water_cooler.png");
+        bottleOfAlcohol = loadImage("/resources/bottle_of_alcohol.png");
+        levelSelect = loadImage("/resources/Level_select.png");
     }
 }

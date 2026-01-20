@@ -5,7 +5,6 @@ import java.util.ArrayList;
 
 import controller.GameController;
 import sound.GameSong;
-import sound.SoundPlayer;
 import entity.Player;
 import entity.Projectile;
 import entity.enemy.Enemy;
@@ -175,7 +174,6 @@ public class UpdateGame {
         } else if (gameState == GameState.GAME_OVER && (!gameOverSoundPlay)) {
             gameSong.doPauseMidiSounds();
             gameOverSoundPlay = true;
-            SoundPlayer.gameOver();
         } else if (gameState == GameState.VICTORY && !"Victory.mid".equals(currentSong)) {
             gameSong.setSongName("Victory.mid");
             gameSong.run();
@@ -202,7 +200,6 @@ public class UpdateGame {
         int screenWidth = game.getScreenWidth();
 
         game.setGameState(GameState.ACTIVE_GAME);
-        SoundPlayer.playBeerCanOpen();
         player.setX(screenWidth / 2);
         player.setY(screenHeight / 2);
 
@@ -213,13 +210,6 @@ public class UpdateGame {
         for (int i = enemyList.size() - 1; i >= 0; i--) {
             enemyList.get(i).update(); // Update the enemy
             if (enemyList.get(i).getIsAlive() == false) {
-                if (enemyList.get(i) instanceof NormalEnemy) {
-                    SoundPlayer.manDie1();
-                } else if (enemyList.get(i) instanceof SlowEnemy) {
-                    SoundPlayer.manDie3();
-                } else {
-                    SoundPlayer.mandDie2();
-                }
                 enemyList.remove(i);
             }
         }
@@ -237,7 +227,6 @@ public class UpdateGame {
                 Projectile newProjectile = new Projectile(game, player, gameController,
                         gameController.getShotDirection());
                 projectileList.add(newProjectile);
-                SoundPlayer.gunShot();
                 bulletTimerCheck = true;
             } else {
                 gameController.shotKeyPressed = false;
