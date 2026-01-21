@@ -2,6 +2,16 @@
 
 ![Resten Ringer](image.png)
 
+## Teknisk oversikt
+- Språk: Java
+- Type: Roguelike spill
+- Fokus: Objektorientert design og spill-logikk
+
+## Kjøre spillet
+1. Klon repoet
+2. Kompiler med `javac`
+3. Kjør main-klassen
+
 ## Historie
 Dette spillet handler om en vanlig kveld på byen.
 
