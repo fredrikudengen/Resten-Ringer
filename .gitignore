@@ -8,3 +8,7 @@
 # Ignore build and output folders
 bin/
 target/
+*.class
+
+# OS
+.DS_Store
