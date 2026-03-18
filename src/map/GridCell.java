@@ -1,10 +1,9 @@
 package map;
 
 public class GridCell {
-    public boolean collision = false;
 
-    public void setCollision(boolean b) {
-        this.collision = true;
-    }
+    private boolean collision = false;
 
+    public boolean isCollision()            { return collision; }
+    public void setCollision(boolean value) { this.collision = value; }
 }
