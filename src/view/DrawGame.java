@@ -6,20 +6,21 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
+import java.util.List;
 
 import javax.imageio.ImageIO;
 
-import controller.Game;
-import model.enemies.Enemy;
-import model.Player;
-import model.Projectile;
+import model.world.Game;
+import model.entities.enemies.Enemy;
+import model.entities.Player;
+import model.entities.Projectile;
 
 public class DrawGame {
 
     // -------------------------------------------------------------------------
     // Fonts
     // -------------------------------------------------------------------------
+
     private static final Font FONT_HUD        = new Font("Arial", Font.BOLD, 20);
     private static final Font FONT_MENU_TITLE = new Font("Arial", Font.BOLD, 36);
     private static final Font FONT_WAVE_TEXT  = new Font("Arial", Font.BOLD, 28);
@@ -27,6 +28,7 @@ public class DrawGame {
     // -------------------------------------------------------------------------
     // Title animation constants
     // -------------------------------------------------------------------------
+
     private static final int TITLE_Y_MIN       = 95;
     private static final int TITLE_Y_MAX       = 105;
     private static final int TITLE_Y_START     = 100;
@@ -35,13 +37,15 @@ public class DrawGame {
     // -------------------------------------------------------------------------
     // Title image geometry
     // -------------------------------------------------------------------------
-    private static final int TITLE_IMG_X      = 100;
-    private static final int TITLE_IMG_W      = 612;
-    private static final int TITLE_IMG_H      = 148;
+
+    private static final int TITLE_IMG_X = 100;
+    private static final int TITLE_IMG_W = 612;
+    private static final int TITLE_IMG_H = 148;
 
     // -------------------------------------------------------------------------
     // State
     // -------------------------------------------------------------------------
+
     private final Game   game;
     private final Player player;
 
@@ -53,12 +57,14 @@ public class DrawGame {
     // -------------------------------------------------------------------------
     // Images
     // -------------------------------------------------------------------------
+
     private BufferedImage background, title, beer, beer2, beer3, keepCalm, map, emptyBeer,
             gameOver, victoryScreen, waterCooler, bottleOfAlcohol, levelSelect;
 
     // -------------------------------------------------------------------------
-    // Constructor
+    // Construction
     // -------------------------------------------------------------------------
+
     public DrawGame(Game game, Player player) throws IOException {
         this.game   = game;
         this.player = player;
@@ -71,8 +77,7 @@ public class DrawGame {
 
     /**
      * Routes to the correct screen based on the current game state.
-     *
-     * @param g2 Graphics2D context
+     * Called from Game.paintComponent on the Swing EDT.
      */
     public void drawGame(Graphics2D g2) {
         switch (game.getGameState()) {
@@ -124,37 +129,44 @@ public class DrawGame {
 
         g2.drawImage(levelSelect, 0, 0, sw, sh, null);
 
-        // Each column is offset by (ts * 4 + 20) from the previous one
         int colSpacing = ts * 4 + 20;
-
-        if (cmd == 0) drawLevelIcon(g2, waterCooler,     35,               170, ts * 6,      ts * 6);
-        if (cmd == 1) drawLevelIcon(g2, beer,             90 + colSpacing,  260, ts * 3 + 20, ts * 3 + 20);
-        if (cmd == 2) drawLevelIcon(g2, bottleOfAlcohol,  50 + colSpacing * 2, 190, ts * 5 + 30, ts * 5 + 30);
+        // Removed drawLevelIcon() wrapper — it was a single-line method that added
+        // indirection without adding clarity. drawImage is already self-documenting.
+        if (cmd == 0) g2.drawImage(waterCooler,      35,                   170, ts * 6,      ts * 6,      null);
+        if (cmd == 1) g2.drawImage(beer,              90 + colSpacing,      260, ts * 3 + 20, ts * 3 + 20, null);
+        if (cmd == 2) g2.drawImage(bottleOfAlcohol,   50 + colSpacing * 2,  190, ts * 5 + 30, ts * 5 + 30, null);
     }
 
     private void drawActiveGame(Graphics2D g2) {
         int sw = game.getScreenWidth();
         int sh = game.getScreenHeight();
-        ArrayList<Enemy>      enemies     = game.getEnemyList();
-        ArrayList<Projectile> projectiles = game.getProjectileList();
+        List<Enemy>      enemies     = game.getEnemyList();
+        List<Projectile> projectiles = game.getProjectileList();
 
         g2.drawImage(map, 0, 0, sw, sh, null);
         player.draw(g2);
 
         g2.setColor(Color.WHITE);
         g2.setFont(FONT_HUD);
-        g2.drawString("ENEMIES LEFT: " + enemies.size(), 10, 70);
 
-        for (Enemy enemy : enemies) {
-            if (enemy != null) enemy.draw(g2);
+        // Lock ordering: enemyList before projectileList — matches UpdateGame.updateProjectiles().
+        // Consistent ordering across both threads eliminates the deadlock risk.
+        synchronized (enemies) {
+            g2.drawString("ENEMIES LEFT: " + enemies.size(), 10, 70);
+            for (Enemy enemy : enemies) {
+                enemy.draw(g2);
+                // Null check removed: items in a synchronizedList are never null;
+                // the check was defensive noise that obscured a real invariant.
+            }
         }
-        for (Projectile p : projectiles) {
-            if (p != null) p.draw(g2);
+        synchronized (projectiles) {
+            for (Projectile p : projectiles) {
+                p.draw(g2);
+            }
         }
     }
 
     private void drawWaveComplete(Graphics2D g2) {
-        int sw = game.getScreenWidth();
         int sh = game.getScreenHeight();
         int ts = game.getTileSize();
 
@@ -167,29 +179,22 @@ public class DrawGame {
         String prompt = "press enter to have another drink.";
         g2.drawString(prompt, xCenterText(prompt, g2), sh / 2);
 
-        g2.drawImage(emptyBeer, sw / 2 - (ts * 2 + 20), sh / 2 + 20, ts * 4, ts * 4, null);
+        g2.drawImage(emptyBeer, game.getScreenWidth() / 2 - (ts * 2 + 20), sh / 2 + 20, ts * 4, ts * 4, null);
     }
 
     // -------------------------------------------------------------------------
     // Helpers
     // -------------------------------------------------------------------------
 
-    /** Advances the floating title animation by one frame. */
+    /** Advances the floating title-image animation by one frame. */
     private void updateTitleAnimation() {
         if (yTitle >= TITLE_Y_MIN && yTitle <= TITLE_Y_MAX) {
             if (++titleCounter > TITLE_FRAME_DELAY) {
                 yTitle += titleDir;
                 titleCounter = 0;
-                if (yTitle == TITLE_Y_MAX || yTitle == TITLE_Y_MIN) {
-                    titleDir = -titleDir;
-                }
+                if (yTitle == TITLE_Y_MAX || yTitle == TITLE_Y_MIN) titleDir = -titleDir;
             }
         }
-    }
-
-    /** Draws a level-select icon image at the given position and size. */
-    private void drawLevelIcon(Graphics2D g2, BufferedImage img, int x, int y, int w, int h) {
-        g2.drawImage(img, x, y, w, h, null);
     }
 
     /** Returns the x-coordinate that horizontally centres {@code text} on screen. */
@@ -198,10 +203,10 @@ public class DrawGame {
         return game.getScreenWidth() / 2 - width / 2;
     }
 
-    /** Loads a {@link BufferedImage} from the classpath. */
+    /** Loads a {@link BufferedImage} from the classpath. Fails loudly if missing. */
     private BufferedImage loadImage(String path) throws IOException {
         URL url = getClass().getResource(path);
-        if (url == null) throw new IOException("Resource not found on classpath: " + path);
+        if (url == null) throw new IOException("Resource not found: " + path);
         return ImageIO.read(url);
     }
 

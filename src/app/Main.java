@@ -1,6 +1,6 @@
 package app;
 
-import controller.Game;
+import model.world.Game;
 
 import java.io.IOException;
 

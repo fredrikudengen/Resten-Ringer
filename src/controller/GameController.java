@@ -3,7 +3,8 @@ package controller;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
-import model.Entity.Direction;
+import model.entities.Entity.Direction;
+import model.world.Game;
 
 public class GameController implements KeyListener {
 

@@ -10,8 +10,8 @@ src/model.entity/enemy/SlowEnemy.java
 src/model.entity/enemy/NormalEnemy.java
 src/model.entity/Player.java
 src/model.entity/CollisionDetection.java
-src/map/GridCell.java
-src/map/GridFactory.java
+src/model.map/GridCell.java
+src/model.map/GridFactory.java
 src/model/DrawGame.java
 src/model/GameState.java
 src/model/Game.java
