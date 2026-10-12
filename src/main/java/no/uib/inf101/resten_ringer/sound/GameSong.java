@@ -39,10 +39,12 @@ public class GameSong implements Runnable {
     
     private void doStopMidiSounds() {
         try {
-            if (this.sequencer == null || !this.sequencer.isRunning()) {
+            if (this.sequencer == null) {
                 return;
             }
-            this.sequencer.stop();
+            if (this.sequencer.isRunning()) {
+                this.sequencer.stop();
+            }
             this.sequencer.close();
         } catch (Exception e) {
             this.midiError("" + e);

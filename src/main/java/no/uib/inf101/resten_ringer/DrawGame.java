@@ -89,14 +89,14 @@ public class DrawGame {
         g2.setFont(new Font("Symbol Bold", Font.BOLD, 20));
         g2.drawString("ENEMIES LEFT: " + enemiesLeft, 10, 70);
 
-        for (int i = 0; i < enemyList.size(); i++) {
-            if (enemyList.get(i) != null) {
-                enemyList.get(i).draw(enemyList.get(i), g2);
+        for (Enemy enemy : enemyList) {
+            if (enemy != null) {
+                enemy.draw(enemy, g2);
             }
         }
-        for (int i = 0; i < projectileList.size(); i++) {
-            if (projectileList.get(i) != null) {
-                projectileList.get(i).draw(g2);
+        for (Projectile projectile : projectileList) {
+            if (projectile != null) {
+                projectile.draw(g2);
             }
         }
     }
@@ -137,14 +137,14 @@ public class DrawGame {
         }
         text = "LEVELS";
         x = xCenterText(text, g2);
-        y += tileSize * 1.5;
+        y += (int) (tileSize * 1.5);
         g2.drawString(text, x, y);
         if (commandNum == 1) {
             g2.drawImage(beer, x - (tileSize + 15), y - tileSize, tileSize, tileSize, null);
         }
         text = "QUIT";
         x = xCenterText(text, g2);
-        y += tileSize * 1.5;
+        y += (int) (tileSize * 1.5);
         g2.drawString(text, x, y);
         if (commandNum == 2) {
             g2.drawImage(beer, x - (tileSize + 15), y - tileSize, tileSize, tileSize, null);
@@ -158,7 +158,7 @@ public class DrawGame {
         int tileSize = game.getTileSize();
         int commandNum = game.getCommandNum();
         g2.drawImage(levelSelect, 0, 0, screenWidth, screenHeight, null);
-        int x = 70;
+        int x;
         if (commandNum == 0) {
             g2.drawImage(waterCooler, 35, 170, tileSize * 6, tileSize * 6, null);
         }
@@ -175,9 +175,8 @@ public class DrawGame {
 
     private int xCenterText(String text, Graphics2D g2) {
         int screenWidth = game.getScreenWidth();
-        int lenght = (int) g2.getFontMetrics().getStringBounds(text, g2).getWidth();
-        int x = screenWidth / 2 - lenght / 2;
-        return x;
+        int length = (int) g2.getFontMetrics().getStringBounds(text, g2).getWidth();
+        return screenWidth / 2 - length / 2;
     }
 
     private void getImage() {

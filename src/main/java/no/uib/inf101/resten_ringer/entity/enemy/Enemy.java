@@ -108,19 +108,15 @@ public abstract class Enemy extends Entity {
             } else {
                 if (yNeededToMove < 0) {
                     y -= speed;
-                    yNeededToMove += speed;
                     movementDirection = "up";
                 } else if (yNeededToMove > 0) {
                     y += speed;
-                    yNeededToMove -= speed;
                     movementDirection = "down";
                 } else if (xNeededToMove < 0) {
                     x -= speed;
-                    xNeededToMove += speed;
                     movementDirection = "left";
                 } else if (xNeededToMove > 0) {
                     x += speed;
-                    xNeededToMove -= speed;
                     movementDirection = "right";
                 }
             }
