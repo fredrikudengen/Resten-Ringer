@@ -233,8 +233,8 @@ public abstract class Enemy extends Entity {
         if (enemyCollidesWithPlayer() == true) {
             player.setShocked();
             if (movementDirection == "up") {
-                if (!(y - 50 < 20)) {
-                    y -= 50;
+                if (!(y + 50 > game.getScreenHeight() - 60)) {
+                    y += 50;
                 }
             } else if (movementDirection == "left") {
                 if (!(x + 50 > game.getScreenWidth() - game.getTileSize() - 5)) {
@@ -245,7 +245,7 @@ public abstract class Enemy extends Entity {
                     x -= 50;
                 }
             } else if (movementDirection == "down") {
-                if (!(y + 50 < game.getScreenHeight() - 60)) {
+                if (!(y - 50 < 20)) {
                     y -= 50;
                 }
             }
