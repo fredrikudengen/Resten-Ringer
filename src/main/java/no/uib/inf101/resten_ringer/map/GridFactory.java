@@ -62,6 +62,7 @@ public class GridFactory {
             }
             br.close();
         } catch (Exception e) {
+            throw new RuntimeException("Could not load map file: " + gridFile, e);
         }
     }
 
