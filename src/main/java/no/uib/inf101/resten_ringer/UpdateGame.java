@@ -238,16 +238,20 @@ public class UpdateGame {
                 gameController.shotKeyPressed = false;
             }
         }
-        for (int i = enemyList.size() - 1; i >= 0; i--) {
-            for (int j = projectileList.size() - 1; j >= 0; j--) {
-                Projectile projectile = projectileList.get(j);
-                projectile.update();
+        for (int j = projectileList.size() - 1; j >= 0; j--) {
+            Projectile projectile = projectileList.get(j);
+            projectile.update();
 
-                if (screenWidth < projectile.getX() || projectile.getX() < 0
-                        || screenHeight < projectile.getY() || projectile.getY() < 0
-                        || projectile.projectileCollidesWithEnemy(i)) {
-                    projectileList.remove(j);
-                }
+            boolean outOfBounds = screenWidth < projectile.getX() || projectile.getX() < 0
+                    || screenHeight < projectile.getY() || projectile.getY() < 0;
+
+            boolean hitEnemy = false;
+            for (int i = enemyList.size() - 1; i >= 0 && !hitEnemy; i--) {
+                hitEnemy = projectile.projectileCollidesWithEnemy(i);
+            }
+
+            if (outOfBounds || hitEnemy) {
+                projectileList.remove(j);
             }
         }
     }
