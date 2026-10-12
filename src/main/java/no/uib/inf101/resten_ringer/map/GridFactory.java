@@ -13,7 +13,7 @@ public class GridFactory {
     private GridCell[] gridCell;
 
     // Stores map data
-    private int gridCellNum[][];
+    private int[][] gridCellNum;
 
     public GridFactory(Game game) {
 
@@ -24,7 +24,7 @@ public class GridFactory {
         gridCellNum = new int[game.getCols()][game.getRows()];
 
         setTiles();
-        loadGrid("gameMap1.txt");
+        loadGrid();
     }
 
     private void setTiles() {
@@ -33,9 +33,9 @@ public class GridFactory {
         gridCell[1].collision = true;
     }
 
-    private void loadGrid(String gridFile) {
+    private void loadGrid() {
         try {
-            InputStream is = getClass().getResourceAsStream(gridFile);
+            InputStream is = getClass().getResourceAsStream("gameMap1.txt");
             BufferedReader br = new BufferedReader(new InputStreamReader(is));
 
             int col = 0;
@@ -48,7 +48,7 @@ public class GridFactory {
                 // Puts read string in an array
                 while (col < game.getCols() && row < game.getRows()) {
                     // Changes string in line to integer
-                    String numbers[] = line.split(" ");
+                    String[] numbers = line.split(" ");
                     // Stores extracted number
                     int num = Integer.parseInt(numbers[col]);
                     gridCellNum[col][row] = num;
@@ -62,7 +62,7 @@ public class GridFactory {
             }
             br.close();
         } catch (Exception e) {
-            throw new RuntimeException("Could not load map file: " + gridFile, e);
+            throw new RuntimeException("Could not load map file: " + "gameMap1.txt", e);
         }
     }
 

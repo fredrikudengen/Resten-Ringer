@@ -73,25 +73,30 @@ public class Projectile extends Entity implements DrawAndUpdate {
 
     @Override
     public void update() {
-        if (shotDirection.equals("up")) {
-            y -= speed;
-            if (y < 0) {
-                gameController.shootUp = false;
+        switch (shotDirection) {
+            case "up" -> {
+                y -= speed;
+                if (y < 0) {
+                    gameController.shootUp = false;
+                }
             }
-        } else if (shotDirection.equals("down")) {
-            y += speed;
-            if (y > game.getScreenHeight()) {
-                gameController.shootDown = false;
+            case "down" -> {
+                y += speed;
+                if (y > game.getScreenHeight()) {
+                    gameController.shootDown = false;
+                }
             }
-        } else if (shotDirection.equals("left")) {
-            x -= speed;
-            if (x < 0) {
-                gameController.shootLeft = false;
+            case "left" -> {
+                x -= speed;
+                if (x < 0) {
+                    gameController.shootLeft = false;
+                }
             }
-        } else if (shotDirection.equals("right")) {
-            x += speed;
-            if (x > game.getScreenWidth()) {
-                gameController.shootRight = false;
+            case "right" -> {
+                x += speed;
+                if (x > game.getScreenWidth()) {
+                    gameController.shootRight = false;
+                }
             }
         }
         imageCounter++;
@@ -144,14 +149,11 @@ public class Projectile extends Entity implements DrawAndUpdate {
                     break;
             }
             // Draw Projectile
-            if (shotDirection.equals("right")) {
-                g2.drawImage(image, x + 40, y + 20, bulletSize * 2, bulletSize, null);
-            } else if (shotDirection.equals("left")) {
-                g2.drawImage(image, x - 40, y + 20, bulletSize * 2, bulletSize, null);
-            } else if (shotDirection.equals("up")) {
-                g2.drawImage(image, x + 25, y - 20, bulletSize, bulletSize * 2, null);
-            } else if (shotDirection.equals("down")) {
-                g2.drawImage(image, x, y + 30, bulletSize, bulletSize * 2, null);
+            switch (shotDirection) {
+                case "right" -> g2.drawImage(image, x + 40, y + 20, bulletSize * 2, bulletSize, null);
+                case "left" -> g2.drawImage(image, x - 40, y + 20, bulletSize * 2, bulletSize, null);
+                case "up" -> g2.drawImage(image, x + 25, y - 20, bulletSize, bulletSize * 2, null);
+                case "down" -> g2.drawImage(image, x, y + 30, bulletSize, bulletSize * 2, null);
             }
         }
     }

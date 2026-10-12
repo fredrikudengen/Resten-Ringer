@@ -105,29 +105,32 @@ public class UpdateGame {
         ArrayList<Enemy> enemyList = game.getEnemyList();
         String modeSelect = game.getModeSelect();
 
-        if (modeSelect.equals("sober mode")) {
-            game.setModeSelect("");
-            player.setHealthpoints(10);
+        switch (modeSelect) {
+            case "sober mode" -> {
+                game.setModeSelect("");
+                player.setHealthpoints(10);
 
-            // removes FastEnemy (last enemy added)
-            enemyList.remove(enemyList.size() - 1);
-            game.setGameState(GameState.ACTIVE_GAME);
+                // removes FastEnemy (last enemy added)
+                enemyList.remove(enemyList.size() - 1);
+                game.setGameState(GameState.ACTIVE_GAME);
+            }
+            case "tipsy mode" -> {
+                game.setModeSelect("");
+                SlowEnemy newSlowEnemy = new SlowEnemy(game, player);
+                enemyList.add(newSlowEnemy);
+                game.setGameState(GameState.ACTIVE_GAME);
 
-        } else if (modeSelect.equals("tipsy mode")) {
-            game.setModeSelect("");
-            SlowEnemy newSlowEnemy = new SlowEnemy(game, player);
-            enemyList.add(newSlowEnemy);
-            game.setGameState(GameState.ACTIVE_GAME);
-
-        } else if (modeSelect.equals("drunk mode")) {
-            game.setModeSelect("");
-            player.setHealthpoints(4);
-            enemyMax += 1;
-            SlowEnemy newSlowEnemy = new SlowEnemy(game, player);
-            enemyList.add(newSlowEnemy);
-            FastEnemy newFastEnemy = new FastEnemy(game, player);
-            enemyList.add(newFastEnemy);
-            game.setGameState(GameState.ACTIVE_GAME);
+            }
+            case "drunk mode" -> {
+                game.setModeSelect("");
+                player.setHealthpoints(4);
+                enemyMax += 1;
+                SlowEnemy newSlowEnemy = new SlowEnemy(game, player);
+                enemyList.add(newSlowEnemy);
+                FastEnemy newFastEnemy = new FastEnemy(game, player);
+                enemyList.add(newFastEnemy);
+                game.setGameState(GameState.ACTIVE_GAME);
+            }
         }
     }
 
@@ -179,7 +182,7 @@ public class UpdateGame {
     }
 
     private void updateActiveGame() {
-        if (player.getIsAlive() == true) {
+        if (player.getIsAlive()) {
             player.update();
         }
         updateProjectile();
@@ -207,7 +210,7 @@ public class UpdateGame {
         ArrayList<Enemy> enemyList = game.getEnemyList();
         for (int i = enemyList.size() - 1; i >= 0; i--) {
             enemyList.get(i).update(); // Update the enemy
-            if (enemyList.get(i).getIsAlive() == false) {
+            if (!enemyList.get(i).getIsAlive()) {
                 if (enemyList.get(i) instanceof NormalEnemy) {
                     SoundPlayer.manDie1();
                 } else if (enemyList.get(i) instanceof SlowEnemy) {
@@ -228,7 +231,7 @@ public class UpdateGame {
 
         if (gameController.shotKeyPressed) {
             // Check if the previous projectile is not alive before creating a new one
-            if (bulletTimerCheck == false) {
+            if (!bulletTimerCheck) {
                 Projectile newProjectile = new Projectile(game, player, gameController,
                         gameController.getShotDirection());
                 projectileList.add(newProjectile);

@@ -82,22 +82,22 @@ public class Player extends Entity implements DrawAndUpdate {
                     break;
             }
         }
-        if (collisionOn == false) {
+        if (!collisionOn) {
             if (gameController.downPressed || gameController.leftPressed || gameController.rightPressed
                     || gameController.upPressed) {
-                if (gameController.upPressed == true) {
+                if (gameController.upPressed) {
                     direction = "up";
                     movementDirection = "up";
                     y -= speed;
-                } else if (gameController.downPressed == true) {
+                } else if (gameController.downPressed) {
                     direction = "down";
                     movementDirection = "down";
                     y += speed;
-                } else if (gameController.leftPressed == true) {
+                } else if (gameController.leftPressed) {
                     direction = "left";
                     movementDirection = "left";
                     x -= speed;
-                } else if (gameController.rightPressed == true) {
+                } else {
                     direction = "right";
                     movementDirection = "right";
                     x += speed;
@@ -113,13 +113,13 @@ public class Player extends Entity implements DrawAndUpdate {
                 }
             }
         }
-        if (gameController.shootDown == true) {
+        if (gameController.shootDown) {
             direction = "down";
-        } else if (gameController.shootUp == true) {
+        } else if (gameController.shootUp) {
             direction = "up";
-        } else if (gameController.shootLeft == true) {
+        } else if (gameController.shootLeft) {
             direction = "left";
-        } else if (gameController.shootRight == true) {
+        } else if (gameController.shootRight) {
             direction = "right";
         }
 
@@ -140,30 +140,18 @@ public class Player extends Entity implements DrawAndUpdate {
     @Override
     public void draw(Graphics2D g2) {
         if (isShocked) {
-            Image hitImage = null;
-            switch (direction) {
-                case "up":
-                    hitImage = (imageNum == 1) ? downHit1 : downHit2;
-                    break;
-                case "down":
-                    hitImage = (imageNum == 1) ? downHit1 : downHit2;
-                    break;
-                case "left":
-                    hitImage = (imageNum == 1) ? leftHit1 : leftHit2;
-                    break;
-                case "right":
-                    hitImage = (imageNum == 1) ? rightHit1 : rightHit2;
-                    break;
-            }
+            Image hitImage = switch (direction) {
+                case "up", "down" -> (imageNum == 1) ? downHit1 : downHit2;
+                case "left" -> (imageNum == 1) ? leftHit1 : leftHit2;
+                case "right" -> (imageNum == 1) ? rightHit1 : rightHit2;
+                default -> null;
+            };
             // Draw player when shocked
-            if (direction.equals("right")) {
-                g2.drawImage(hitImage, x, y, game.getTileSize() * 2, game.getTileSize(), null);
-            } else if (direction.equals("left")) {
-                g2.drawImage(hitImage, x - game.getTileSize(), y, game.getTileSize() * 2, game.getTileSize(), null);
-            } else if (direction.equals("up")) {
-                g2.drawImage(hitImage, x, y, game.getTileSize(), game.getTileSize() * 2, null);
-            } else if (direction.equals("down")) {
-                g2.drawImage(hitImage, x, y, game.getTileSize(), game.getTileSize() * 2, null);
+            switch (direction) {
+                case "right" -> g2.drawImage(hitImage, x, y, game.getTileSize() * 2, game.getTileSize(), null);
+                case "left" ->
+                        g2.drawImage(hitImage, x - game.getTileSize(), y, game.getTileSize() * 2, game.getTileSize(), null);
+                case "up", "down" -> g2.drawImage(hitImage, x, y, game.getTileSize(), game.getTileSize() * 2, null);
             }
 
             if (isShocked) {
@@ -174,30 +162,21 @@ public class Player extends Entity implements DrawAndUpdate {
             }
 
         } else {
-            Image playerImage = null;
-            switch (direction) {
-                case "up":
-                    playerImage = (imageNum == 1) ? up1 : up2;
-                    break;
-                case "down":
-                    playerImage = (imageNum == 1) ? down1 : down2;
-                    break;
-                case "left":
-                    playerImage = (imageNum == 1) ? left1 : left2;
-                    break;
-                case "right":
-                    playerImage = (imageNum == 1) ? right1 : right2;
-                    break;
-            }
+            Image playerImage = switch (direction) {
+                case "up" -> (imageNum == 1) ? up1 : up2;
+                case "down" -> (imageNum == 1) ? down1 : down2;
+                case "left" -> (imageNum == 1) ? left1 : left2;
+                case "right" -> (imageNum == 1) ? right1 : right2;
+                default -> null;
+            };
             // Draw player
-            if (direction.equals("right")) {
-                g2.drawImage(playerImage, x, y, game.getTileSize() * 2, game.getTileSize(), null);
-            } else if (direction.equals("left")) {
-                g2.drawImage(playerImage, x - game.getTileSize(), y, game.getTileSize() * 2, game.getTileSize(), null);
-            } else if (direction.equals("up")) {
-                g2.drawImage(playerImage, x, y - game.getTileSize(), game.getTileSize(), game.getTileSize() * 2, null);
-            } else if (direction.equals("down")) {
-                g2.drawImage(playerImage, x, y, game.getTileSize(), game.getTileSize() * 2, null);
+            switch (direction) {
+                case "right" -> g2.drawImage(playerImage, x, y, game.getTileSize() * 2, game.getTileSize(), null);
+                case "left" ->
+                        g2.drawImage(playerImage, x - game.getTileSize(), y, game.getTileSize() * 2, game.getTileSize(), null);
+                case "up" ->
+                        g2.drawImage(playerImage, x, y - game.getTileSize(), game.getTileSize(), game.getTileSize() * 2, null);
+                case "down" -> g2.drawImage(playerImage, x, y, game.getTileSize(), game.getTileSize() * 2, null);
             }
         }
 

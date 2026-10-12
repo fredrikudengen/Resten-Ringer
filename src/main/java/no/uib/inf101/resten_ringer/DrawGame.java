@@ -193,6 +193,6 @@ public class DrawGame {
         victoryScreen = Inf101Graphics.loadImageFromResources("victoryScreen.png");
         waterCooler = Inf101Graphics.loadImageFromResources("water_cooler.png");
         bottleOfAlcohol = Inf101Graphics.loadImageFromResources("bottle_of_alcohol.png");
-        levelSelect = Inf101Graphics.loadImageFromResources("level_select.png");
+        levelSelect = Inf101Graphics.loadImageFromResources("Level_select.png");
     }
 }

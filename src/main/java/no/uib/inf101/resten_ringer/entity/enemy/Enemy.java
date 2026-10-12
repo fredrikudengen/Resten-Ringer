@@ -18,8 +18,6 @@ public abstract class Enemy extends Entity {
 
     private int imageNum = 1;
     private int imageCounter = 0;
-    private int xNeededToMove;
-    private int yNeededToMove;
 
     private boolean isStopped = false;
     private long stopStartTime = 0;
@@ -70,24 +68,16 @@ public abstract class Enemy extends Entity {
      * Updates the x and y of Enemy so it moves towards the Player.
      */
     protected void simulateEnemyMoves() {
-        xNeededToMove = player.getX() - x;
-        yNeededToMove = player.getY() - y;
+        int xNeededToMove = player.getX() - x;
+        int yNeededToMove = player.getY() - y;
         // If number of x pixels needed to move is larger than y, move to left or right
         // first
         if (Math.abs(xNeededToMove) > Math.abs(yNeededToMove)) {
             collisionOn = false;
             game.collisionDetection.checkTile(this);
-            if (collisionOn == true) {
+            if (collisionOn) {
                 // Move around collision tile based on direction
-                if (movementDirection.equals("left")) {
-                    y += speed;
-                } else if (movementDirection.equals("right")) {
-                    y += speed;
-                } else if (movementDirection.equals("up")) {
-                    x += speed;
-                } else if (movementDirection.equals("down")) {
-                    x += speed;
-                }
+                move();
             } else {
                 if (xNeededToMove < 0) {
                     x -= speed;
@@ -113,16 +103,8 @@ public abstract class Enemy extends Entity {
         if (Math.abs(xNeededToMove) <= Math.abs(yNeededToMove)) {
             collisionOn = false;
             game.collisionDetection.checkTile(this);
-            if (collisionOn == true) {
-                if (movementDirection.equals("left")) {
-                    y += speed;
-                } else if (movementDirection.equals("right")) {
-                    y += speed;
-                } else if (movementDirection.equals("up")) {
-                    x += speed;
-                } else if (movementDirection.equals("down")) {
-                    x += speed;
-                }
+            if (collisionOn) {
+                move();
             } else {
                 if (yNeededToMove < 0) {
                     y -= speed;
@@ -142,6 +124,13 @@ public abstract class Enemy extends Entity {
                     movementDirection = "right";
                 }
             }
+        }
+    }
+
+    private void move() {
+        switch (movementDirection) {
+            case "left", "right" -> y += speed;
+            case "up", "down" -> x += speed;
         }
     }
 
@@ -169,53 +158,19 @@ public abstract class Enemy extends Entity {
         Image image = null;
 
         if (enemy instanceof SlowEnemy) {
-            switch (movementDirection) {
-                case "up":
-                    image = (imageNum == 1) ? slow_enemy_up_1 : slow_enemy_up_2;
-                    break;
-                case "down":
-                    image = (imageNum == 1) ? slow_enemy_right_1 : slow_enemy_right_2;
-                    break;
-                case "left":
-                    image = (imageNum == 1) ? slow_enemy_left_1 : slow_enemy_left_2;
-                    break;
-                case "right":
-                    image = (imageNum == 1) ? slow_enemy_right_1 : slow_enemy_right_2;
-                    break;
-            }
+            image = walk(image, slow_enemy_up_1, slow_enemy_up_2, slow_enemy_right_1, slow_enemy_right_2, slow_enemy_left_1, slow_enemy_left_2);
         }
 
         if (enemy instanceof NormalEnemy) {
-            switch (movementDirection) {
-                case "up":
-                    image = (imageNum == 1) ? normal_enemy_up_1 : normal_enemy_up_2;
-                    break;
-                case "down":
-                    image = (imageNum == 1) ? normal_enemy_down_1 : normal_enemy_down_2;
-                    break;
-                case "left":
-                    image = (imageNum == 1) ? normal_enemy_down_1 : normal_enemy_down_2;
-                    break;
-                case "right":
-                    image = (imageNum == 1) ? normal_enemy_down_1 : normal_enemy_down_2;
-                    break;
-            }
+            image = walk(image, normal_enemy_up_1, normal_enemy_up_2, normal_enemy_down_1, normal_enemy_down_2, normal_enemy_down_1, normal_enemy_down_2);
         }
         if (enemy instanceof FastEnemy) {
-            switch (movementDirection) {
-                case "up":
-                    image = (imageNum == 1) ? fast_enemy_up_1 : fast_enemy_up_2;
-                    break;
-                case "down":
-                    image = (imageNum == 1) ? fast_enemy_left_1 : fast_enemy_left_2;
-                    break;
-                case "left":
-                    image = (imageNum == 1) ? fast_enemy_left_1 : fast_enemy_left_2;
-                    break;
-                case "right":
-                    image = (imageNum == 1) ? fast_enemy_right_1 : fast_enemy_right_2;
-                    break;
-            }
+            image = switch (movementDirection) {
+                case "up" -> (imageNum == 1) ? fast_enemy_up_1 : fast_enemy_up_2;
+                case "down", "left" -> (imageNum == 1) ? fast_enemy_left_1 : fast_enemy_left_2;
+                case "right" -> (imageNum == 1) ? fast_enemy_right_1 : fast_enemy_right_2;
+                default -> image;
+            };
 
         }
 
@@ -225,28 +180,43 @@ public abstract class Enemy extends Entity {
 
     }
 
+    private Image walk(Image image, BufferedImage slowEnemyUp1, BufferedImage slowEnemyUp2, BufferedImage slowEnemyRight1, BufferedImage slowEnemyRight2, BufferedImage slowEnemyLeft1, BufferedImage slowEnemyLeft2) {
+        image = switch (movementDirection) {
+            case "up" -> (imageNum == 1) ? slowEnemyUp1 : slowEnemyUp2;
+            case "down", "right" -> (imageNum == 1) ? slowEnemyRight1 : slowEnemyRight2;
+            case "left" -> (imageNum == 1) ? slowEnemyLeft1 : slowEnemyLeft2;
+            default -> image;
+        };
+        return image;
+    }
+
     /**
      * Knocks back the enemy if it collides with the player in the opposite
-     * direction of it's movement direction
+     * direction of its movement direction
      */
     protected void knockBackEnemy() {
-        if (enemyCollidesWithPlayer() == true) {
+        if (enemyCollidesWithPlayer()) {
             player.setShocked();
-            if (movementDirection.equals("up")) {
-                if (!(y + 50 > game.getScreenHeight() - 60)) {
-                    y += 50;
+            switch (movementDirection) {
+                case "up" -> {
+                    if (!(y + 50 > game.getScreenHeight() - 60)) {
+                        y += 50;
+                    }
                 }
-            } else if (movementDirection.equals("left")) {
-                if (!(x + 50 > game.getScreenWidth() - game.getTileSize() - 5)) {
-                    x += 50;
+                case "left" -> {
+                    if (!(x + 50 > game.getScreenWidth() - game.getTileSize() - 5)) {
+                        x += 50;
+                    }
                 }
-            } else if (movementDirection.equals("right")) {
-                if (!(x - 50 < 20)) {
-                    x -= 50;
+                case "right" -> {
+                    if (!(x - 50 < 20)) {
+                        x -= 50;
+                    }
                 }
-            } else if (movementDirection.equals("down")) {
-                if (!(y - 50 < 20)) {
-                    y -= 50;
+                case "down" -> {
+                    if (!(y - 50 < 20)) {
+                        y -= 50;
+                    }
                 }
             }
         }
