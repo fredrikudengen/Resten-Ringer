@@ -79,13 +79,13 @@ public abstract class Enemy extends Entity {
             game.collisionDetection.checkTile(this);
             if (collisionOn == true) {
                 // Move around collision tile based on direction
-                if (movementDirection == "left") {
+                if (movementDirection.equals("left")) {
                     y += speed;
-                } else if (movementDirection == "right") {
+                } else if (movementDirection.equals("right")) {
                     y += speed;
-                } else if (movementDirection == "up") {
+                } else if (movementDirection.equals("up")) {
                     x += speed;
-                } else if (movementDirection == "down") {
+                } else if (movementDirection.equals("down")) {
                     x += speed;
                 }
             } else {
@@ -114,13 +114,13 @@ public abstract class Enemy extends Entity {
             collisionOn = false;
             game.collisionDetection.checkTile(this);
             if (collisionOn == true) {
-                if (movementDirection == "left") {
+                if (movementDirection.equals("left")) {
                     y += speed;
-                } else if (movementDirection == "right") {
+                } else if (movementDirection.equals("right")) {
                     y += speed;
-                } else if (movementDirection == "up") {
+                } else if (movementDirection.equals("up")) {
                     x += speed;
-                } else if (movementDirection == "down") {
+                } else if (movementDirection.equals("down")) {
                     x += speed;
                 }
             } else {
@@ -232,19 +232,19 @@ public abstract class Enemy extends Entity {
     protected void knockBackEnemy() {
         if (enemyCollidesWithPlayer() == true) {
             player.setShocked();
-            if (movementDirection == "up") {
+            if (movementDirection.equals("up")) {
                 if (!(y + 50 > game.getScreenHeight() - 60)) {
                     y += 50;
                 }
-            } else if (movementDirection == "left") {
+            } else if (movementDirection.equals("left")) {
                 if (!(x + 50 > game.getScreenWidth() - game.getTileSize() - 5)) {
                     x += 50;
                 }
-            } else if (movementDirection == "right") {
+            } else if (movementDirection.equals("right")) {
                 if (!(x - 50 < 20)) {
                     x -= 50;
                 }
-            } else if (movementDirection == "down") {
+            } else if (movementDirection.equals("down")) {
                 if (!(y - 50 < 20)) {
                     y -= 50;
                 }

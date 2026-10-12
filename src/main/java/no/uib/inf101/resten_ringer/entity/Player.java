@@ -156,13 +156,13 @@ public class Player extends Entity implements DrawAndUpdate {
                     break;
             }
             // Draw player when shocked
-            if (direction == "right") {
+            if (direction.equals("right")) {
                 g2.drawImage(hitImage, x, y, game.getTileSize() * 2, game.getTileSize(), null);
-            } else if (direction == "left") {
+            } else if (direction.equals("left")) {
                 g2.drawImage(hitImage, x - game.getTileSize(), y, game.getTileSize() * 2, game.getTileSize(), null);
-            } else if (direction == "up") {
+            } else if (direction.equals("up")) {
                 g2.drawImage(hitImage, x, y, game.getTileSize(), game.getTileSize() * 2, null);
-            } else if (direction == "down") {
+            } else if (direction.equals("down")) {
                 g2.drawImage(hitImage, x, y, game.getTileSize(), game.getTileSize() * 2, null);
             }
 
@@ -190,13 +190,13 @@ public class Player extends Entity implements DrawAndUpdate {
                     break;
             }
             // Draw player
-            if (direction == "right") {
+            if (direction.equals("right")) {
                 g2.drawImage(playerImage, x, y, game.getTileSize() * 2, game.getTileSize(), null);
-            } else if (direction == "left") {
+            } else if (direction.equals("left")) {
                 g2.drawImage(playerImage, x - game.getTileSize(), y, game.getTileSize() * 2, game.getTileSize(), null);
-            } else if (direction == "up") {
+            } else if (direction.equals("up")) {
                 g2.drawImage(playerImage, x, y - game.getTileSize(), game.getTileSize(), game.getTileSize() * 2, null);
-            } else if (direction == "down") {
+            } else if (direction.equals("down")) {
                 g2.drawImage(playerImage, x, y, game.getTileSize(), game.getTileSize() * 2, null);
             }
         }
