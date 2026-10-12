@@ -22,8 +22,14 @@ import java.awt.geom.AffineTransform;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Inf101Graphics {
+
+  // Caches decoded images by resource path so repeated loads (e.g. every new
+  // Enemy/Projectile instance) don't re-read and re-decode the same file from disk.
+  private static final Map<String, BufferedImage> imageCache = new HashMap<>();
 
   //////////////////////////////////////
   /// String helper methods
@@ -229,12 +235,18 @@ public class Inf101Graphics {
     if (!filename.startsWith("/")) {
       filename = "/" + filename;
     }
+    BufferedImage cached = imageCache.get(filename);
+    if (cached != null) {
+      return cached;
+    }
     InputStream is = Inf101Graphics.class.getResourceAsStream(filename);
     if (is == null) {
       throw new RuntimeException("Could not find image file in resources: " + filename);
     }
     try {
-      return ImageIO.read(is);
+      BufferedImage image = ImageIO.read(is);
+      imageCache.put(filename, image);
+      return image;
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
